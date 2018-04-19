@@ -165,15 +165,41 @@ Keywords: x; y; z
 \section{Introduction}
 \label{sec:intro}
 
-In this paper we will explore and assess deterministic scalar flux solutions
-from the Lagrange Discrete Ordinates (LDO) equations as input for Monte Carlo
-variance reduction parameter generation in the CADIS and \fwc\ contexts.
+Radiation shielding is an important and interesting problem from various
+perspectives. Simulation of shielding scenarios is critical for health physics
+and nuclear security applications, but arriving at a solution for a given
+response of interest (e.g., neutron flux at a given location) can be
+computationally difficult in the context of
+the magnitude of particle attenuation often seen in shielding problems.
 
-\begin{itemize}
-\item{3D neutron transport is on the rise with HPC}
-\item{Discrete ordinates and Monte Carlo are common solution approaches}
-\item{Hybrid methods aim to leverage the strengths of both}
-\end{itemize}
+The steady-state Boltzmann transport equation is typically solved using either 
+deterministic methods or stochastic (Monte Carlo) methods. So-called ``hybrid''
+methods aim to combine the favorable aspects of deterministic and Monte Carlo
+methods to achieve better results. The CADIS (consistent adjoint driven
+importance sampling) and \fwc\ (forward-weighted CADIS) methods are the current
+state of the art in Monte Carlo variance reduction parameter generation.
+Although hybrid methods are used to
+significant effect in radiation shielding problems, they do not entirely
+mitigate the negative aspects of the combined simulation types.
+
+One particular area of study where hybrid methods tend to fall short is in
+shielding problems with highly anisotropic particle movement and particle
+streaming pathways. This is because the standard implementation of the CADIS
+and \fwc\ methods is based on scalar particle flux rather than angular particle
+flux. So, solutions from deterministic calculations exclude information about
+how particles move toward a response of interest. For problems with strong
+anisotropies in the particle flux, the importance map and biased source 
+developed using the standard space/energy treatment may not represent the real
+importance well enough to sufficiently improve efficiency in the Monte Carlo
+calculation. 
+
+This work aims to gauge the performance of Monte Carlo biasing parameters based
+on scalar flux solutions from solving the Lagrange Discrete Ordinates (LDO)
+equations. We will be employing the LDO equations' solutions in the standard
+CADIS and \fwc\ methods to assess how well the LDO representation's unique
+treatment of scattering and asymmetry in angle incorporate angular information
+into the resultant scalar flux solutions and corresponding Monte Carlo biasing
+parameters.
 
 %%---------------------------------------------------------------------------%%
 \section{Background}
