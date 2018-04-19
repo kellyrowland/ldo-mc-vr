@@ -85,57 +85,40 @@
 \DeclareMathOperator{\low}{lower}
 \DeclareMathOperator{\upp}{upper}
 
-\newcommand{\Sn}{\ensuremath{S_N}}
-\newcommand{\Macro}{\ensuremath{\Sigma}}
-
-\newcommand{\vOmega}{\ensuremath{\hat{\Omega}}}
-\newcommand{\Ye}[2]{\ensuremath{Y^e_{#1}(\vOmega_#2)}}
-\newcommand{\Yo}[2]{\ensuremath{Y^o_{#1}(\vOmega_#2)}}
-
+\newcommand{\sa}{\shortrightarrow}
+\newcommand{\bo}{\mathbf\Omega}
+\newcommand{\vecr}{\textbf{r}}
+\newcommand{\sn}{S$_\mathrm{N}$}
+\newcommand{\pn}{P$_\mathrm{N}$}
+\newcommand{\sigt}{\Sigma_t}
+\newcommand{\sigs}{\Sigma_s}
+\newcommand{\hl}{\mathcal{H}_L}
+\newcommand{\maths}{\mathbb{S}^2}
+\newcommand{\dl}{d_L}
+\newcommand{\lij}{\langle L_i,L_j \rangle}
+\newcommand{\kij}{\langle K_i,K_j \rangle}
 \newcommand{\ve}[1]{\ensuremath{\mathbf{#1}}}
-
-\newcommand{\sigg}[1]{\ensuremath{\sigma^{gg'}_{\text{s}\,#1}}}
-\newcommand{\psig}{\ensuremath{\psi^g}}
-
+\newcommand{\Ye}[2]{\ensuremath{Y^e_{#1}(\bo_#2)}}
+\newcommand{\Yo}[2]{\ensuremath{Y^o_{#1}(\bo_#2)}}
+\newcommand{\Sigg}[1]{\ensuremath{\Sigma^{g'\sa g}_{\text{s},#1}}}
 \newcommand{\even}{\ensuremath{\phi^g}}
 \newcommand{\odd}{\ensuremath{\vartheta^g}}
-
-\newcommand{\evenp}{\ensuremath{\phi^{g'}}}
-\newcommand{\oddp}{\ensuremath{\vartheta^{g'}}}
-
-\newcommand{\apsi}[1]{\ensuremath{\psi^{\dagger\,#1}}}
-\newcommand{\aeven}[1]{\ensuremath{\phi^{\dagger\,#1}}}
-\newcommand{\aodd}[1]{\ensuremath{\vartheta^{\dagger\,#1}}}
-
-\newcommand{\asigg}[1]{\ensuremath{\sigma^{g'g}_{\text{s}\,#1}}}
-
-\newcommand{\aPsi}[1]{\ensuremath{\Psi^{\dagger\,#1}}}
-\newcommand{\aPhi}[1]{\ensuremath{\Phi^{\dagger\,#1}}}
-
-\newcommand{\epsi}{\ensuremath{\epsilon}}
-\newcommand{\ephi}{\ensuremath{\varepsilon}}
-
-\newcommand{\psie}{\ensuremath{\psi_{\epsi}}}
-\newcommand{\phie}{\ensuremath{\phi_{\ephi}}}
-
-\newcommand{\Psie}{\ensuremath{\Psi_{\epsi}}}
-\newcommand{\Phie}{\ensuremath{\Phi_{\ephi}}}
-
-\newcommand{\apsie}[1]{\ensuremath{\psi^{\dagger\,#1}_{\epsi}}}
-\newcommand{\aphie}[1]{\ensuremath{\phi^{\dagger\,#1}_{\ephi}}}
-
-\newcommand{\aPsie}[1]{\ensuremath{\Psi^{\dagger\,#1}_{\epsi}}}
-\newcommand{\aPhie}[1]{\ensuremath{\Phi^{\dagger\,#1}_{\ephi}}}
-
-\newcommand{\avg}[1]{\ensuremath{\langle#1\rangle}}
-
-\newcommand{\osig}{\ensuremath{\overline{\sigma}}}
-\newcommand{\osigs}{\ensuremath{\overline{\sigma_{\text{s}}}}}
-
+\newcommand{\xhat}{\ensuremath{\hat{x}}}
+\newcommand{\xbar}{\ensuremath{\bar{x}}}
+\newcommand{\qhat}{\ensuremath{\hat{q}}}
+\newcommand{\psihat}{\ensuremath{\hat{\psi}}}
+\newcommand{\khat}{\ensuremath{\hat{K}}}
+\newcommand{\Gij}[2]{\sum_{\ell=0}^L\frac{2\ell+1}{4\pi}P_{\ell}(\bo_#1\cdot\bo_#2)}
+\newcommand{\Sij}[2]{\Sigma^{g'\rightarrow g}_{\text{s,L}}(\bo_#1\cdot\bo_#2)}
+\newcommand{\Snij}[3]{\Sigma^{g'\rightarrow g}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
+\newcommand{\Snz}[3]{\Sigma^{0\sa 0}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
+\newcommand{\ldosig}[2]{\sum_{n=0}^N \frac{2n+1}{4\pi}\sigma_{s,n}^{g'\rightarrow g} P_n(\bo_#1\cdot\bo_#2)}
+\newcommand{\fq}{\qquad\qquad\qquad\qquad}
+\newcommand{\st}{\tilde{S}}
+\newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
 
 \begin{document}
-
 
 %Define fields for \maketitle  (fields are \author, \date, \thanks, and \title)
 
@@ -196,17 +179,200 @@ variance reduction parameter generation in the CADIS and \fwc\ contexts.
 \section{Background}
 \label{sec:background}
 
-%%---------------------------------------------------------------------------%%
-\subsection{Denovo}
-
-\begin{itemize}
-\item{Denovo is the transport solver in the Exnihilo code suite developed at
-ORNL}
-\item{2D and 3D neutral particle transport}
-\item{Scalable}
-\end{itemize}
+Here we begin by describing the CADIS (consistent adjoint driven importance 
+sampling) and \fwc\ (forward-weighted consistent adjoint driven importance
+sampling) methods, which are the current state
+of the art of Monte Carlo variance reduction parameter generation. These are 
+introduced first because this work 
+employs solutions of the LDO equations in combination with the CADIS and \fwc\ 
+methods via the ADVANTG software.
 
 %%---------------------------------------------------------------------------%%
+\subsection{CADIS and \fwc}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{CADIS}
+
+The CADIS method was introduced by Wagner and Haghighat to automate Monte Carlo
+variance reduction parameter generation \cite{cadis}. CADIS is based on the
+source biasing and weight window techniques , does not depend heavily 
+on user experience, and was implemented as described in Reference \cite{cadis}
+in the MCNP \cite{mcnp} code. Most importantly, the result of using the CADIS
+method is source biasing parameters and weight window target
+values such that particles are born with the target weights.
+
+The goal of most Monte Carlo transport problems is to calculate some response
+(scalar flux, dose, etc.) at some location in phase-space. This can be posed as
+solving the following integral equation:
+
+\begin{equation}
+R = \int_P \psi(P)\sigma_d(P)dP,
+\label{eq:cadis_r1}
+\end{equation}
+
+\noindent where $R$ is the response of interest, $\psi$ is the neutron angular
+flux, and $\sigma_d$ is some objective function in the phase-space
+$(\vecr, E, \bo) \in P$. With the mathematical adjoint identity, it can be
+shown that
+
+\begin{equation}
+R = \int_P \psi^{\dagger}(P)q(P)dP,
+\label{eq:cadis_r2}
+\end{equation}
+
+\noindent where $\psi^{\dagger}$ and $q$ are the adjoint neutron angular flux
+function and the particle source density, respectively. For a given problem
+with a vacuum boundary condition, Equations \ref{eq:cadis_r1} and
+\ref{eq:cadis_r2} are equivalent expressions for $R$. The adjoint neutron
+angular flux function $\psi^{\dagger}$ has physical meaning as the expected
+contribution to the response $R$ from a particle in phase-space $P$. In other
+words, the adjoint flux function is significant because it represents the
+importance of those source particles to the response of interest.
+
+To calculate the response with the Monte Carlo method, the independent
+variables are sampled from the probability density function (PDF) $q(P)$.
+However, this may not be the best PDF from which to sample, so an alternative
+PDF $\qhat(P)$ can be introduced into the integral:
+
+\begin{equation}
+R = \int_P \left[\frac{\psi^{\dagger}(P)q(P)}{\qhat(P)}\right]\qhat(P)dP,
+\end{equation}
+
+\noindent where $\qhat(P) \geq 0$ and the integral of $\qhat(P)$ over $P$ is 
+normalized to unity. Then, the alternative PDF $\qhat(P)$ that will minimize
+the variance of the response is given by
+
+\begin{equation}
+\qhat(P) = \frac{\psi^{\dagger}(P)q(P)}{\int_P\psi^{\dagger}(P)q(P)dP}.
+\label{eq:qhat}
+\end{equation}
+
+Because the source variables are sampled from this new biased PDF, the
+statistical weight of the source particles must be corrected such that
+
+\begin{equation}
+w(P)\qhat(P) = w_0q(P),
+\label{eq:cadis_w1}
+\end{equation}
+
+\noindent where $w_0$ is the unbiased particle starting weight and is set equal
+to 1. Substituting Equation \ref{eq:qhat} into Equation \ref{eq:cadis_w1} and
+solving for $w(P)$ gives the following expression for the statistical weight of
+the particles:
+
+\begin{equation}
+w(P) = \frac{\int_P\psi^{\dagger}(P)q(P)dP}{\psi^{\dagger}(P)}
+= \frac{R}{\psi^{\dagger}(P)}.
+\label{eq:cadis_w2}
+\end{equation}
+
+\noindent Equation \ref{eq:cadis_w2} demonstrates an inverse relationship
+between this adjoint (importance) function and the statistical particle weight.
+With this, reduced variance can be achieved when all source and transport
+sampling is proportional to its importance. The source particles' energy and
+position are sampled from the biased source distribution
+
+\begin{equation}
+\qhat(\vecr,E) = 
+\frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}
+{\int_V\int_E\phi^{\dagger}(\vecr,E)q(\vecr,E) dE\ d\vecr} 
+= \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}{R}.
+\label{eq:cadis_sb}
+\end{equation}
+
+To bias particles undergoing the transport process, the weight window technique
+is applied. Weight window lower bounds $w_{\ell}$ must be calculated such that
+the statistical weights defined in Equation \ref{eq:cadis_w2} fall at the
+center of the weight window intervals. The width of a given interval is denoted
+by $c_u = w_u/w_{\ell}$, the ratio of upper and lower weight window values. The
+weight window lower bounds are then given by
+
+\begin{equation}
+w_{\ell}(\vecr,E) = \frac{w}{\left(\frac{c_u +1}{2}\right)} 
+= \frac{R}{\phi^{\dagger}(\vecr,E)}\frac{1}{\left(\frac{c_u +1}{2}\right)}.
+\label{eq:cadis_tb}
+\end{equation}
+
+\noindent Using this definition, the weight window technique then performs
+particle splitting and/or rouletting consistent with the statistical weight
+given in Equation \ref{eq:cadis_w3}.
+
+The key result of the foregoing discussion is that the statistical weights of
+the source particles are within the bounds of the weight windows. In other
+words, the source-biasing parameters and the weight window target values are
+consistent. This circumvents the potential of particles being immediately split
+or rouletted upon birth and avoids the resultant degradation in computational
+efficiency. We refer the reader to \cite{cadis} for a complete discussion of
+results and analysis of the initial implementation of the CADIS method. The
+CADIS method is very effective for automated optimization of localized
+detectors but falls short of efficiently optimizing distributed responses.
+\fwc, discussed in the next section, was developed to address this issue.
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{\fwc}
+
+\fwc, is a variation on the CADIS method to increase the efficiency of Monte
+Carlo calculations of distributions and responses at multiple localized
+detectors \cite{fwcadis}.
+
+For this global variance reduction method, a response with uniformly-low
+statistical uncertainty across all phase-space is desired. One way to target
+this for a given Monte Carlo simulation is to uniformly distribute the
+particles throughout the system. Though this is not a physical response, it is
+a proxy for the goal of obtaining uniform uncertainty. It also indicates the
+possibility of developing an adjoint importance function that represents the
+importance of particles to achieving the goal of uniform particle distribution.
+
+With this new problem formulation, the problem of calculating particle density
+is cast into the response formulation:
+
+\begin{equation}
+R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)f(\vecr,E,\bo)dE\ dV\ d\bo,
+\end{equation}
+
+\noindent where $f(\vecr,E,\bo)$ is some function that converts angular
+particle flux to Monte Carlo particle density. The Monte Carlo particle 
+density can be estimated by
+
+\begin{equation}
+m(\vecr,E,\bo) = \frac{n(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)} 
+= \frac{\psi(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}
+\end{equation}
+
+\noindent and the total Monte Carlo density can be estimated by
+
+\begin{equation}
+R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
+\left[\frac{1}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}\right]dV\ dE\ d\bo.
+\label{eq:fwcadis_r}
+\end{equation}
+
+If the average particle weight is set proportional to the physical particle
+density, then the Monte Carlo particle density should be approximately uniform
+in phase-space:
+
+\begin{equation}
+R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
+\left[\frac{1}{\psi(\vecr,E,\bo)}\right]dV\ dE\ d\bo.
+\end{equation}
+
+\noindent By then defining the adjoint source as the bracketed term in the
+above equation,
+
+\begin{equation}
+q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
+\end{equation}
+
+\noindent we can calculate an adjoint importance function that represents the
+importance of particles to achieving the desired objective of uniformly
+distributed Monte Carlo particles. This should, in turn, correspond to
+approximately uniform statistical uncertainties. The method physically 
+orresponds to weighting the adjoint source with the inverse of the forward
+flux; the adjoint source will be high where the forward flux is low and the
+adjoint source will be low where the forward flux is high. With this method,
+after the adjoint has been determined, the standard CADIS procedures are used
+to calculate consistent source biasing parameters and weight windows.
+
 %%---------------------------------------------------------------------------%%
 \subsection{LDO Equations}
 
@@ -216,23 +382,15 @@ ORNL}
 \end{itemize}
 
 %%---------------------------------------------------------------------------%%
-%%---------------------------------------------------------------------------%%
-%%---------------------------------------------------------------------------%%
-\section{Past Work}
-\label{sec:pastwork}
-% replace this with a 'methodology' sort of section?
-
-%%---------------------------------------------------------------------------%%
 \section{Results}
 \label{sec:results}
 
 \begin{itemize}
-\item{Compared LDO equations' associated MC VR parameters with those from standard quadrature 
-      sets}
+\item{Compared LDO equations' associated MC VR parameters with those from
+      standard quadrature sets}
 \item{Relatively coarse multigroup energy library}
 \end{itemize}
 
-%%---------------------------------------------------------------------------%%
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
@@ -317,11 +475,11 @@ was C$_2$H$_4$. This is listed as ``polyethylene, non-borated'' and is material
 \end{figure}
 
 The problem measurements are $40\times54\times48$ inches. A uniform spatial
-mesh was imposed over the entire problem, with voxels measuring 1 inch per side.
-The neutron source in this problem is a Cf-252 point source located at the 
-center of the $x-$ and $y-$directions and at $z = 9$ inches.
-This point source was approximated as a small volumetric source in the tests in
-this work.
+mesh was imposed over the entire problem, with voxels measuring 1 inch per
+side. The neutron source in this problem is a Cf-252 point source located at
+the center of the $x-$ and $y-$directions and at $z = 9$ inches. This point
+source was approximated as a small volumetric source in the tests in this
+work.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
