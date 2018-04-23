@@ -78,7 +78,7 @@
 \usepackage{float} % for psuedocode formatting
 \usepackage{xspace}
 \usepackage{mathrsfs}
-\usepackage[pdftex]{hyperref}
+\usepackage[pdftex,hidelinks]{hyperref}
 
 %-------------
 \DeclareMathOperator{\diag}{diag}
@@ -408,8 +408,7 @@ to calculate consistent source biasing parameters and weight windows.
 \end{itemize}
 
 %%---------------------------------------------------------------------------%%
-\section{Results}
-\label{sec:results}
+\section{Test Cases and Run Parameters}
 
 \begin{itemize}
 \item{Compared LDO equations' associated MC VR parameters with those from
@@ -483,7 +482,7 @@ compositions of air, carbon steel, and water were taken from the Compendium of
 Material Composition Data for Radiation Transport Modeling \cite{pnnl}.
 
 %%---------------------------------------------------------------------------%%
-\subsection{Dog-Legged Void Neutron}
+\subsection{Dog-Legged Void Neutron (DLVN)}
 
 The next problem modeled is the dog-legged void neutron (DLVN) experimental 
 benchmark, which was designed to measure neutron streaming in iron with air
@@ -513,6 +512,77 @@ boundaries on all other sides of the configuration. For the tests in this work,
 the use of reflecting boundary conditions was not available, so the model used 
 was constructed to represent the entire experimental geometry configuration.
 Vacuum boundary conditions were applied to the outside of the entire problem.
+
+%%---------------------------------------------------------------------------%%
+\subsection{Simplified Portal Monitor}
+
+The final problem described here is a simplified portal monitor scenario.
+Portal monitors are large detector panels used to screen cargo for illicit
+radioactive materials. The problem models a cargo container holding a Ba-133
+photon point source and large blocks of homogenized iron and polyethylene. 
+The geometry and material configuration used in this test is the same as the
+example problem listed in Section 7.2 of the ADVANTG technical report
+\cite{advantg}. Diagrams of the simplified portal monitor problem are shown in
+Figure \ref{p1}.
+
+\begin{figure}[!htb]
+\centering
+\begin{subfigure}{0.475\textwidth}
+\includegraphics[width=\textwidth]{img/portal1.png}
+\end{subfigure}
+\begin{subfigure}{0.475\textwidth}
+\includegraphics[width=\textwidth]{img/portal2.png}
+\end{subfigure}
+\caption{Top and side views of simplified portal problem \cite{advantg}.}
+\label{p1}
+\end{figure}
+
+In Figure \ref{p1}, the different colors represent different materials. The NaI
+detectors are red and the gray material is concrete. The two types of material
+blocks are iron, shown in green, and polyethylene, shown in white. The steel
+cargo container surrounds the particle source and material blocks and is a
+semitransparent blue.
+
+A non-uniform Cartesian mesh that captures all of the problem's material
+boundaries was constructed for this simulation. The voxels are nominally 10 cm
+thick within the cargo container. Additional mesh planes parallel to the
+$x-$axis were added to the gaps between the homogenized iron and polyethylene
+blocks \cite{advantg}. Vacuum boundary conditions are present at all problem
+edges.
+
+%%---------------------------------------------------------------------------%%
+\section{Results}
+\label{sec:results}
+
+%%---------------------------------------------------------------------------%%
+\subsection{Steel Plate Embedded in Water}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{CADIS}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{\fwc}
+
+%%---------------------------------------------------------------------------%%
+\subsection{Dog-Legged Void Neutron (DLVN)}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{CADIS}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{\fwc}
+
+%%---------------------------------------------------------------------------%%
+\subsection{Simplified Portal Monitor}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{CADIS}
+
+%%---------------------------------------------------------------------------%%
+\subsubsection{\fwc}
+
+%%---------------------------------------------------------------------------%%
+\subsection{Summary}
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions}
