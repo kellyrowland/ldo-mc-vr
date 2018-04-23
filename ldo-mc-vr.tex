@@ -406,14 +406,12 @@ to calculate consistent source biasing parameters and weight windows.
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Run Parameters}
 
-\begin{itemize}
-\item{Compared LDO equations' associated MC VR parameters with those from
-      standard quadrature sets}
-\item{Relatively coarse multigroup energy library}
-\end{itemize}
+In this section we introduce and describe the test case scenarios examined as
+well as the various parameters chosen for the calculations in this work. 
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
+\label{sec:steel_params}
 
 The first test case we describe is an idealized geometry of a steel plate 
 embedded in water; it is modeled after the scenario presented in Reference 
@@ -608,14 +606,14 @@ ordinates equations but employs a nonstandard scattering treatment.
 For reasons noted below, the Galerkin quadrature orders used were 2 and 4. For
 an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
 has a total of $N(N+2)$ angles; the Galerkin quadrature sets
-used in this work range have 8 and 24 total angles, respectively.
+used in this work have 8 and 24 total angles, respectively.
 
 The degrees and sizes of the LDO quadrature sets used are listed in Table
 \ref{ldo-n}.
 
 \begin{table}[!htb]
 \centering
-\caption{Properties of LDO quadrature sets used in preliminary scaling studies.}
+\caption{Properties of LDO quadrature sets used in deterministic calculations.}
 \begin{tabular}{cc}
 \multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
 \multicolumn{1}{l}{\textbf{Quadrature Points}} \\
@@ -636,9 +634,7 @@ The step characteristics (SC) spatial discretization was used in all of the
 deterministic calculations based on the recommendation listed in Section 9.1.3
 of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
 scenarios, the point sources are approximated as small spherical volumetric
-sources.
-
-Except for the Galerkin quadratures, all runs used a P$_5$ scattering
+sources. Except for the Galerkin quadratures, all runs used a P$_5$ scattering
 expansion. At the time of this writing, Galerkin quadrature sets are
 implemented in the Exnihilo framework with the restriction that the \pn\ order
 be one greater than the \sn\ order. That is, for the Galerkin quadrature set of
@@ -657,10 +653,9 @@ histories to simulate. For the steel plate in water and simplified portal
 monitor cases, all calculations used 1\E{9} particle histories in both the
 CADIS and \fwc\ contexts. The DLVN experimental benchmark case was simulated 
 with 1\E{10} neutron histories as it was modeled after calculations in
-Reference \cite{sw-dlvn}. All Monte Carlo tally results and following
-calculations are reported with the one standard deviation confidence interval
-$\xbar(1\pm R)$ where the relative error $R \equiv S_{\xbar}/\xbar$
-\cite{mcnp}.
+Reference \cite{sw-dlvn}. All Monte Carlo tally results are reported with the
+one standard deviation confidence interval $\xbar(1\pm R)$ where the relative
+error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
 
 %%---------------------------------------------------------------------------%%
 \section{Results}
@@ -672,8 +667,18 @@ $\xbar(1\pm R)$ where the relative error $R \equiv S_{\xbar}/\xbar$
 %%---------------------------------------------------------------------------%%
 \subsubsection{CADIS}
 
+For the CADIS calculations for the steel plate embedded in water, the adjoint
+source was set to be the detector tally.
+
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
+
+For the \fwc\ calculations for the steel plate in water, the adjoint source was
+set to be a mesh tally over all of the air beyond the steel plate. The
+discretization for the adjoint source mesh tally is the same as that listed in 
+Section \ref{sec:steel_params}. Specifically, the adjoint source mesh is
+identical to the overall problem mesh in the $x-$ and $y-$directions but starts
+at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
@@ -681,8 +686,16 @@ $\xbar(1\pm R)$ where the relative error $R \equiv S_{\xbar}/\xbar$
 %%---------------------------------------------------------------------------%%
 \subsubsection{CADIS}
 
+To study the DLVN problem in the context of the CADIS method, the adjoint
+source was set to be the tally located at detector \#14 in the original
+experiment.
+
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
+
+Considering the DLVN case with the \fwc\ method, the adjoint source was
+specified to be the combination of all of the detector locations in the
+problem.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
@@ -690,8 +703,16 @@ $\xbar(1\pm R)$ where the relative error $R \equiv S_{\xbar}/\xbar$
 %%---------------------------------------------------------------------------%%
 \subsubsection{CADIS}
 
+To study calculations for the simplified portal monitor scenario in the context
+of the CADIS method, the adjoint source was set to be the top detector in the
+small array.
+
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
+
+To generate Monte Carlo variance reduction parameters for the simplified portal
+monitor using the \fwc\ method, the adjoint source was set to be all four
+detector locations in the problem's detector array.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Summary}
