@@ -319,10 +319,6 @@ w_{\ell}(\vecr,E) = \frac{w}{\left(\frac{c_u +1}{2}\right)}
 \label{eq:cadis_tb}
 \end{equation}
 
-\noindent Using this definition, the weight window technique then performs
-particle splitting and/or rouletting consistent with the statistical weight
-given in Equation \ref{eq:cadis_w3}.
-
 The key result of the foregoing discussion is that the statistical weights of
 the source particles are within the bounds of the weight windows. In other
 words, the source-biasing parameters and the weight window target values are
@@ -549,6 +545,122 @@ thick within the cargo container. Additional mesh planes parallel to the
 $x-$axis were added to the gaps between the homogenized iron and polyethylene
 blocks \cite{advantg}. Vacuum boundary conditions are present at all problem
 edges.
+
+\subsection{Calculation Parameters}
+\label{params}
+
+All of the deterministic calculations used 32 processes on a 2.8GHz AMD 
+Opteron\texttrademark\ 6320 Processor \cite{amd}, two for each logical CPU
+unit. With this in mind, all deterministic calculations were set to use the
+same Denovo computational block structure of 8 blocks in the $x-$dimension, 4
+blocks in the $y-$dimension, and 1 block in the $z-$dimension;
+thus the total number of computational blocks equals the number of processes.
+Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep algorithm for high
+parallel efficiency in calculating transport sweeps \cite{denovo}; the
+aforementioned block structure was chosen to achieve the same parallel
+performance among all test case deterministic simulations. 
+
+All but one of the test cases use the same coarse energy group structure
+specified in the ``27n19g'' library; the groups in this library are listed in
+Table A-1 of Appendix A of the ADVANTG technical report \cite{advantg}. The
+exception to this is the simplified portal problem. The highest energy
+emission line of Ba-133 is 383.8 keV, so weight window bounds above this
+energy would not be used in the Monte Carlo simulation. Thus, the highest
+energy group of the deterministic calculations was set to group number 41,
+which has an upper energy of 400 keV \cite{advantg}. Because 
+energy discretization is treated the same way between the traditional discrete 
+ordinates formulation and the LDO equations, it was assumed that energy group 
+structure would not greatly impact the comparative results.
+
+In the deterministic calculations, forward solutions for the test cases were
+generated using quadruple range (QR), Galerkin, linear-discontinuous finite 
+element (LDFE), and LDO quadrature sets. All test cases were run with the same 
+quadrature sets; increasing sizes of quadrature sets were used to ascertain the
+angular mesh refinement necessary for a given quadrature type to converge to a 
+solution. 
+
+QR quadrature sets were chosen to generate the reference results against which
+the  LDO results are compared. QR was selected because they are commonly used 
+in hybrid methods for Monte Carlo variance reduction parameter generation and 
+therefore provide a relevant baseline. The Exnihilo framework allows the user
+to select the number of polar and azimuthal angles in each octant when using a
+QR quadrature set; for these studies, the number of polar and azimuthal angles
+per octant were each set to the same value, with the values ranging from one
+per octant (for a total of eight angles) to nine per octant (for a total of
+648 angles). 
+
+LDFE and Galerkin quadrature sets were also chosen because of their interesting
+mathematical properties. Compared to QR quadrature sets, LDFE quadrature sets
+have been shown to exhibit more accurate solutions for the scalar flux in both 
+simple and more complex geometry and material configurations \cite{ldfe}; they 
+approximate the angular flux using direction cosines and are determined by
+requiring that the integration of the related interpolation basis functions is
+equal to the surface area of a unit sphere. For LDFE quadrature sets, if $N$ is
+the order of the quadrature, there are $4^{(N+1)}$ angles per octant
+\cite{exum}. In this work, the LDFE quadrature orders used were one (128 total
+angles) and two (8192 total angles).
+
+Galerkin quadrature sets offer several advantages relative to the standard \sn\
+method for problems with highly anisotropic scattering \cite{morel}. Similar to
+the LDO equations, the ``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method
+developed by Morel has the same algebraic structure as the traditional discrete
+ordinates equations but employs a nonstandard scattering treatment.
+For reasons noted below, the Galerkin quadrature orders used were 2 and 4. For
+an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
+has a total of $N(N+2)$ angles; the Galerkin quadrature sets
+used in this work range have 8 and 24 total angles, respectively.
+
+The degrees and sizes of the LDO quadrature sets used are listed in Table
+\ref{ldo-n}.
+
+\begin{table}[!htb]
+\centering
+\caption{Properties of LDO quadrature sets used in preliminary scaling studies.}
+\begin{tabular}{cc}
+\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
+\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
+\hline
+3 & 16 \\
+5 & 36 \\
+8 & 81 \\
+9 & 100 \\
+11 & 144 \\
+12 & 169 \\
+13 & 196 \\
+14 & 225 \\
+\end{tabular}
+\label{ldo-n}
+\end{table}
+
+The step characteristics (SC) spatial discretization was used in all of the
+deterministic calculations based on the recommendation listed in Section 9.1.3
+of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
+scenarios, the point sources are approximated as small spherical volumetric
+sources.
+
+Except for the Galerkin quadratures, all runs used a P$_5$ scattering
+expansion. At the time of this writing, Galerkin quadrature sets are
+implemented in the Exnihilo framework with the restriction that the \pn\ order
+be one greater than the \sn\ order. That is, for the Galerkin quadrature set of
+\sn\ order 2, the corresponding \pn\ order is set equal to 3, and for the
+Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5.
+
+The Monte Carlo calculations in this work were run on one Dell PowerEdge C6220
+server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total of
+20 cores) \cite{savio}. All jobs were specified to use 21 MPI tasks; MCNP
+reserves one ``master'' process for communication and transports particles with
+the remaining available tasks \cite{mcnp}. So, for the purpose of parallel
+efficiency, one transport process per hardware core was used here.
+
+All of the Monte Carlo calculations were run with a fixed number of particle 
+histories to simulate. For the steel plate in water and simplified portal 
+monitor cases, all calculations used 1\E{9} particle histories in both the
+CADIS and \fwc\ contexts. The DLVN experimental benchmark case was simulated 
+with 1\E{10} neutron histories as it was modeled after calculations in
+Reference \cite{sw-dlvn}. All Monte Carlo tally results and following
+calculations are reported with the one standard deviation confidence interval
+$\xbar(1\pm R)$ where the relative error $R \equiv S_{\xbar}/\xbar$
+\cite{mcnp}.
 
 %%---------------------------------------------------------------------------%%
 \section{Results}
