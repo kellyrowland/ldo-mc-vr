@@ -201,17 +201,26 @@ treatment of scattering and asymmetry in angle incorporate angular information
 into the resultant scalar flux solutions and corresponding Monte Carlo biasing
 parameters.
 
+The remainder of the paper is structured as follows: background information is
+given regarding the CADIS and \fwc\ methods as well as about the LDO equations
+to set the stage. Test case scenarios are described with relevant calculation
+pararmeters listed; numerical results and discussion follow. We conclude with a
+summary of the results and a discussion of suggested pathways for future work.
+
 %%---------------------------------------------------------------------------%%
 \section{Background}
 \label{sec:background}
 
 Here we begin by describing the CADIS (consistent adjoint driven importance 
-sampling) and \fwc\ (forward-weighted consistent adjoint driven importance
-sampling) methods, which are the current state
-of the art of Monte Carlo variance reduction parameter generation. These are 
-introduced first because this work 
-employs solutions of the LDO equations in combination with the CADIS and \fwc\ 
-methods via the ADVANTG software.
+sampling) and \fwc\ (forward-weighted CADIS) methods, which are the current
+state of the art of Monte Carlo variance reduction parameter generation. These
+are introduced first because this work employs solutions of the LDO equations
+in combination with the CADIS and \fwc\ methods via the ADVANTG \cite{advantg}
+software. A brief introduction to the LDO equations is then given to explore
+the difference between the LDO representation and the classical \sn\ equations.
+We conclude the section by highlighting the differences in treatment of the
+angular variable and scattering between the two formulations to motivate the
+work undertaken.
 
 %%---------------------------------------------------------------------------%%
 \subsection{CADIS and \fwc}
@@ -221,7 +230,7 @@ methods via the ADVANTG software.
 
 The CADIS method was introduced by Wagner and Haghighat to automate Monte Carlo
 variance reduction parameter generation \cite{cadis}. CADIS is based on the
-source biasing and weight window techniques , does not depend heavily 
+source biasing and weight window techniques, does not depend heavily 
 on user experience, and was implemented as described in Reference \cite{cadis}
 in the MCNP \cite{mcnp} code. Most importantly, the result of using the CADIS
 method is source biasing parameters and weight window target
@@ -324,19 +333,19 @@ the source particles are within the bounds of the weight windows. In other
 words, the source-biasing parameters and the weight window target values are
 consistent. This circumvents the potential of particles being immediately split
 or rouletted upon birth and avoids the resultant degradation in computational
-efficiency. We refer the reader to \cite{cadis} for a complete discussion of
-results and analysis of the initial implementation of the CADIS method. The
-CADIS method is very effective for automated optimization of localized
-detectors but falls short of efficiently optimizing distributed responses.
-\fwc, discussed in the next section, was developed to address this issue.
+efficiency. We refer the reader to Reference \cite{cadis} for a complete
+discussion of results and analysis of the initial implementation of the CADIS
+method. The CADIS method is very effective for automated optimization of
+localized detectors but falls short of efficiently optimizing distributed
+responses. \fwc, discussed in the next section, was developed to address this
+issue.
 
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
-\fwc, is a variation on the CADIS method to increase the efficiency of Monte
+\fwc\ is a variation on the CADIS method to increase the efficiency of Monte
 Carlo calculations of distributions and responses at multiple localized
 detectors \cite{fwcadis}.
-
 For this global variance reduction method, a response with uniformly-low
 statistical uncertainty across all phase-space is desired. One way to target
 this for a given Monte Carlo simulation is to uniformly distribute the
@@ -361,7 +370,9 @@ m(\vecr,E,\bo) = \frac{n(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)}
 = \frac{\psi(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}
 \end{equation}
 
-\noindent and the total Monte Carlo density can be estimated by
+\noindent where $\bar{w}$ is the average particle weight, $n$ is the physical
+particle density, and $v$ is the physical particle velocity. The total Monte
+Carlo density can then be estimated by
 
 \begin{equation}
 R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
@@ -396,12 +407,24 @@ after the adjoint has been determined, the standard CADIS procedures are used
 to calculate consistent source biasing parameters and weight windows.
 
 %%---------------------------------------------------------------------------%%
-\subsection{LDO Equations}
+\subsection{Lagrange Discrete Ordinates (LDO) Equations}
 
-\begin{itemize}
-\item{Developed by Ahrens}
-\item{Inherently 3D}
-\end{itemize}
+The Lagrange Discrete Ordinates (LDO) equations are formally the same as the
+classical \sn\ equations and are written as
+
+\begin{multline}
+\bo_n\cdot\nabla\psi_{n}(\vecr,E) + 
+\Sigma_{t}(\vecr,E)\psi_{n}(\vecr,E) = \\
+\int_0^\infty\sum_{m=1}^{N}\sum_{n'=1}^{N}\langle L_{n'},L_{m}\rangle
+\Sigma_{s,L}(\vecr,E'\rightarrow E)(\bo_{m}\cdot\bo_n)\psi_{n'}(E')dE'
++ Q_{n}(E),
+\end{multline}
+
+\noindent where $N$ is the number of discrete angles used in the formulation
+and is a property of the maximum degree of integration of the quadrature set
+on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
+$\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
+$L$. A full derivation can be found in Reference \cite{ahrens}.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Run Parameters}
@@ -450,7 +473,7 @@ $z = 140$ cm.
 \caption{Materials and compositions in the steel plate in water scenario.}
 \label{steel-mat}
 \begin{tabular}{l|cc}
-Material & \multicolumn{2}{c}{Isotopes (Atomic \%)} \\ \hline
+\textbf{Material} & \multicolumn{2}{c}{\textbf{Isotopes (Atomic \%)}} \\ \hline
 \multirow{5}{*}{Source}   & U-235   & (0.000247) \\
                           & U-238   & (0.009287) \\
                           & Zr-nat. & (0.004009) \\
@@ -578,7 +601,7 @@ angular mesh refinement necessary for a given quadrature type to converge to a
 solution. 
 
 QR quadrature sets were chosen to generate the reference results against which
-the  LDO results are compared. QR was selected because they are commonly used 
+the LDO results are compared. QR was selected because they are commonly used 
 in hybrid methods for Monte Carlo variance reduction parameter generation and 
 therefore provide a relevant baseline. The Exnihilo framework allows the user
 to select the number of polar and azimuthal angles in each octant when using a
