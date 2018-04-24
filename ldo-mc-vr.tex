@@ -665,6 +665,17 @@ error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
 \section{Results}
 \label{sec:results}
 
+We are going to look at tally results and Figure of Merit (FOM) values, the
+latter of which is calculated as
+
+\begin{equation}
+\text{FOM} = \frac{1}{R^2T},
+\label{eq:fom}
+\end{equation}
+
+\noindent where $R$ is the estimated relative error and $T$ is
+the computer time taken to complete the calculation \cite{mcnp}.
+
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 
@@ -744,6 +755,56 @@ Section \ref{sec:steel_params}. Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but starts
 at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 
+The Monte Carlo run with biasing parameters from the Galerkin quadrature set
+of order 2 was not able to finish in a timely manner for the hardware
+configuration used in this work, so Monte Carlo results for this data point
+are not included here.
+
+Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
+problem for the biased and unbiased calculations. The biased calculations are
+plotted as a function of angular mesh refinement and the unbiased calculation
+value is shown as a black horizontal line. Like the CADIS method, the \fwc\
+method generates biasing parameters such that the biased Monte Carlo flux
+tally results all fall far below that of the unbiased calculation. Similarly,
+in this case, the angular mesh refinement has little impact on the tally
+result. So, if using an LDO quadrature set to generate biasing parameters with
+the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
+used to good effect.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/steel-fwcadis-tally.eps}
+\caption{Flux tally over the air region in the steel plate test with the \fwc\ method.}
+\label{steel-fwc-tally}
+\end{figure}
+
+To analyze the performance of the representative quadrature sets' variance
+reduction parameters for the steel plate in water case using the \fwc\ method,
+we will look at the average FOM values over the entire adjoint source mesh
+tally. The Figures of Merit were calculated by taking the average relative
+error over all spatial cells in the air block mesh tally and using that mean
+value in combination with the MCNP-reported computer time and Equation
+\ref{eq:fom}. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
+as a function of the number of angles used in generating the biasing
+parameters. The average FOM for the unbiased calculation is shown as a
+horizontal black line.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/steel-fwcadis-fom.eps}
+\caption{Average FOM values for the mesh tally in the \fwc\ steel plate scenario.}
+\label{steel-fwc-fom}
+\end{figure}
+
+We see a different trend here in that the highest average FOM values tend to
+come from quadrature sets with mid-range angular mesh refinement; the coarsest
+and finest angular meshes produce Monte Carlo biasing parameters that result
+in reduced Figures of Merit. Considering Figures \ref{steel-fwc-tally} and
+\ref{steel-fwc-fom}, we note that one would wish to use a lower-order (e.g.,
+order 5) LDO quadrature set to generate variance reduction parameters for a
+Monte Carlo mesh tally using the \fwc\ method.
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
 
