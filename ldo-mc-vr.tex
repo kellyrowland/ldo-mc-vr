@@ -672,8 +672,68 @@ error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
 \subsubsection{CADIS}
 
 For the CADIS calculations for the steel plate embedded in water, the adjoint
-source was set to be the detector tally.
+source was set to be the detector tally. Figure \ref{steel-cad-tally} shows
+the MCNP-reported flux tally for the detector at the end of the steel plate
+for each angular mesh refinement for each quadrature type. We note that the
+Monte Carlo runs with biasing parameters from the Galerkin quadrature set of
+order 2 and the LDO quadrature set of order 5 were not able to finish in a
+timely manner for the hardware configuration used in this work, so Monte Carlo
+results for those two data points are not included here. The flux tally
+results are plotted as a function of angular mesh refinement to observe the
+impact of angular mesh refinement on flux tally solution for the different
+quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
+value for an unbiased Monte Carlo calculation as a reference point of
+comparison; it is shown as a horizontal black line with dashed lines on either
+side indicating the one standard deviation confidence interval.
 
+\begin{figure}[!hbt]
+\centering
+\includegraphics[max height=0.445\textheight]{img/steel-cadis-tally.eps}
+\caption{MCNP-reported flux tally values at the end of the steel plate.}
+\label{steel-cad-tally}
+\end{figure}
+
+All of the biased results tend towards a tally calculation on the order of
+$10^{-12}$, while the unbiased tally calculation is on the order of
+$10^{-10}$. This phenomenon has been previously documented
+\cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
+iron cross section; the unresolved resonance region in the iron cross section
+spans multiple energy groups, leading to inaccuracies in the discretized
+multigroup cross section values used in deterministic calculations.
+
+We move on to looking at the Figures of Merit for the various Monte Carlo run
+results. Figure \ref{steel-cad-fom} shows the reported FOM value for the
+detector tally for the various quadrature sets and orders. We again plot the
+results as a function of angular mesh refinement with a black horizontal line
+denoting the FOM for the unbiased Monte Carlo calculation. The biasing
+parameters corresponding to the LDFE quadrature set of order 1 result in the
+highest FOM value while those of the QR set of order 1 result in the lowest
+FOM value. For all LDO quadrature sets of order 8 and above, the Figures of
+Merit are one order of magnitude greater than that of the unbiased
+calculation.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/steel-cadis-fom.eps}
+\caption{FOM values for MCNP flux tally at the end of the steel plate.}
+\label{steel-cad-fom}
+\end{figure}
+
+To conclude this section, we consider the overall trends in angular mesh
+refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
+appears that the angular mesh refinement does not have a great impact on the
+flux tally value in this scenario, as all of the biased tally results fall
+within the same order of magnitude and do not exhibit any trends as a function
+of the number of discrete angles used. The Figures of Merit vary somewhat
+more greatly. Specifically, the LDO biasing parameters appear to gather around
+FOM values of 0.005 even as the number of discrete angles used is increased.
+So, for the steel plate in water detector tally in the context of the CADIS
+method, one could use a relatively low-order (i.e., order 8) LDO quadrature
+set to generate Monte Carlo biasing parameters that result in a Figure of
+Merit comparable to (and better than most of, as seen here) those produced by
+finer angular meshes.
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
@@ -695,8 +755,8 @@ source was set to be the tally located at detector \#14 in the original
 experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
 forward scalar flux at the location of detector \#14. Here we see that all of
 the biased calculation values fall within the error of the unbiased result.
-However, all of these tally calculations  (biased and unbiased) do not match
-the experimentally calculated flux value of  2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
+However, all of these tally calculations (biased and unbiased) do not match
+the experimentally calculated flux value of 2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
 at detector \#14.
 
 \begin{figure}[!htb]
@@ -741,11 +801,11 @@ deterministic calculations does not greatly impact the flux tally result from
 MCNP. Figures \ref{dlvn-fwc-13} and \ref{dlvn-fwc-14} show similar behavior
 with the exception of the most coarse angular meshes. For these detector
 locations, any angular mesh refinement other than the coarsest angular mesh
-will produce a consistent forward  scalar flux tally result. Figures
+will produce a consistent forward scalar flux tally result. Figures
 \ref{dlvn-fwc-11} and \ref{dlvn-fwc-12} show slightly more variation in flux
 tally result with angular mesh refinement. These two detector locations'
 tallies have also higher statistical error relative to those at the other
-detector locations.  Overall, though, the flux tallies at detectors \#11 and
+detector locations. Overall, though, the flux tallies at detectors \#11 and
 \#12 are not heavily impacted by the refinement of the angular mesh used in
 generating the Monte Carlo biasing parameters, but a mid-range number of
 quadrature points should be used to avoid the large statistical errors seen at
@@ -765,8 +825,8 @@ quadrature types, with the Figure of Merit largely consistent across
 quadrature types with the exception of QR angular meshes.
 
 In Table \ref{dlvn-fwc-det} we compare the Monte Carlo forward flux tally
-results for the  representative quadrature sets listed in Section \ref{params}.
-Results from the unbiased Monte  Carlo calculation are also included for
+results for the representative quadrature sets listed in Section \ref{params}.
+Results from the unbiased Monte Carlo calculation are also included for
 comparison. All Monte Carlo flux tally values are reported with an uncertainty
 of one standard deviation. For all detector locations, the Monte Carlo flux
 tallies do not match the experimentally measured flux values for any of the
@@ -954,7 +1014,7 @@ of the CADIS method, the adjoint source was set to be the top detector in the
 small array.
 
 Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
-forward scalar  flux tally values and Figures of Merit, respectively. As with
+forward scalar flux tally values and Figures of Merit, respectively. As with
 the other test cases, the values are plotted as a function of the number of
 quadrature points used to generate the biasing parameters in order to explore
 the impact of angular mesh refinement on flux tally and FOM.
@@ -982,7 +1042,7 @@ discrete angular values in order to stabilize. Figure \ref{cargo-cad-fom}
 shows a strong correlation between the number of quadrature points and the
 flux tally FOM, eventually approaching an upper limit around 100. The LDO
 Figures of Merit increase most rapidly with the number of quadrature points
-used, so one would want to use a higher-order LDO  quadrature set to generate
+used, so one would want to use a higher-order LDO quadrature set to generate
 Monte Carlo biasing parameters.
 
 \FloatBarrier
