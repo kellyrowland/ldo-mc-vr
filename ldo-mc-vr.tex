@@ -79,6 +79,8 @@
 \usepackage{xspace}
 \usepackage{mathrsfs}
 \usepackage[pdftex,hidelinks]{hyperref}
+\usepackage[super]{nth}
+\usepackage[export]{adjustbox}
 
 %-------------
 \DeclareMathOperator{\diag}{diag}
@@ -714,8 +716,130 @@ To generate Monte Carlo variance reduction parameters for the simplified portal
 monitor using the \fwc\ method, the adjoint source was set to be all four
 detector locations in the problem's detector array.
 
+Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
+Figures of Merit for all four detectors in the array. The flux tallies and FOM
+values are each plotted as a function of the number of discrete angles used in
+the quadrature sets that were used to generate biasing parameters. In all
+plots, the unbiased calculation result is shown as a horizontal black line. At
+all detector locations, the forward flux tallies and FOM values show the same
+trend of leveling off to a stable value once the angular mesh used for the
+\fwc\ biasing parameters has been refined past the few coarsest numbers of
+discrete angles. At all detector locations except for the \nth{2} in the array,
+the unbiased calculation and the calculations with biasing parameters resultant
+from the representative quadrature sets all match within statistical
+uncertainty. The \nth{2} detector sees all representative biased flux tallies
+matching one another but outside the error bounds of the unbiased flux tally
+calculation.
+
+\begin{figure}[!htb]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-1.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the top detector.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-2.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the second detector.}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-3.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the third detector.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-4.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the bottom detector.}
+\end{subfigure}
+\caption{\fwc\ flux tallies and FOM values for the portal monitor scenario.}
+\label{cargo-fwc}
+\end{figure}
+
+Table \ref{cargo-fwc-fom-table} lists the Figures of Merit for the various
+detector locations for the representative quadrature sets. The unbiased
+calculation FOM values are also tabulated for reference. We see that the
+biasing parameters from the representative LDO quadrature set produce the
+highest Figures of Merit for three out of four detector locations, with the
+representative QR quadrature set's biasing parameters achieving the highest FOM
+for the bottom detector in the array.
+
+\begin{table}[!hbt]
+\centering
+\small
+\caption{\fwc\ FOM values for representative quadratures for the portal monitor.}
+\label{cargo-fwc-fom-table}
+\begin{tabular}{l|cccc}
+\multicolumn{1}{l|}{Quad. Type}
+& \multicolumn{1}{l}{Top Detector}
+& \multicolumn{1}{l}{\nth{2} Detector}
+& \multicolumn{1}{l}{\nth{3} Detector}
+& \multicolumn{1}{l}{Bottom Detector}
+\\ \hline
+\begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} 76.1145 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 121.241 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 128.9 \end{tabular} % fom for #34
+& \begin{tabular}[c]{@{}c@{}} \textbf{81.125} \end{tabular} % fom for #44
+\\
+\begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} 30.2458 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 38.1391 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 34.01 \end{tabular} % fom for #34
+& \begin{tabular}[c]{@{}c@{}} 29.016 \end{tabular} % fom for #44
+\\
+\begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} 65.6132 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 96.1557 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 115.5 \end{tabular} % fom for #34
+& \begin{tabular}[c]{@{}c@{}} 61.655 \end{tabular} % fom for #44
+\\
+\begin{tabular}[c]{@{}l@{}}   LDO \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} \textbf{85.7067} \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} \textbf{132.962} \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} \textbf{140.3} \end{tabular} % fom for #34
+& \begin{tabular}[c]{@{}c@{}} 75.135 \end{tabular} % fom for #44
+\\
+Unbiased & 4.40963 & 3.15204 & 2.096 & 2.8313
+\end{tabular}
+\end{table}
+
+To conclude, using LDO quadrature sets to generate Monte Carlo biasing
+parameters in the \fwc\ method is particularly promising for cases such as the
+simplified portal monitor scenario. When selecting an LDO quadrature set to
+generate variance reduction parameters for similar photon transport problems,
+a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
+
 %%---------------------------------------------------------------------------%%
 \subsection{Summary}
+
+On the whole, little correlation was seen between angular mesh refinement and
+the MCNP-reported forward flux tally values in the CADIS context. If using an
+LDO quadrature set to generate biasing parameters in this context for any of
+the neutron transport scenarios, a low-order (3 - 8) quadrature set may be used
+to sufficient effect for flux tally value and FOM achievement. For generating
+biasing parameters in the CADIS context for a photon problem with an LDO
+quadrature set, the finest available angular mesh should be used. This is
+consistent with what is expected based on the difference between neutron and
+photon scattering in the materials in these test case scenarios.
+
+In the context of the \fwc\ method, we found that low-order (5 or 8) angular
+meshes are sufficient to produce forward flux tally and Figure of Merit values
+comparable to those of more refined angular meshes when using LDO quadrature
+sets. The superior FOM values resultant from the representative LDO quadrature
+set for three of four detectors in the simplified portal monitor scenario
+begets interest in further exploration of LDO equations' solutions as input for
+Monte Carlo biasing parameters for photon transport in the \fwc\ context.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions}
