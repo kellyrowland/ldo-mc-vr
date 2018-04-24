@@ -920,6 +920,39 @@ To study calculations for the simplified portal monitor scenario in the context
 of the CADIS method, the adjoint source was set to be the top detector in the
 small array.
 
+Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
+forward scalar  flux tally values and Figures of Merit, respectively. As with
+the other test cases, the values are plotted as a function of the number of
+quadrature points used to generate the biasing parameters in order to explore
+the impact of angular mesh refinement on flux tally and FOM.
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/portal-cadis-tally.eps}
+\caption{Flux tally in the portal monitor top detector using the CADIS method.}
+\label{cargo-cad-tally}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/portal-cadis-fom.eps}
+\caption{CADIS method FOM values for the portal monitor top detector flux tally.}
+\label{cargo-cad-fom}
+\end{figure}
+
+Similar to other test cases, the flux tally values reported in Figure 
+\ref {cargo-cad-tally} show a trend of converging to a stable value after the
+first few coarsest angular meshes. The flux tally values from the biased
+calculations all fall within the statistical error of that of the unbiased
+calculation but appear to require a minimum value of approximately 100
+discrete angular values in order to stabilize. Figure \ref{cargo-cad-fom}
+shows a strong correlation between the number of quadrature points and the
+flux tally FOM, eventually approaching an upper limit around 100. The LDO
+Figures of Merit increase most rapidly with the number of quadrature points
+used, so one would want to use a higher-order LDO  quadrature set to generate
+Monte Carlo biasing parameters.
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
@@ -941,41 +974,6 @@ from the representative quadrature sets all match within statistical
 uncertainty. The \nth{2} detector sees all representative biased flux tallies
 matching one another but outside the error bounds of the unbiased flux tally
 calculation.
-
-\begin{figure}[!htb]
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-1.eps}
-\subcaption{MCNP-reported forward flux tally and FOM values at the top detector.}
-\end{subfigure}
-\\
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-2.eps}
-\subcaption{MCNP-reported forward flux tally and FOM values at the second detector.}
-\end{subfigure}
-\end{figure}
-\clearpage
-\begin{figure}[!htb]
-\ContinuedFloat
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-3.eps}
-\subcaption{MCNP-reported forward flux tally and FOM values at the third detector.}
-\end{subfigure}
-\\
-\begin{subfigure}{\textwidth}
-\centering
-\includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-4.eps}
-\subcaption{MCNP-reported forward flux tally and FOM values at the bottom detector.}
-\end{subfigure}
-\caption{\fwc\ flux tallies and FOM values for the portal monitor scenario.}
-\label{cargo-fwc}
-\end{figure}
 
 Table \ref{cargo-fwc-fom-table} lists the Figures of Merit for the various
 detector locations for the representative quadrature sets. The unbiased
@@ -1031,6 +1029,42 @@ simplified portal monitor scenario. When selecting an LDO quadrature set to
 generate variance reduction parameters for similar photon transport problems,
 a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
 
+\begin{figure}[!htb]
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-1.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the top detector.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-2.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the second detector.}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-3.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the third detector.}
+\end{subfigure}
+\\
+\begin{subfigure}{\textwidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/portal-fwcadis-4.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at the bottom detector.}
+\end{subfigure}
+\caption{\fwc\ flux tallies and FOM values for the portal monitor scenario.}
+\label{cargo-fwc}
+\end{figure}
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsection{Summary}
 
