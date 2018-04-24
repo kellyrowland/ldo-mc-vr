@@ -692,8 +692,41 @@ at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
-experiment.
+experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
+forward scalar flux at the location of detector \#14. Here we see that all of
+the biased calculation values fall within the error of the unbiased result.
+However, all of these tally calculations  (biased and unbiased) do not match
+the experimentally calculated flux value of  2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
+at detector \#14.
 
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/dlvn-cadis-tally.eps}
+\caption{Flux tally at detector \#14 in the DLVN problem with the CADIS method.}
+\label{dlvn-cad-tally}
+\end{figure}
+
+\begin{figure}[!htb]
+\centering
+\includegraphics[max height=0.445\textheight]{img/dlvn-cadis-fom.eps}
+\caption{FOM values for the DLVN problem detector \#14 tally with the CADIS 
+         method.}
+\label{dlvn-cad-fom}
+\end{figure}
+
+Figures \ref{dlvn-cad-tally} and \ref{dlvn-cad-fom} show similar convergence
+behavior with respect to angular mesh refinement for the biased tally
+calculations and Figure of Merit values. Beyond the lowest-order angular mesh
+refinement for each quadrature type studied here, the tally result for this
+detector location using the CADIS method is not impacted by further refining
+the angular mesh. The Figures of Merit for the tally calculations reach a
+similar upper bound, but this happens more slowly with respect to angular mesh
+refinement for the LDO quadrature sets. Like the tally in the steel plate case
+above, the LDO quadrature set of order 8 is the optimal choice with respect to
+flux tally result and FOM value for detector \#14 in the DLVN experimental
+benchmark problem in the CADIS context.
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
