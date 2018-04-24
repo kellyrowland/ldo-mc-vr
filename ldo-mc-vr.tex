@@ -602,7 +602,27 @@ generated using quadruple range (QR), Galerkin, linear-discontinuous finite
 element (LDFE), and LDO quadrature sets. All test cases were run with the same 
 quadrature sets; increasing sizes of quadrature sets were used to ascertain the
 angular mesh refinement necessary for a given quadrature type to converge to a 
-solution. 
+solution. The degrees and sizes of the LDO quadrature sets used are listed in
+Table \ref{ldo-n}.
+
+\begin{table}[!htb]
+\centering
+\caption{Properties of LDO quadrature sets used in deterministic calculations.}
+\begin{tabular}{cc}
+\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
+\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
+\hline
+3 & 16 \\
+5 & 36 \\
+8 & 81 \\
+9 & 100 \\
+11 & 144 \\
+12 & 169 \\
+13 & 196 \\
+14 & 225 \\
+\end{tabular}
+\label{ldo-n}
+\end{table}
 
 QR quadrature sets were chosen to generate the reference results against which
 the LDO results are compared. QR was selected because they are commonly used 
@@ -635,28 +655,6 @@ an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
 has a total of $N(N+2)$ angles; the Galerkin quadrature sets
 used in this work have 8 and 24 total angles, respectively.
 
-The degrees and sizes of the LDO quadrature sets used are listed in Table
-\ref{ldo-n}.
-
-\begin{table}[!htb]
-\centering
-\caption{Properties of LDO quadrature sets used in deterministic calculations.}
-\begin{tabular}{cc}
-\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
-\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
-\hline
-3 & 16 \\
-5 & 36 \\
-8 & 81 \\
-9 & 100 \\
-11 & 144 \\
-12 & 169 \\
-13 & 196 \\
-14 & 225 \\
-\end{tabular}
-\label{ldo-n}
-\end{table}
-
 The step characteristics (SC) spatial discretization was used in all of the
 deterministic calculations based on the recommendation listed in Section 9.1.3
 of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
@@ -684,20 +682,38 @@ Reference \cite{sw-dlvn}. All Monte Carlo tally results are reported with the
 one standard deviation confidence interval $\xbar(1\pm R)$ where the relative
 error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
 
+In the \fwc\ calculations for the DLVN and simplified portal monitor scenarios,
+we examine Monte Carlo results corresponding to biasing parameters from a
+chosen representative subset of the quadrature sets.
+For these comparisons, quadrature sets of similar angular mesh
+refinement were chosen such that the quadrature sets have approximately the 
+same total number of angles, with the exception of the Galerkin quadrature set.
+The QR quadrature set is of order 4 and has 128 angles, the LDFE set is order 1
+with 128 angles, and the LDO set is of order 11 with 144 angles. 
+The Galerkin quadrature set chosen as the representative example here is of
+order 4 and has 24 angles. This set was chosen because its corresponding \pn\
+order is 5 and so the scattering data used matches that of the other quadrature
+types. 
+
 %%---------------------------------------------------------------------------%%
 \section{Results}
 \label{sec:results}
 
-We are going to look at tally results and Figure of Merit (FOM) values, the
-latter of which is calculated as
+For the three test case scenarios described above, we will examine the flux
+tally results and Figure of Merit (FOM) values reported by MCNP. We note that
+Figures of Merit are calculated as
 
 \begin{equation}
 \text{FOM} = \frac{1}{R^2T},
 \label{eq:fom}
 \end{equation}
 
-\noindent where $R$ is the estimated relative error and $T$ is
-the computer time taken to complete the calculation \cite{mcnp}.
+\noindent where $R$ is the estimated relative error and $T$ is the computer
+time taken to complete the calculation \cite{mcnp}. Flux tally and FOM values
+are presented for the test case scenarios in the contexts of both the CADIS and
+\fwc\ methods, with additional focus on how the results vary as a function of
+angular mesh refinement used in the deterministic calculations used to produce
+scalar flux solutions for Monte Carlo variance reduction parameter generation.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -774,10 +790,9 @@ finer angular meshes.
 For the \fwc\ calculations for the steel plate in water, the adjoint source was
 set to be a mesh tally over all of the air beyond the steel plate. The
 discretization for the adjoint source mesh tally is the same as that listed in 
-Section \ref{sec:steel_params}. Specifically, the adjoint source mesh is
+Section \ref{sec:steel_params}\ Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but starts
 at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
-
 The Monte Carlo run with biasing parameters from the Galerkin quadrature set
 of order 2 was not able to finish in a timely manner for the hardware
 configuration used in this work, so Monte Carlo results for this data point
@@ -909,7 +924,7 @@ quadrature types, with the Figure of Merit largely consistent across
 quadrature types with the exception of QR angular meshes.
 
 In Table \ref{dlvn-fwc-det} we compare the Monte Carlo forward flux tally
-results for the representative quadrature sets listed in Section \ref{params}.
+results for the representative quadrature sets listed in Section \ref{params}\
 Results from the unbiased Monte Carlo calculation are also included for
 comparison. All Monte Carlo flux tally values are reported with an uncertainty
 of one standard deviation. For all detector locations, the Monte Carlo flux
