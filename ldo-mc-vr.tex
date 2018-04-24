@@ -81,6 +81,8 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usepackage[export]{adjustbox}
+\usepackage{tabularx}
+\usepackage{placeins} % for float barriers
 
 %-------------
 \DeclareMathOperator{\diag}{diag}
@@ -699,6 +701,215 @@ Considering the DLVN case with the \fwc\ method, the adjoint source was
 specified to be the combination of all of the detector locations in the
 problem.
 
+Figures \ref{dlvn-fwc-5} and \ref{dlvn-fwc-9} exhibit the same lack of trend in
+flux tally as a function of angular mesh refinement. That is, in general, for
+detector locations \#5 and \#9, using more discrete angles in the \fwc\
+deterministic calculations does not greatly impact the flux tally result from
+MCNP. Figures \ref{dlvn-fwc-13} and \ref{dlvn-fwc-14} show similar behavior
+with the exception of the most coarse angular meshes. For these detector
+locations, any angular mesh refinement other than the coarsest angular mesh
+will produce a consistent forward  scalar flux tally result. Figures
+\ref{dlvn-fwc-11} and \ref{dlvn-fwc-12} show slightly more variation in flux
+tally result with angular mesh refinement. These two detector locations'
+tallies have also higher statistical error relative to those at the other
+detector locations.  Overall, though, the flux tallies at detectors \#11 and
+\#12 are not heavily impacted by the refinement of the angular mesh used in
+generating the Monte Carlo biasing parameters, but a mid-range number of
+quadrature points should be used to avoid the large statistical errors seen at
+the extreme ends of the angular mesh refinement spectrum.
+
+Like their corresponding flux tally graphs, Figures \ref{dlvn-fwc-5},
+\ref{dlvn-fwc-9}, and \ref{dlvn-fwc-13} show almost no variation in FOM with
+angular mesh refinement for the tallies at detector locations \#5, \#9, and
+\#13. This is to be expected, considering the uniform statistical error and
+stable flux tally results at these locations. Figure \ref{dlvn-fwc-11} shows
+variation in FOM with angular mesh refinement that is more varied, which
+corresponds to the larger statistical uncertainties in the flux tally values
+for detector \#11. Figure \ref{dlvn-fwc-12} shows little variation in FOM with
+angular mesh refinement with the exception of the finest QR set. Lastly,
+\ref{dlvn-fwc-14} shows an upper FOM limit of approximately 200 across all
+quadrature types, with the Figure of Merit largely consistent across
+quadrature types with the exception of QR angular meshes.
+
+In Table \ref{dlvn-fwc-det} we compare the Monte Carlo forward flux tally
+results for the  representative quadrature sets listed in Section \ref{params}.
+Results from the unbiased Monte  Carlo calculation are also included for
+comparison. All Monte Carlo flux tally values are reported with an uncertainty
+of one standard deviation. For all detector locations, the Monte Carlo flux
+tallies do not match the experimentally measured flux values for any of the
+representative quadrature sets or the unbiased calculation, so we only compare
+the Monte Carlo calculations in this table. We do note that the Monte Carlo
+calculations overestimate the flux tally at all detector locations with the
+exception of detector \#13. The flux tallies at detectors 5, 9, 13, and 14 all
+match within statistical uncertainty for all of the Monte Carlo calculations.
+At detector \#11, the biased Monte Carlo calculations match within standard
+error, but the calculations using the QR and LDO biasing parameter fall outside
+of the error bounds of the unbiased calculation. Somewhat similarly, at
+detector \#14, all of the biased calculations match one another within
+statistical uncertainty, but they are all outside of the error bounds of the
+unbiased flux tally calculation.
+
+\begin{table}[!htb]
+\centering
+\scriptsize
+\caption{DLVN benchmark flux tallies [n/cm$^2$/s] calculated with \fwc.}
+\label{dlvn-fwc-det}
+\begin{tabularx}{\textwidth}{l|cccccX}
+         & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
+         & \textbf{LDO} & \textbf{Unbiased} & \\ \hline
+ Det. \#5 & (1.3341 $\pm$ 0.0003) & (1.3344 $\pm$ 0.0003) & (1.3347 $\pm$ 0.0004) &
+            (1.3344 $\pm$ 0.0003) & (1.3315 $\pm$ 0.0092) & \rule{0pt}{2.6ex} \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#9 & (2.5225 $\pm$ 0.0005) & (2.5224 $\pm$ 0.0005) & (2.5229 $\pm$ 0.0004) &
+            (2.2555 $\pm$ 0.0004) & (2.5104 $\pm$ 0.0127) & \rule{0pt}{2.6ex} \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#11 & (1.4420 $\pm$ 0.0005) & (1.4451 $\pm$ 0.0027) & (1.4446 $\pm$ 0.0026) &
+            (1.4463 $\pm$ 0.0015) & (1.4463 $\pm$ 0.0010) & \rule{0pt}{2.6ex} \\
+          &  \E{-5} & \E{-5} & \E{-5} & \E{-5} & \E{-5} & \\
+ Det. \#12 & (2.4749 $\pm$ 0.0004) & (2.4743 $\pm$ 0.0004) & (2.4751 $\pm$ 0.0004) &
+            (2.4744 $\pm$ 0.0004) & (2.4684 $\pm$ 0.0042) \rule{0pt}{2.6ex} & \\
+          &  \E{-6} & \E{-6} & \E{-6} & \E{-6} & \E{-6} & \\
+ Det. \#13 & (4.3984 $\pm$ 0.0011) & (4.3997 $\pm$ 0.0011) & (4.3994 $\pm$ 0.0011) &
+            (4.3983 $\pm$ 0.0011) & (4.4170 $\pm$ 0.0175) \rule{0pt}{2.6ex} & \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#14 & (7.0070 $\pm$ 0.0025) & (7.0829 $\pm$ 0.0045) & (7.0813 $\pm$ 0.0026) &
+            (7.0834 $\pm$ 0.0032) & (7.0694 $\pm$ 0.0216) \rule{0pt}{2.6ex} & \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\ \hline
+\end{tabularx}
+\end{table}
+
+To examine the FOM values in a more quantifiable way, Table 
+\ref{dlvn-fwc-fom-table} lists the FOM values for all detector locations for
+each of the representative quadrature sets as well as the unbiased calculation.
+The maximum FOM value in each detector location column is emphasized. Of the
+six detector locations, the representative LDO quadrature set achieves the
+highest FOM for two of the locations. The representative QR quadrature set is
+the only other type to also deliver the highest Figure of Merit for two out of
+six detectors; the Galerkin and LDFE quadrature set biasing parameters each
+only achieve the highest FOM for one detector location. So, the representative
+LDO quadrature set's biasing parameters perform comparably to those from the
+representative QR quadrature set with respect to obtaining high FOM values for
+multiple detector locations using the \fwc\ method for the DLVN problem.
+
+\begin{table}[!hbt]
+\centering
+\caption{\fwc\ FOM values for representative quadratures for the DLVN problem.}
+\label{dlvn-fwc-fom-table}
+\begin{tabular}{l|cccccc}
+\multicolumn{1}{l|}{Quad. Type}
+& \multicolumn{1}{l}{Det. \#5}
+& \multicolumn{1}{l}{Det. \#9}
+& \multicolumn{1}{l}{Det. \#11}
+& \multicolumn{1}{l}{Det. \#12}
+& \multicolumn{1}{l}{Det. \#13}
+& \multicolumn{1}{l}{Det. \#14}
+\\ \hline
+\begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} 483.012 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 709.51 \end{tabular} % fom for #9
+& \begin{tabular}[c]{@{}c@{}} \textbf{202.66} \end{tabular} % fom for #11
+& \begin{tabular}[c]{@{}c@{}} 747.914 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 380.843 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} \textbf{185.40} \end{tabular} % fom for #14
+\\
+\begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} \textbf{527.794} \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 649.88 \end{tabular} % fom for #9
+& \begin{tabular}[c]{@{}c@{}} 5.9934 \end{tabular} % fom for #11
+& \begin{tabular}[c]{@{}c@{}} 798.878 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 326.107 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 52.098 \end{tabular} % fom for #14
+\\
+\begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
+& \begin{tabular}[c]{@{}c@{}} 310.276 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 710.43 \end{tabular} % fom for #9
+& \begin{tabular}[c]{@{}c@{}} 6.6749 \end{tabular} % fom for #11
+& \begin{tabular}[c]{@{}c@{}} 926.278 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} \textbf{391.624} \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 166.51 \end{tabular} % fom for #14
+\\
+\begin{tabular}[c]{@{}l@{}}   LDO \end{tabular}
+& \begin{tabular}[c]{@{}c@{}} 478.242 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} \textbf{721.22} \end{tabular} % fom for #9
+& \begin{tabular}[c]{@{}c@{}} 19.959 \end{tabular} % fom for #11
+& \begin{tabular}[c]{@{}c@{}} \textbf{943.959} \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 369.423 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 110.40 \end{tabular} % fom for #14
+\\
+Unbiased  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
+\end{tabular}
+\end{table}
+
+In summary, for test case scenarios such as the DLVN problem in which the
+\fwc\ method is used to generate Monte Carlo variance reduction parameters to
+optimize the response at multiple flux tally detector locations, a relatively
+coarse quadrature set of any of the types studied here can be used to
+sufficient effect. However, the coarsest available quadrature sets should be
+avoided; flux tally results and Figures of Merit for the various detector
+locations tend to level out as a function of angular mesh refinement beyond
+the quadrature sets with the fewest number of angles. In particular, if using
+an LDO quadrature set in another similar scenario, we would suggest using a
+point set of order 5 or 8.
+
+\begin{figure}[!htb]
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-5.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#5.}
+\label{dlvn-fwc-5}
+\end{subfigure} 
+\\
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-9.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#9.}
+\label{dlvn-fwc-9}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-11.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#11.}
+\label{dlvn-fwc-11}
+\end{subfigure}
+\\
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-12.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#12.}
+\label{dlvn-fwc-12}
+\end{subfigure}
+\end{figure}
+\clearpage
+\begin{figure}[!htb]
+\ContinuedFloat
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-13.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#13.}
+\label{dlvn-fwc-13}
+\end{subfigure} 
+\\
+\begin{subfigure}{\linewidth}
+\centering
+\includegraphics[max height=0.445\textheight]
+{img/dlvn-fwcadis-14.eps}
+\subcaption{MCNP-reported forward flux tally and FOM values at detector \#14.}
+\label{dlvn-fwc-14}
+\end{subfigure}
+\caption{\fwc\ flux tallies and FOM values for the DLVN problem.}
+\label{dlvn-fwc-tally}
+\end{figure}
+
+\FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
 
