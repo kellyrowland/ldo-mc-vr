@@ -191,18 +191,18 @@ Radiation shielding is an important and interesting problem from various
 perspectives. Simulation of shielding scenarios is critical for health physics
 and nuclear security applications, but arriving at a solution for a given
 response of interest (e.g., neutron flux at a given location) can be
-computationally difficult in the context of
-the magnitude of particle attenuation often seen in shielding problems.
+computationally difficult in the context of the magnitude of particle
+attenuation often seen in shielding problems.
 
-The steady-state Boltzmann transport equation is typically solved using either 
-deterministic methods or stochastic (Monte Carlo) methods. So-called ``hybrid''
-methods aim to combine the favorable aspects of deterministic and Monte Carlo
-methods to achieve better results. The CADIS (consistent adjoint driven
-importance sampling) and \fwc\ (forward-weighted CADIS) methods are the current
-state of the art in Monte Carlo variance reduction parameter generation.
-Although hybrid methods are used to
-significant effect in radiation shielding problems, they do not entirely
-mitigate the negative aspects of the combined simulation types.
+The steady-state Boltzmann transport equation is typically solved using either
+deterministic methods or stochastic (Monte Carlo) methods. So-called
+``hybrid'' methods aim to combine the favorable aspects of deterministic and
+Monte Carlo methods to achieve better results. The CADIS (consistent adjoint
+driven importance sampling) and \fwc\ (forward-weighted CADIS) methods are the
+current state of the art in Monte Carlo variance reduction parameter
+generation. Although hybrid methods are used to significant effect in
+radiation shielding problems, they do not entirely mitigate the negative
+aspects of the combined simulation types.
 
 One particular area of study where hybrid methods tend to fall short is in
 shielding problems with highly anisotropic particle movement and particle
@@ -221,28 +221,32 @@ equations. We will be employing the LDO equations' solutions in the standard
 CADIS and \fwc\ methods to assess how well the LDO representation's unique
 treatment of scattering and asymmetry in angle incorporate angular information
 into the resultant scalar flux solutions and corresponding Monte Carlo biasing
-parameters.
+parameters. Deterministic calculations were performed with the Denovo radiation
+transport code developed by Oak Ridge National Laboratory \cite{denovo} in the
+Exnihilo framework, with Monte Carlo biasing parameters generated via the
+ADVANTG software \cite{advantg} and Monte Carlo calculations run with MCNP5
+\cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
 given regarding the CADIS and \fwc\ methods as well as about the LDO equations
 to set the stage. Test case scenarios are described with relevant calculation
-pararmeters listed; numerical results and discussion follow. We conclude with a
+parameters listed; numerical results and discussion follow. We conclude with a
 summary of the results and a discussion of suggested pathways for future work.
 
 %%---------------------------------------------------------------------------%%
 \section{Background}
 \label{sec:background}
 
-Here we begin by describing the CADIS (consistent adjoint driven importance 
+Here we begin by describing the CADIS (consistent adjoint driven importance
 sampling) and \fwc\ (forward-weighted CADIS) methods, which are the current
 state of the art of Monte Carlo variance reduction parameter generation. These
 are introduced first because this work employs solutions of the LDO equations
 in combination with the CADIS and \fwc\ methods via the ADVANTG \cite{advantg}
 software. A brief introduction to the LDO equations is then given to explore
-the difference between the LDO representation and the classical \sn\ equations.
-We conclude the section by highlighting the differences in treatment of the
-angular variable and scattering between the two formulations to motivate the
-work undertaken.
+the difference between the LDO representation and the classical discrete
+ordinates (\sn) equations. We conclude the section by highlighting the
+differences in treatment of the angular variable and scattering between the
+two formulations to motivate the work undertaken.
 
 %%---------------------------------------------------------------------------%%
 \subsection{CADIS and \fwc}
@@ -250,13 +254,13 @@ work undertaken.
 %%---------------------------------------------------------------------------%%
 \subsubsection{CADIS}
 
-The CADIS method was introduced by Wagner and Haghighat to automate Monte Carlo
-variance reduction parameter generation \cite{cadis}. CADIS is based on the
-source biasing and weight window techniques, does not depend heavily 
-on user experience, and was implemented as described in Reference \cite{cadis}
-in the MCNP \cite{mcnp} code. Most importantly, the result of using the CADIS
-method is source biasing parameters and weight window target
-values such that particles are born with the target weights.
+The CADIS method was introduced by Wagner and Haghighat to automate Monte
+Carlo variance reduction parameter generation \cite{cadis}. CADIS is based on
+the source biasing and weight window techniques, does not depend heavily  on
+user experience, and was first implemented as described in Reference
+\cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
+method is source biasing parameters and weight window target values such that
+particles are born with the target weights.
 
 The goal of most Monte Carlo transport problems is to calculate some response
 (scalar flux, dose, etc.) at some location in phase-space. This can be posed as
@@ -367,14 +371,14 @@ issue.
 
 \fwc\ is a variation on the CADIS method to increase the efficiency of Monte
 Carlo calculations of distributions and responses at multiple localized
-detectors \cite{fwcadis}.
-For this global variance reduction method, a response with uniformly-low
-statistical uncertainty across all phase-space is desired. One way to target
-this for a given Monte Carlo simulation is to uniformly distribute the
-particles throughout the system. Though this is not a physical response, it is
-a proxy for the goal of obtaining uniform uncertainty. It also indicates the
-possibility of developing an adjoint importance function that represents the
-importance of particles to achieving the goal of uniform particle distribution.
+detectors \cite{fwcadis}. For this global variance reduction method, a
+response with uniformly-low statistical uncertainty across all phase-space is
+desired. One way to target this for a given Monte Carlo simulation is to
+uniformly distribute the particles throughout the system. Though this is not a
+physical response, it is a proxy for the goal of obtaining uniform
+uncertainty. It also indicates the possibility of developing an adjoint
+importance function that represents the importance of particles to achieving
+the goal of uniform particle distribution.
 
 With this new problem formulation, the problem of calculating particle density
 is cast into the response formulation:
@@ -422,7 +426,7 @@ q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 importance of particles to achieving the desired objective of uniformly
 distributed Monte Carlo particles. This should, in turn, correspond to
 approximately uniform statistical uncertainties. The method physically 
-orresponds to weighting the adjoint source with the inverse of the forward
+corresponds to weighting the adjoint source with the inverse of the forward
 flux; the adjoint source will be high where the forward flux is low and the
 adjoint source will be low where the forward flux is high. With this method,
 after the adjoint has been determined, the standard CADIS procedures are used
@@ -448,8 +452,31 @@ on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
 $\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
 $L$. A full derivation can be found in Reference \cite{ahrens}.
 
+The notable differences between the LDO equations and the classical \sn\
+equations can be summarized as:
+
+\begin{enumerate}
+\item{The LDO equations' solutions have an interpolatory structure in angle,
+      which allows the angular flux to naturally be evaluated at directions
+      other than those in the discrete ordinates used to construct and solve
+      the equations.}
+\item{The LDO formulation does not require calculation of spherical harmonic
+      moments.}
+\item{The positive-weight quadrature sets on which the LDO equations are based
+      can integrate spherical harmonics ranging from degree 0 to degree 165.}
+\end{enumerate}
+
+For a given fixed maximum degree of integration $L$, the corresponding number
+of ordinates in the LDO formulation is $(L+1)^2$. The LDO equations are
+developed with and must be evaluated at a fundamental system of points for the
+subspace of spherical harmonics. Ahrens provides references for examples of
+construction methods of these point systems \cite{ahrens}. As in the 
+fundamental studies of the LDO equations conducted by Ahrens, we
+have chosen to use the extremal point sets developed and distributed by
+Womersley \cite{wom}.
+
 %%---------------------------------------------------------------------------%%
-\section{Test Cases and Run Parameters}
+\section{Test Cases and Calculation Parameters}
 
 In this section we introduce and describe the test case scenarios examined as
 well as the various parameters chosen for the calculations in this work. 
@@ -1297,8 +1324,37 @@ begets interest in further exploration of LDO equations' solutions as input for
 Monte Carlo biasing parameters for photon transport in the \fwc\ context.
 
 %---------------------------------------------------------------------------%%
-\section{Conclusions}
+\section{Conclusions and Future Work}
 \label{sec:conclusions}
+
+The LDO equations saw their best-performing Monte Carlo biasing parameters in
+the \fwc\ context. For the DLVN experimental benchmark, LDO variance reduction
+parameters generated the highest Figures of Merit for two of the six detector
+locations in the assembly. Of those studied here, the only other quadrature
+type to achieve this was the QR quadrature set. In the case of the simplified
+portal monitor scenario studied in the \fwc\ context, the LDO biasing
+parameters attained the highest FOM values for three out of four detector
+locations. Considering results from the test case scenarios in which neutrons
+were transported using the CADIS and \fwc\ methods, we suggest a coarse
+angular mesh for Monte Carlo variance reduction parameter generation based on
+flux solutions resultant from solving the LDO equations. For photon transport
+problems, a more refined LDO angular mesh is recommended for generating Monte
+Carlo biasing parameters and achieving detector responses with high Figures of
+Merit.
+
+In general, the LDO formulation is most useful in the specific context of
+Monte Carlo variance parameter generation using the \fwc\ method for photon
+transport problems. It is also effective in the \fwc\ method for neutron
+transport problems, though somewhat less so. However, the LDO representation
+is currently limited in applicability by its current implementation in the
+Exnihilo framework and the ADVANTG software. The problem space available to
+explore is limited to those with vacuum boundary conditions and isotropic
+fixed particle sources with non-zero volume. Adopting the LDO formulation in
+another radiation transport and Monte Carlo variance reduction parameter
+generation framework would be of interest if the framework is flexible in
+allowing for asymmetric quadrature sets to be used and if the framework allows
+for relative ease in implementing the unique features of the LDO
+representation such as interpolation in angle.
 
 \pagebreak
 \section*{Acknowledgments}
