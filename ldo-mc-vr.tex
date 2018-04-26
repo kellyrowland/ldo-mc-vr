@@ -239,14 +239,10 @@ summary of the results and a discussion of suggested pathways for future work.
 
 Here we begin by describing the CADIS (consistent adjoint driven importance
 sampling) and \fwc\ (forward-weighted CADIS) methods, which are the current
-state of the art of Monte Carlo variance reduction parameter generation. These
-are introduced first because this work employs solutions of the LDO equations
-in combination with the CADIS and \fwc\ methods via the ADVANTG \cite{advantg}
-software. A brief introduction to the LDO equations is then given to explore
+state of the art of Monte Carlo variance reduction parameter generation. A
+brief introduction to the LDO equations is then given to demonstrate
 the difference between the LDO representation and the classical discrete
-ordinates (\sn) equations. We conclude the section by highlighting the
-differences in treatment of the angular variable and scattering between the
-two formulations to motivate the work undertaken.
+ordinates (\sn) equations.
 
 %%---------------------------------------------------------------------------%%
 \subsection{CADIS and \fwc}
@@ -256,7 +252,7 @@ two formulations to motivate the work undertaken.
 
 The CADIS method was introduced by Wagner and Haghighat to automate Monte
 Carlo variance reduction parameter generation \cite{cadis}. CADIS is based on
-the source biasing and weight window techniques, does not depend heavily  on
+the source biasing and weight window techniques, does not depend heavily on
 user experience, and was first implemented as described in Reference
 \cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
 method is source biasing parameters and weight window target values such that
@@ -402,7 +398,7 @@ Carlo density can then be estimated by
 
 \begin{equation}
 R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
-\left[\frac{1}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}\right]dV\ dE\ d\bo.
+\left[\frac{1}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}\right]dE\ dV\ d\bo.
 \label{eq:fwcadis_r}
 \end{equation}
 
@@ -412,7 +408,7 @@ in phase-space:
 
 \begin{equation}
 R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
-\left[\frac{1}{\psi(\vecr,E,\bo)}\right]dV\ dE\ d\bo.
+\left[\frac{1}{\psi(\vecr,E,\bo)}\right]dE\ dV\ d\bo.
 \end{equation}
 
 \noindent By then defining the adjoint source as the bracketed term in the
