@@ -85,40 +85,13 @@
 \usepackage{placeins} % for float barriers
 
 %-------------
-\DeclareMathOperator{\diag}{diag}
-\DeclareMathOperator{\low}{lower}
-\DeclareMathOperator{\upp}{upper}
-
-\newcommand{\sa}{\shortrightarrow}
 \newcommand{\bo}{\mathbf\Omega}
 \newcommand{\vecr}{\textbf{r}}
 \newcommand{\sn}{S$_\mathrm{N}$}
 \newcommand{\pn}{P$_\mathrm{N}$}
-\newcommand{\sigt}{\Sigma_t}
-\newcommand{\sigs}{\Sigma_s}
-\newcommand{\hl}{\mathcal{H}_L}
-\newcommand{\maths}{\mathbb{S}^2}
-\newcommand{\dl}{d_L}
-\newcommand{\lij}{\langle L_i,L_j \rangle}
-\newcommand{\kij}{\langle K_i,K_j \rangle}
 \newcommand{\ve}[1]{\ensuremath{\mathbf{#1}}}
-\newcommand{\Ye}[2]{\ensuremath{Y^e_{#1}(\bo_#2)}}
-\newcommand{\Yo}[2]{\ensuremath{Y^o_{#1}(\bo_#2)}}
-\newcommand{\Sigg}[1]{\ensuremath{\Sigma^{g'\sa g}_{\text{s},#1}}}
-\newcommand{\even}{\ensuremath{\phi^g}}
-\newcommand{\odd}{\ensuremath{\vartheta^g}}
-\newcommand{\xhat}{\ensuremath{\hat{x}}}
 \newcommand{\xbar}{\ensuremath{\bar{x}}}
 \newcommand{\qhat}{\ensuremath{\hat{q}}}
-\newcommand{\psihat}{\ensuremath{\hat{\psi}}}
-\newcommand{\khat}{\ensuremath{\hat{K}}}
-\newcommand{\Gij}[2]{\sum_{\ell=0}^L\frac{2\ell+1}{4\pi}P_{\ell}(\bo_#1\cdot\bo_#2)}
-\newcommand{\Sij}[2]{\Sigma^{g'\rightarrow g}_{\text{s,L}}(\bo_#1\cdot\bo_#2)}
-\newcommand{\Snij}[3]{\Sigma^{g'\rightarrow g}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
-\newcommand{\Snz}[3]{\Sigma^{0\sa 0}_{\text{s,#1}}(\bo_#2 \cdot \bo_#3)}
-\newcommand{\ldosig}[2]{\sum_{n=0}^N \frac{2n+1}{4\pi}\sigma_{s,n}^{g'\rightarrow g} P_n(\bo_#1\cdot\bo_#2)}
-\newcommand{\fq}{\qquad\qquad\qquad\qquad}
-\newcommand{\st}{\tilde{S}}
 \newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
 
@@ -305,7 +278,7 @@ the variance of the response is given by
 \end{equation}
 
 Because the source variables are sampled from this new biased PDF, the
-statistical weight of the source particles must be corrected such that
+statistical weight of the source particles, $w(P)$, must be corrected such that
 
 \begin{equation}
 w(P)\qhat(P) = w_0q(P),
@@ -333,9 +306,11 @@ position are sampled from the biased source distribution
 \qhat(\vecr,E) = 
 \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}
 {\int_V\int_E\phi^{\dagger}(\vecr,E)q(\vecr,E) dE\ d\vecr} 
-= \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}{R}.
+= \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}{R},
 \label{eq:cadis_sb}
 \end{equation}
+
+\noindent where $\phi$ denotes the scalar neutron flux.
 
 To bias particles undergoing the transport process, the weight window technique
 is applied. Weight window lower bounds $w_{\ell}$ must be calculated such that
@@ -475,7 +450,10 @@ Womersley \cite{wom}.
 \section{Test Cases and Calculation Parameters}
 
 In this section we introduce and describe the test case scenarios examined as
-well as the various parameters chosen for the calculations in this work. 
+well as the various parameters chosen for the calculations in this work. First,
+we present descriptions of the geometry and materials used in the test cases.
+Then, we discuss the parameters chosen for the various deterministic and Monte
+Carlo calculations performed in this work.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -624,7 +602,7 @@ thus the total number of computational blocks equals the number of processes.
 Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep algorithm for high
 parallel efficiency in calculating transport sweeps \cite{denovo}; the
 aforementioned block structure was chosen to achieve the same parallel
-performance among all test case deterministic simulations. 
+decomposition among all test case deterministic simulations. 
 
 All but one of the test cases use the same coarse energy group structure
 specified in the ``27n19g'' library; the groups in this library are listed in
@@ -690,10 +668,10 @@ Galerkin quadrature sets offer several advantages relative to the standard \sn\
 method for problems with highly anisotropic scattering \cite{morel}. Similar to
 the LDO equations, the ``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method
 developed by Morel has the same algebraic structure as the traditional discrete
-ordinates equations but employs a nonstandard scattering treatment.
-For reasons noted below, the Galerkin quadrature orders used were 2 and 4. For
+ordinates equations but employs a nonstandard scattering treatment.For
 an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
-has a total of $N(N+2)$ angles; the Galerkin quadrature sets
+has a total of $N(N+2)$ angles. For reasons noted below, the Galerkin quadrature
+orders used were 2 and 4; the Galerkin quadrature sets
 used in this work have 8 and 24 total angles, respectively.
 
 The step characteristics (SC) spatial discretization was used in all of the
@@ -709,7 +687,7 @@ Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5.
 
 The Monte Carlo calculations in this work were run on one Dell PowerEdge C6220
 server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total of
-20 cores) \cite{savio}. All jobs were specified to use 21 MPI tasks; MCNP
+20 cores) \cite{savio}. All calculations were specified to use 21 MPI tasks; MCNP
 reserves one ``master'' process for communication and transports particles with
 the remaining available tasks \cite{mcnp}. So, for the purpose of parallel
 efficiency, one transport process per hardware core was used here.
@@ -753,8 +731,8 @@ Figures of Merit are calculated as
 time taken to complete the calculation \cite{mcnp}. Flux tally and FOM values
 are presented for the test case scenarios in the contexts of both the CADIS and
 \fwc\ methods, with additional focus on how the results vary as a function of
-angular mesh refinement used in the deterministic calculations used to produce
-scalar flux solutions for Monte Carlo variance reduction parameter generation.
+angular mesh refinement used in the deterministic calculations from which Monte
+Carlo variance reduction parameters were generated.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
