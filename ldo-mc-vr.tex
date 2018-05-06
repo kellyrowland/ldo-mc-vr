@@ -129,7 +129,11 @@ Number of figures: \totalfigures \\}
 
 \begin{abstract} {
 
-The Lagrange Discrete Ordinates (LDO) equations retain the formal structure of
+Hybrid radiation transport methods that use
+deterministic solutions to speed up stochastic calculations are rarely effective for shielding problems
+with highly anisotropic particle movement and particle streaming pathways.
+In this work, we investigate using a different deterministic formulation, the Lagrange Discrete Ordinates (LDO), for variance reduction parameter generation in hybrid methods. 
+The LDO equations retain the formal structure of
 the traditional discrete ordinates approximation of the Boltzmann transport
 equation while handling the angular variable and particle scattering in a
 unique fashion. The LDO equations' solutions have an interpolatory structure
@@ -137,10 +141,7 @@ such that the angular flux can be naturally evaluated at directions other than
 the discrete ordinates used in arriving at the solutions, and those discrete
 ordinates at which the problem is solved may be chosen in a strategic way. Of
 particular interest is that the LDO equations have been shown to mitigate ray
-effects at increased angular resolutions; hybrid methods that combine
-deterministic and stochastic solutions often fall short in shielding problems
-with highly anisotropic particle movement and particle streaming pathways. In
-this work, we assess the LDO equations' scalar flux solutions as input in the
+effects at increased angular resolutions. Here, we assess the LDO equations' scalar flux solutions as input in the
 CADIS and \fwc\ methods for Monte Carlo variance reduction parameter
 generation. Monte Carlo calculations and Figures of Merit using biasing
 parameters from the LDO equations are compared against those using biasing
@@ -149,7 +150,7 @@ scenarios in both neutron and photon transport. The LDO equations' variance
 reduction parameters see their best performance in the \fwc\ method,
 especially for photon transport.
 
-Keywords: x; y; z
+Keywords: hybrid methods; transport; Lagrange discrete ordinates
 }
 \end{abstract}
 
