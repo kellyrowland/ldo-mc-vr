@@ -81,7 +81,6 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usepackage[export]{adjustbox}
-\usepackage{tabularx}
 \usepackage{placeins} % for float barriers
 
 %-------------
@@ -94,6 +93,7 @@
 \newcommand{\qhat}{\ensuremath{\hat{q}}}
 \newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
+\newcommand{\mr}[1]{\multirow{2}{*}{#1}}
 
 \begin{document}
 
@@ -514,12 +514,13 @@ $z = 140$ cm.
 \end{table}
 
 The composition of the neutron source block is a homogenization of water,
-zirconium, and uranium and was calculated based on the geometry and composition
-of the Rowlands UO$_2$ pin cell benchmark specification \cite{pincell}. The
-source is a U-235 fission 
-spectrum that is uniformly distributed throughout the homogenized material. The
-compositions of air, carbon steel, and water were taken from the Compendium of 
-Material Composition Data for Radiation Transport Modeling \cite{pnnl}.
+zirconium, and uranium and was calculated based on the geometry and
+composition of the Rowlands UO$_2$ pin cell benchmark specification
+\cite{pincell}. The source is a U-235 fission  spectrum that is uniformly
+distributed throughout the homogenized material. The compositions of air,
+carbon steel, and water were taken from the Compendium of  Material
+Composition Data for Radiation Transport Modeling \cite{pnnl}. For this
+scenario, we are intested in the flux solutions at the end of the steel plate.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
@@ -544,7 +545,8 @@ mesh was imposed over the entire problem, with voxels measuring 1 inch per
 side. The neutron source in this problem is a Cf-252 point source located at
 the center of the $x-$ and $y-$directions and at $z = 9$ inches. This point
 source was approximated as a small volumetric source in the tests in this
-work.
+work. We are interested in the flux solutions at the various detector
+locations shown in Figure \ref{dlvn}.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
@@ -577,11 +579,12 @@ Figure \ref{p1}.
 \label{p1}
 \end{figure}
 
-In Figure \ref{p1}, the different colors represent different materials. The NaI
-detectors are red and the gray material is concrete. The two types of material
-blocks are iron, shown in green, and polyethylene, shown in white. The steel
-cargo container surrounds the particle source and material blocks and is a
-semitransparent blue.
+In Figure \ref{p1}, the different colors represent different materials. The
+NaI detectors are red and the gray material is concrete. The two types of
+material blocks are iron, shown in green, and polyethylene, shown in white.
+The steel cargo container surrounds the particle source and material blocks
+and is a semitransparent blue. Here we are interested in the flux solutions at
+the four detector locations.
 
 A non-uniform Cartesian mesh that captures all of the problem's material
 boundaries was constructed for this simulation. The voxels are nominally 10 cm
@@ -628,8 +631,8 @@ Table \ref{ldo-n}.
 \centering
 \caption{Properties of LDO quadrature sets used in deterministic calculations.}
 \begin{tabular}{cc}
-\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
-\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
+\multicolumn{1}{l}{\textbf{Quadrature Order ($\mathbf{N}$)}} & 
+\multicolumn{1}{l}{\textbf{Number of Points}} \\
 \hline
 3 & 16 \\
 5 & 36 \\
@@ -753,7 +756,8 @@ impact of angular mesh refinement on flux tally solution for the different
 quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
 value for an unbiased Monte Carlo calculation as a reference point of
 comparison; it is shown as a horizontal black line with dashed lines on either
-side indicating the one standard deviation confidence interval.
+side indicating the one standard deviation confidence interval. Recall that
+1\E{9} neutron histories were used in these calculations.
 
 \begin{figure}[!hbt]
 \centering
@@ -815,7 +819,7 @@ at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 The Monte Carlo run with biasing parameters from the Galerkin quadrature set
 of order 2 was not able to finish in a timely manner for the hardware
 configuration used in this work, so Monte Carlo results for this data point
-are not included here.
+are not included here. Again, 1\E{9} neutron histories were used here.
 
 Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
 problem for the biased and unbiased calculations. The biased calculations are
@@ -870,12 +874,13 @@ Monte Carlo mesh tally using the \fwc\ method.
 
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
-experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
-forward scalar flux at the location of detector \#14. Here we see that all of
-the biased calculation values fall within the error of the unbiased result.
-However, all of these tally calculations (biased and unbiased) do not match
-the experimentally calculated flux value of 2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
-at detector \#14.
+experiment. Note that 1\E{10} particle histories were simulated in the Monte
+Carlo calculations. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally
+for the forward scalar flux at the location of detector \#14;. Here we see
+that all of the biased calculation values fall within the error of the
+unbiased result. However, all of these tally calculations (biased and
+unbiased) do not match the experimentally calculated flux value of 2.74\E{-7}
+$\pm$ 5\% n/cm$^2$/s at detector \#14.
 
 \begin{figure}[!htb]
 \centering
@@ -910,7 +915,8 @@ benchmark problem in the CADIS context.
 
 Considering the DLVN case with the \fwc\ method, the adjoint source was
 specified to be the combination of all of the detector locations in the
-problem.
+problem. Recall that 1\E{10} neutron histories were simulated for the DLVN
+tests.
 
 Figures \ref{dlvn-fwc-5} and \ref{dlvn-fwc-9} exhibit the same lack of trend in
 flux tally as a function of angular mesh refinement. That is, in general, for
@@ -962,31 +968,31 @@ unbiased flux tally calculation.
 
 \begin{table}[!htb]
 \centering
-\scriptsize
+\footnotesize
 \caption{DLVN benchmark flux tallies [n/cm$^2$/s] calculated with \fwc.}
 \label{dlvn-fwc-det}
-\begin{tabularx}{\textwidth}{l|cccccX}
+\begin{tabular}{l|ccccc}
          & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
-         & \textbf{LDO} & \textbf{Unbiased} & \\ \hline
- Det. \#5 & (1.3341 $\pm$ 0.0003) & (1.3344 $\pm$ 0.0003) & (1.3347 $\pm$ 0.0004) &
-            (1.3344 $\pm$ 0.0003) & (1.3315 $\pm$ 0.0092) & \rule{0pt}{2.6ex} \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#9 & (2.5225 $\pm$ 0.0005) & (2.5224 $\pm$ 0.0005) & (2.5229 $\pm$ 0.0004) &
-            (2.2555 $\pm$ 0.0004) & (2.5104 $\pm$ 0.0127) & \rule{0pt}{2.6ex} \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#11 & (1.4420 $\pm$ 0.0005) & (1.4451 $\pm$ 0.0027) & (1.4446 $\pm$ 0.0026) &
-            (1.4463 $\pm$ 0.0015) & (1.4463 $\pm$ 0.0010) & \rule{0pt}{2.6ex} \\
-          &  \E{-5} & \E{-5} & \E{-5} & \E{-5} & \E{-5} & \\
- Det. \#12 & (2.4749 $\pm$ 0.0004) & (2.4743 $\pm$ 0.0004) & (2.4751 $\pm$ 0.0004) &
-            (2.4744 $\pm$ 0.0004) & (2.4684 $\pm$ 0.0042) \rule{0pt}{2.6ex} & \\
-          &  \E{-6} & \E{-6} & \E{-6} & \E{-6} & \E{-6} & \\
- Det. \#13 & (4.3984 $\pm$ 0.0011) & (4.3997 $\pm$ 0.0011) & (4.3994 $\pm$ 0.0011) &
-            (4.3983 $\pm$ 0.0011) & (4.4170 $\pm$ 0.0175) \rule{0pt}{2.6ex} & \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#14 & (7.0070 $\pm$ 0.0025) & (7.0829 $\pm$ 0.0045) & (7.0813 $\pm$ 0.0026) &
-            (7.0834 $\pm$ 0.0032) & (7.0694 $\pm$ 0.0216) \rule{0pt}{2.6ex} & \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\ \hline
-\end{tabularx}
+         & \textbf{LDO} & \textbf{Unbiased}  \\ \hline
+ Det. \#5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
+            \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
+    (\E{-7})      &    &   &  &   &    \\
+ Det. \#9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
+            \mr{2.2555 $\pm$ 0.0004} & \mr{2.5104 $\pm$ 0.0127} \rule{0pt}{2.6ex}  \\
+   (\E{-7}) &   &  &  &  &   \\
+ Det. \#11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
+            \mr{1.4463 $\pm$ 0.0015} & \mr{1.4463 $\pm$ 0.0010} \rule{0pt}{2.6ex} \\
+   (\E{-5}) &   &  &  &  &   \\
+ Det. \#12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
+            \mr{2.4744 $\pm$ 0.0004} & \mr{2.4684 $\pm$ 0.0042}  \rule{0pt}{2.6ex} \\
+    (\E{-6}) &   &  &  &  &   \\
+ Det. \#13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
+            \mr{4.3983 $\pm$ 0.0011} & \mr{4.4170 $\pm$ 0.0175}  \rule{0pt}{2.6ex} \\
+    (\E{-7}) &   &  &  &  &   \\
+ Det. \#14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
+            \mr{7.0834 $\pm$ 0.0032} & \mr{7.0694 $\pm$ 0.0216}  \rule{0pt}{2.6ex} \\
+    (\E{-7}) &   &  &  &  &   \\ \hline
+\end{tabular}
 \end{table}
 
 To examine the FOM values in a more quantifiable way, Table 
@@ -1016,38 +1022,38 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 & \multicolumn{1}{l}{Det. \#14}
 \\ \hline
 \begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 483.012 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 483.01 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 709.51 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} \textbf{202.66} \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 747.914 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 380.843 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 747.91 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 380.84 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} \textbf{185.40} \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} \textbf{527.794} \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} \textbf{527.79} \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 649.88 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 5.9934 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 798.878 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 326.107 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 798.88 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 326.11 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 52.098 \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 310.276 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 310.28 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 710.43 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 6.6749 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 926.278 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} \textbf{391.624} \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 926.28 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} \textbf{391.62} \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 166.51 \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   LDO \end{tabular}
-& \begin{tabular}[c]{@{}c@{}} 478.242 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 478.24 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} \textbf{721.22} \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 19.959 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} \textbf{943.959} \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 369.423 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} \textbf{943.96} \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 369.42 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 110.40 \end{tabular} % fom for #14
 \\
-Unbiased  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
+Unbiased  & 0.14912 & 0.27845 & 14.555 & 2.5256 & 0.45376 & 0.76362
 \end{tabular}
 \end{table}
 
@@ -1129,7 +1135,8 @@ point set of order 5 or 8.
 
 To study calculations for the simplified portal monitor scenario in the context
 of the CADIS method, the adjoint source was set to be the top detector in the
-small array.
+small array. Here, 1\E{9} particle histories were used in the Monte Carlo
+calculations.
 
 Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
 forward scalar flux tally values and Figures of Merit, respectively. As with
@@ -1169,7 +1176,8 @@ Monte Carlo biasing parameters.
 
 To generate Monte Carlo variance reduction parameters for the simplified portal
 monitor using the \fwc\ method, the adjoint source was set to be all four
-detector locations in the problem's detector array.
+detector locations in the problem's detector array. Again, 1\E{9} photon
+histories were used in the calculations here.
 
 Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
@@ -1207,30 +1215,30 @@ for the bottom detector in the array.
 & \multicolumn{1}{l}{Bottom Detector}
 \\ \hline
 \begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 76.1145 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 121.241 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 76.115 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 121.24 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 128.9 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} \textbf{81.125} \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 30.2458 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 38.1391 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 30.249 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 38.139 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 34.01 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 29.016 \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 65.6132 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 96.1557 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 65.613 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 96.156 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 115.5 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 61.655 \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   LDO \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} \textbf{85.7067} \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} \textbf{132.962} \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} \textbf{85.707} \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} \textbf{132.96} \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} \textbf{140.3} \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 75.135 \end{tabular} % fom for #44
 \\
-Unbiased & 4.40963 & 3.15204 & 2.096 & 2.8313
+Unbiased & 4.4096 & 3.1520 & 2.096 & 2.8313
 \end{tabular}
 \end{table}
 
