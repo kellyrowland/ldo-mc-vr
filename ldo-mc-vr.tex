@@ -334,21 +334,20 @@ fundamental studies of the LDO equations conducted by Ahrens, we
 have chosen to use the extremal point sets developed and distributed by
 Womersley \cite{wom}.
 
-% It feels weird that you describe so much less of this than the CADIS stuff. 
-% The amount of information seems a bit out of sync. 
 % What I would add here is some description about LDO. No one knows about these and they don't know what they are, how they perform, etc. I'd give some quick descriptions and we should come up with a way to reference your other paper. Depending on the submission timing, we can start by putting that other paper on arxiv after it's submitted and referencing it that way.
 
 % It would be useful to motivate this work a little bit more. I'd add a section here that is past work as a small subsection. Describe some examples of where cadis and fw-cadis didn't work well and what some others have done to try to resovle the problem. That will put this work into context. Otherwise, it's hard to understand what problem you're really solving and if anyone else has looked at this at all. 
+\subsection{Previous Work}
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
 In this section we introduce and describe the test case scenarios examined as
-well as the various parameters chosen for the calculations in this work. First,
-we present descriptions of the geometry and materials used in the test cases as well as why each problem was chosen.
-Then, we discuss the parameters chosen for the various deterministic and Monte
-Carlo calculations performed in this work.
-% per steven, add why each problem was chosen. 
+well as the various parameters chosen for the calculations in this work.
+First, we present descriptions of the geometry and materials used in the test
+cases as well as why each problem was chosen. Then, we discuss the parameters
+chosen for the various deterministic and Monte Carlo calculations performed in
+this work. % per steven, add why each problem was chosen.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -524,8 +523,8 @@ Table \ref{ldo-n}.
 \centering
 \caption{Properties of LDO quadrature sets used in deterministic calculations.}
 \begin{tabular}{cc}
-\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
-\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
+\multicolumn{1}{l}{\textbf{Quadrature Order ($\mathbf{N}$)}} & 
+\multicolumn{1}{l}{\textbf{Number of Points}} \\
 \hline
 3 & 16 \\
 5 & 36 \\
@@ -565,8 +564,7 @@ method for problems with highly anisotropic scattering \cite{morel}. Similar to
 the LDO equations, the ``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method
 developed by Morel has the same algebraic structure as the traditional discrete
 ordinates equations but employs a nonstandard scattering treatment. For
-an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
-% are there other ways to do it such that this was a choice in exnihilo?
+an \sn\ order $N$, a given Galerkin quadrature set
 has a total of $N(N+2)$ angles. For reasons noted below, the Galerkin quadrature
 orders used were 2 and 4; the Galerkin quadrature sets
 used in this work have 8 and 24 total angles, respectively.
