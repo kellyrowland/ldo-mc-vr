@@ -129,26 +129,27 @@ Number of figures: \totalfigures \\}
 
 \begin{abstract} {
 
-Hybrid radiation transport methods that use
-deterministic solutions to speed up stochastic calculations are rarely effective for shielding problems
-with highly anisotropic particle movement and particle streaming pathways.
-In this work, we investigate using a different deterministic formulation, the Lagrange Discrete Ordinates (LDO), for variance reduction parameter generation in hybrid methods. 
-The LDO equations retain the formal structure of
-the traditional discrete ordinates approximation of the Boltzmann transport
+Hybrid radiation transport methods that use deterministic solutions to speed
+up stochastic calculations are rarely effective for shielding problems with
+highly anisotropic particle movement and particle streaming pathways. In this
+work, we investigate using a different deterministic formulation, the Lagrange
+Discrete Ordinates (LDO), for variance reduction parameter generation in
+hybrid methods.  The LDO equations retain the formal structure of the
+traditional discrete ordinates approximation of the Boltzmann transport
 equation while handling the angular variable and particle scattering in a
 unique fashion. The LDO equations' solutions have an interpolatory structure
 such that the angular flux can be naturally evaluated at directions other than
 the discrete ordinates used in arriving at the solutions, and those discrete
 ordinates at which the problem is solved may be chosen in a strategic way. Of
 particular interest is that the LDO equations have been shown to mitigate ray
-effects at increased angular resolutions. Here, we assess the LDO equations' scalar flux solutions as input in the
-CADIS and \fwc\ methods for Monte Carlo variance reduction parameter
-generation. Monte Carlo calculations and Figures of Merit using biasing
-parameters from the LDO equations are compared against those using biasing
-parameters from standard quadrature set types for a small variety of test case
-scenarios in both neutron and photon transport. The LDO equations' variance
-reduction parameters see their best performance in the \fwc\ method,
-especially for photon transport.
+effects at increased angular resolutions. Here, we assess the LDO equations'
+scalar flux solutions as input in the CADIS and \fwc\ methods for Monte Carlo
+variance reduction parameter generation. Monte Carlo calculations and Figures
+of Merit using biasing parameters from the LDO equations are compared against
+those using biasing parameters from standard quadrature set types for a small
+variety of test case scenarios in both neutron and photon transport. The LDO
+equations' variance reduction parameters see their best performance in the
+\fwc\ method, especially for photon transport.
 
 Keywords: hybrid methods; transport; Lagrange discrete ordinates
 }
@@ -171,37 +172,38 @@ attenuation often seen in shielding problems.
 The steady-state Boltzmann transport equation is typically solved using either
 deterministic methods or stochastic (Monte Carlo) methods. So-called
 ``hybrid'' methods aim to combine the favorable aspects of deterministic and
-Monte Carlo methods to achieve more accurate results more quickly. The CADIS (consistent adjoint
-driven importance sampling) and \fwc\ (forward-weighted CADIS) methods are the
-current state of the art in Monte Carlo variance reduction parameter
-generation for shielding. However, these methods do not entirely mitigate the negative aspects of the combined simulation types.
+Monte Carlo methods to achieve more accurate results more quickly. The CADIS
+(consistent adjoint driven importance sampling) and \fwc\ (forward-weighted
+CADIS) methods are the current state of the art in Monte Carlo variance
+reduction parameter generation for shielding. However, these methods do not
+entirely mitigate the negative aspects of the combined simulation types.
 
-One particular area of interest where even hybrid methods struggle to yield accurate results quickly is in
-shielding problems with highly anisotropic particle movement and particle
-streaming pathways. This is because the standard implementation of the CADIS
-and \fwc\ methods is based on scalar particle flux rather than angular particle
-flux. So, solutions from deterministic calculations exclude information about
-how particles move toward a response of interest. For problems with strong
-anisotropies in the particle flux, the importance map and biased source 
-developed using the standard space/energy treatment may not represent the real
-importance well enough to sufficiently improve efficiency in the Monte Carlo
-calculation. 
+One particular area of interest where even hybrid methods struggle to yield
+accurate results quickly is in shielding problems with highly anisotropic
+particle movement and particle streaming pathways. This is because the
+standard implementation of the CADIS and \fwc\ methods is based on scalar
+particle flux rather than angular particle flux. So, solutions from
+deterministic calculations exclude information about how particles move toward
+a response of interest. For problems with strong anisotropies in the particle
+flux, the importance map and biased source  developed using the standard
+space/energy treatment may not represent the real importance well enough to
+sufficiently improve efficiency in the Monte Carlo calculation.
 
-This work aims to gauge the performance of Monte Carlo biasing parameters based
-on scalar flux solutions from solving the Lagrange Discrete Ordinates (LDO)
-equations. 
-We employ the LDO equations' solutions in the standard
-CADIS and \fwc\ methods to assess how well the LDO representation's unique
-treatment of scattering and asymmetry in angle incorporate angular information
-into the resultant scalar flux solutions and corresponding Monte Carlo biasing
-parameters. Deterministic calculations were performed with the Denovo radiation
-transport code developed by Oak Ridge National Laboratory \cite{denovo} in the
-Exnihilo framework, with Monte Carlo biasing parameters generated via the
-ADVANTG software \cite{advantg} and Monte Carlo calculations run with MCNP5
-\cite{mcnp}.
+This work aims to gauge the performance of Monte Carlo biasing parameters
+based on scalar flux solutions from solving the Lagrange Discrete Ordinates
+(LDO) equations.  We employ the LDO equations' solutions in the standard CADIS
+and \fwc\ methods to assess how well the LDO representation's unique treatment
+of scattering and asymmetry in angle incorporate angular information into the
+resultant scalar flux solutions and corresponding Monte Carlo biasing
+parameters. Deterministic calculations were performed with the Denovo
+radiation transport code developed by Oak Ridge National Laboratory
+\cite{denovo} in the Exnihilo framework, with Monte Carlo biasing parameters
+generated via the ADVANTG software \cite{advantg} and Monte Carlo calculations
+run with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
-given regarding the CADIS and \fwc\ methods as well as about the LDO equations. Test case scenarios are then described with relevant calculation
+given regarding the CADIS and \fwc\ methods as well as about the LDO
+equations. Test case scenarios are then described with relevant calculation
 parameters listed; numerical results and discussion follow. We conclude with a
 summary of the results and a discussion of suggested pathways for future work.
 
@@ -228,80 +230,11 @@ the source biasing and weight window techniques, does not depend heavily on
 user experience, and was first implemented as described in Reference
 \cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
 method is source biasing parameters and weight window target values such that
-particles are born with the target weights.
-% you might want to indicate in this first paragraph that CADIS is for local response values. 
+particles are born with the target weights. The CADIS method is very effective
+for automated optimization of localized response values.
 
-The goal of most Monte Carlo transport problems is to calculate some response
-(scalar flux, dose, etc.) at some location in phase-space. This can be posed as
-solving the following integral equation:
-
-\begin{equation}
-R = \int_P \psi(P)\sigma_d(P)dP,
-\label{eq:cadis_r1}
-\end{equation}
-
-\noindent where $R$ is the response of interest, $\psi$ is the neutron angular
-flux, and $\sigma_d$ is some objective function in the phase-space
-$(\vecr, E, \bo) \in P$. With the mathematical adjoint identity, it can be
-shown that
-% you might want to put a ref for the adjoint identity so someone can easily look it up if they don't know what that means. 
-
-\begin{equation}
-R = \int_P \psi^{\dagger}(P)q(P)dP,
-\label{eq:cadis_r2}
-\end{equation}
-
-\noindent where $\psi^{\dagger}$ and $q$ are the adjoint neutron angular flux
-function and the particle source density, respectively. For a given problem
-with a vacuum boundary condition, Equations \ref{eq:cadis_r1} and
-\ref{eq:cadis_r2} are equivalent expressions for $R$. The adjoint neutron
-angular flux function $\psi^{\dagger}$ has physical meaning as the expected
-contribution to the response $R$ from a particle in phase-space $P$. In other
-words, the adjoint flux function is significant because it represents the
-importance of those source particles to the response of interest.
-
-To calculate the response with the Monte Carlo method, the independent
-variables are sampled from the probability density function (PDF) $q(P)$.
-However, this may not be the best PDF from which to sample, so an alternative
-PDF $\qhat(P)$ can be introduced into the integral:
-
-\begin{equation}
-R = \int_P \left[\frac{\psi^{\dagger}(P)q(P)}{\qhat(P)}\right]\qhat(P)dP,
-\end{equation}
-
-\noindent where $\qhat(P) \geq 0$ and the integral of $\qhat(P)$ over $P$ is 
-normalized to unity. Then, the alternative PDF $\qhat(P)$ that will minimize
-the variance of the response is given by
-
-\begin{equation}
-\qhat(P) = \frac{\psi^{\dagger}(P)q(P)}{\int_P\psi^{\dagger}(P)q(P)dP}.
-\label{eq:qhat}
-\end{equation}
-
-Because the source variables are sampled from this new biased PDF, the
-statistical weight of the source particles, $w(P)$, must be corrected such that
-
-\begin{equation}
-w(P)\qhat(P) = w_0q(P),
-\label{eq:cadis_w1}
-\end{equation}
-
-\noindent where $w_0$ is the unbiased particle starting weight and is set equal
-to 1. Substituting Equation \ref{eq:qhat} into Equation \ref{eq:cadis_w1} and
-solving for $w(P)$ gives the following expression for the statistical weight of
-the particles:
-
-\begin{equation}
-w(P) = \frac{\int_P\psi^{\dagger}(P)q(P)dP}{\psi^{\dagger}(P)}
-= \frac{R}{\psi^{\dagger}(P)}.
-\label{eq:cadis_w2}
-\end{equation}
-
-\noindent Equation \ref{eq:cadis_w2} demonstrates an inverse relationship
-between this adjoint (importance) function and the statistical particle weight.
-With this, reduced variance can be achieved when all source and transport
-sampling is proportional to its importance. The source particles' energy and
-position are sampled from the biased source distribution
+Using this method, source particles' energy and position are sampled from the
+biased source distribution
 
 \begin{equation}
 \qhat(\vecr,E) = 
@@ -311,24 +244,8 @@ position are sampled from the biased source distribution
 \label{eq:cadis_sb}
 \end{equation}
 
-\noindent where $\phi$ denotes the scalar neutron flux.
-
-% I think the above is well explained, but might be more than is actually needed. That is, a reference to CADIS papers might be sufficient and you could just show the punchline of what will be needed / used. (see, e.g. the paper I wrote with Steve Wilson.). Mostly I'm just not sure the reader really needs all of this background information to understand the work. Same with FW-CADIS. Does that make sense? 
-% Converseley, it's not that long and it probably makes it easier to understand, so maybe it's fine.  
-
-To bias particles undergoing the transport process, the weight window technique
-is applied. Weight window lower bounds $w_{\ell}$ must be calculated such that
-the statistical weights defined in Equation \ref{eq:cadis_w2} fall at the
-center of the weight window intervals. The width of a given interval is denoted
-by $c_u = w_u/w_{\ell}$, the ratio of upper and lower weight window values. The
-weight window lower bounds are then given by
-
-\begin{equation}
-w_{\ell}(\vecr,E) = \frac{w}{\left(\frac{c_u +1}{2}\right)} 
-= \frac{R}{\phi^{\dagger}(\vecr,E)}\frac{1}{\left(\frac{c_u +1}{2}\right)}.
-\label{eq:cadis_tb}
-\end{equation}
-% why don't we just show how to calculate the centers?
+\noindent where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
+is the particle source density, and $R$ is some response of interest.
 
 A key result of the CADIS method is that the statistical weights of
 the source particles are the weight windows centers. In other
@@ -356,49 +273,14 @@ uncertainty. It also indicates the possibility of developing an adjoint
 importance function that represents the importance of particles to achieving
 the goal of uniform particle distribution.
 
-With this new problem formulation, the problem of calculating particle density
-is cast into the response formulation:
-
-\begin{equation}
-R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)f(\vecr,E,\bo)dE\ dV\ d\bo,
-\end{equation}
-
-\noindent where $f(\vecr,E,\bo)$ is some function that converts angular
-particle flux to Monte Carlo particle density. The Monte Carlo particle 
-density can be estimated by
-
-\begin{equation}
-m(\vecr,E,\bo) = \frac{n(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)} 
-= \frac{\psi(\vecr,E,\bo)}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}
-\end{equation}
-
-\noindent where $\bar{w}$ is the average particle weight, $n$ is the physical
-particle density, and $v$ is the physical particle velocity. The total Monte
-Carlo density can then be estimated by
-
-\begin{equation}
-R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
-\left[\frac{1}{\bar{w}(\vecr,E,\bo)v(\vecr,E,\bo)}\right]dE\ dV\ d\bo.
-\label{eq:fwcadis_r}
-\end{equation}
-
-If the average particle weight is set to be proportional to the physical particle
-density, then the Monte Carlo particle density should be approximately uniform
-in phase-space:
-
-\begin{equation}
-R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
-\left[\frac{1}{\psi(\vecr,E,\bo)}\right]dE\ dV\ d\bo.
-\end{equation}
-
-\noindent By next defining the adjoint source as the bracketed term in the
-above equation,
+With this new problem formulation, the adjoint source is defined as
 
 \begin{equation}
 q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 \end{equation}
 
-\noindent we can calculate an adjoint importance function that represents the
+\noindent where $\psi$ denotes the angular neutron flux. From this,
+we can calculate an adjoint importance function that represents the
 importance of particles to achieving the desired objective of uniformly
 distributed Monte Carlo particles. This should, in turn, correspond to
 approximately uniform statistical uncertainties. The method physically 
