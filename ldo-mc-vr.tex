@@ -81,6 +81,7 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usepackage[export]{adjustbox}
+\usepackage{tabularx}
 \usepackage{placeins} % for float barriers
 
 %-------------
@@ -93,7 +94,6 @@
 \newcommand{\qhat}{\ensuremath{\hat{q}}}
 \newcommand{\E}[1]{$\times10^{#1}$}
 \newcommand{\fwc}{\mbox{FW-CADIS}}
-\newcommand{\mr}[1]{\multirow{2}{*}{#1}}
 
 \begin{document}
 
@@ -129,7 +129,11 @@ Number of figures: \totalfigures \\}
 
 \begin{abstract} {
 
-The Lagrange Discrete Ordinates (LDO) equations retain the formal structure of
+Hybrid radiation transport methods that use
+deterministic solutions to speed up stochastic calculations are rarely effective for shielding problems
+with highly anisotropic particle movement and particle streaming pathways.
+In this work, we investigate using a different deterministic formulation, the Lagrange Discrete Ordinates (LDO), for variance reduction parameter generation in hybrid methods. 
+The LDO equations retain the formal structure of
 the traditional discrete ordinates approximation of the Boltzmann transport
 equation while handling the angular variable and particle scattering in a
 unique fashion. The LDO equations' solutions have an interpolatory structure
@@ -137,10 +141,7 @@ such that the angular flux can be naturally evaluated at directions other than
 the discrete ordinates used in arriving at the solutions, and those discrete
 ordinates at which the problem is solved may be chosen in a strategic way. Of
 particular interest is that the LDO equations have been shown to mitigate ray
-effects at increased angular resolutions; hybrid methods that combine
-deterministic and stochastic solutions often fall short in shielding problems
-with highly anisotropic particle movement and particle streaming pathways. In
-this work, we assess the LDO equations' scalar flux solutions as input in the
+effects at increased angular resolutions. Here, we assess the LDO equations' scalar flux solutions as input in the
 CADIS and \fwc\ methods for Monte Carlo variance reduction parameter
 generation. Monte Carlo calculations and Figures of Merit using biasing
 parameters from the LDO equations are compared against those using biasing
@@ -149,7 +150,7 @@ scenarios in both neutron and photon transport. The LDO equations' variance
 reduction parameters see their best performance in the \fwc\ method,
 especially for photon transport.
 
-Keywords: x; y; z
+Keywords: hybrid methods; transport; Lagrange discrete ordinates
 }
 \end{abstract}
 
@@ -170,14 +171,12 @@ attenuation often seen in shielding problems.
 The steady-state Boltzmann transport equation is typically solved using either
 deterministic methods or stochastic (Monte Carlo) methods. So-called
 ``hybrid'' methods aim to combine the favorable aspects of deterministic and
-Monte Carlo methods to achieve better results. The CADIS (consistent adjoint
+Monte Carlo methods to achieve more accurate results more quickly. The CADIS (consistent adjoint
 driven importance sampling) and \fwc\ (forward-weighted CADIS) methods are the
 current state of the art in Monte Carlo variance reduction parameter
-generation. Although hybrid methods are used to significant effect in
-radiation shielding problems, they do not entirely mitigate the negative
-aspects of the combined simulation types.
+generation for shielding. However, these methods do not entirely mitigate the negative aspects of the combined simulation types.
 
-One particular area of study where hybrid methods tend to fall short is in
+One particular area of interest where even hybrid methods struggle to yield accurate results quickly is in
 shielding problems with highly anisotropic particle movement and particle
 streaming pathways. This is because the standard implementation of the CADIS
 and \fwc\ methods is based on scalar particle flux rather than angular particle
@@ -190,7 +189,8 @@ calculation.
 
 This work aims to gauge the performance of Monte Carlo biasing parameters based
 on scalar flux solutions from solving the Lagrange Discrete Ordinates (LDO)
-equations. We will be employing the LDO equations' solutions in the standard
+equations. 
+We employ the LDO equations' solutions in the standard
 CADIS and \fwc\ methods to assess how well the LDO representation's unique
 treatment of scattering and asymmetry in angle incorporate angular information
 into the resultant scalar flux solutions and corresponding Monte Carlo biasing
@@ -201,8 +201,7 @@ ADVANTG software \cite{advantg} and Monte Carlo calculations run with MCNP5
 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
-given regarding the CADIS and \fwc\ methods as well as about the LDO equations
-to set the stage. Test case scenarios are described with relevant calculation
+given regarding the CADIS and \fwc\ methods as well as about the LDO equations. Test case scenarios are then described with relevant calculation
 parameters listed; numerical results and discussion follow. We conclude with a
 summary of the results and a discussion of suggested pathways for future work.
 
@@ -230,6 +229,7 @@ user experience, and was first implemented as described in Reference
 \cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
 method is source biasing parameters and weight window target values such that
 particles are born with the target weights.
+% you might want to indicate in this first paragraph that CADIS is for local response values. 
 
 The goal of most Monte Carlo transport problems is to calculate some response
 (scalar flux, dose, etc.) at some location in phase-space. This can be posed as
@@ -244,6 +244,7 @@ R = \int_P \psi(P)\sigma_d(P)dP,
 flux, and $\sigma_d$ is some objective function in the phase-space
 $(\vecr, E, \bo) \in P$. With the mathematical adjoint identity, it can be
 shown that
+% you might want to put a ref for the adjoint identity so someone can easily look it up if they don't know what that means. 
 
 \begin{equation}
 R = \int_P \psi^{\dagger}(P)q(P)dP,
@@ -312,6 +313,9 @@ position are sampled from the biased source distribution
 
 \noindent where $\phi$ denotes the scalar neutron flux.
 
+% I think the above is well explained, but might be more than is actually needed. That is, a reference to CADIS papers might be sufficient and you could just show the punchline of what will be needed / used. (see, e.g. the paper I wrote with Steve Wilson.). Mostly I'm just not sure the reader really needs all of this background information to understand the work. Same with FW-CADIS. Does that make sense? 
+% Converseley, it's not that long and it probably makes it easier to understand, so maybe it's fine.  
+
 To bias particles undergoing the transport process, the weight window technique
 is applied. Weight window lower bounds $w_{\ell}$ must be calculated such that
 the statistical weights defined in Equation \ref{eq:cadis_w2} fall at the
@@ -324,9 +328,10 @@ w_{\ell}(\vecr,E) = \frac{w}{\left(\frac{c_u +1}{2}\right)}
 = \frac{R}{\phi^{\dagger}(\vecr,E)}\frac{1}{\left(\frac{c_u +1}{2}\right)}.
 \label{eq:cadis_tb}
 \end{equation}
+% why don't we just show how to calculate the centers?
 
-The key result of the foregoing discussion is that the statistical weights of
-the source particles are within the bounds of the weight windows. In other
+A key result of the CADIS method is that the statistical weights of
+the source particles are the weight windows centers. In other
 words, the source-biasing parameters and the weight window target values are
 consistent. This circumvents the potential of particles being immediately split
 or rouletted upon birth and avoids the resultant degradation in computational
@@ -377,7 +382,7 @@ R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
 \label{eq:fwcadis_r}
 \end{equation}
 
-If the average particle weight is set proportional to the physical particle
+If the average particle weight is set to be proportional to the physical particle
 density, then the Monte Carlo particle density should be approximately uniform
 in phase-space:
 
@@ -386,7 +391,7 @@ R = \int_{4\pi}\int_{V}\int_{E}\psi(\vecr,E,\bo)
 \left[\frac{1}{\psi(\vecr,E,\bo)}\right]dE\ dV\ d\bo.
 \end{equation}
 
-\noindent By then defining the adjoint source as the bracketed term in the
+\noindent By next defining the adjoint source as the bracketed term in the
 above equation,
 
 \begin{equation}
@@ -407,7 +412,7 @@ to calculate consistent source biasing parameters and weight windows.
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
 
 The Lagrange Discrete Ordinates (LDO) equations are formally the same as the
-classical \sn\ equations and are written as
+classical \sn\ equations and are written for each discrete angle in the angle set as
 
 \begin{multline}
 \bo_n\cdot\nabla\psi_{n}(\vecr,E) + 
@@ -422,6 +427,7 @@ and is a property of the maximum degree of integration of the quadrature set
 on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
 $\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
 $L$. A full derivation can be found in Reference \cite{ahrens}.
+% you might want to suggest a comparison reference for the Sn equations. If you're not familiar with them, none of this will make any sense. 
 
 The notable differences between the LDO equations and the classical \sn\
 equations can be summarized as:
@@ -446,14 +452,21 @@ fundamental studies of the LDO equations conducted by Ahrens, we
 have chosen to use the extremal point sets developed and distributed by
 Womersley \cite{wom}.
 
+% It feels weird that you describe so much less of this than the CADIS stuff. 
+% The amount of information seems a bit out of sync. 
+% What I would add here is some description about LDO. No one knows about these and they don't know what they are, how they perform, etc. I'd give some quick descriptions and we should come up with a way to reference your other paper. Depending on the submission timing, we can start by putting that other paper on arxiv after it's submitted and referencing it that way.
+
+% It would be useful to motivate this work a little bit more. I'd add a section here that is past work as a small subsection. Describe some examples of where cadis and fw-cadis didn't work well and what some others have done to try to resovle the problem. That will put this work into context. Otherwise, it's hard to understand what problem you're really solving and if anyone else has looked at this at all. 
+
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
 In this section we introduce and describe the test case scenarios examined as
 well as the various parameters chosen for the calculations in this work. First,
-we present descriptions of the geometry and materials used in the test cases.
+we present descriptions of the geometry and materials used in the test cases as well as why each problem was chosen.
 Then, we discuss the parameters chosen for the various deterministic and Monte
 Carlo calculations performed in this work.
+% per steven, add why each problem was chosen. 
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -545,8 +558,7 @@ mesh was imposed over the entire problem, with voxels measuring 1 inch per
 side. The neutron source in this problem is a Cf-252 point source located at
 the center of the $x-$ and $y-$directions and at $z = 9$ inches. This point
 source was approximated as a small volumetric source in the tests in this
-work. We are interested in the flux solutions at the various detector
-locations shown in Figure \ref{dlvn}.
+work.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
@@ -579,12 +591,11 @@ Figure \ref{p1}.
 \label{p1}
 \end{figure}
 
-In Figure \ref{p1}, the different colors represent different materials. The
-NaI detectors are red and the gray material is concrete. The two types of
-material blocks are iron, shown in green, and polyethylene, shown in white.
-The steel cargo container surrounds the particle source and material blocks
-and is a semitransparent blue. Here we are interested in the flux solutions at
-the four detector locations.
+In Figure \ref{p1}, the different colors represent different materials. The NaI
+detectors are red and the gray material is concrete. The two types of material
+blocks are iron, shown in green, and polyethylene, shown in white. The steel
+cargo container surrounds the particle source and material blocks and is a
+semitransparent blue.
 
 A non-uniform Cartesian mesh that captures all of the problem's material
 boundaries was constructed for this simulation. The voxels are nominally 10 cm
@@ -631,8 +642,8 @@ Table \ref{ldo-n}.
 \centering
 \caption{Properties of LDO quadrature sets used in deterministic calculations.}
 \begin{tabular}{cc}
-\multicolumn{1}{l}{\textbf{Quadrature Order ($\mathbf{N}$)}} & 
-\multicolumn{1}{l}{\textbf{Number of Points}} \\
+\multicolumn{1}{l}{\textbf{Subspace Degree ($\mathbf{N}$)}} & 
+\multicolumn{1}{l}{\textbf{Quadrature Points}} \\
 \hline
 3 & 16 \\
 5 & 36 \\
@@ -671,8 +682,9 @@ Galerkin quadrature sets offer several advantages relative to the standard \sn\
 method for problems with highly anisotropic scattering \cite{morel}. Similar to
 the LDO equations, the ``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method
 developed by Morel has the same algebraic structure as the traditional discrete
-ordinates equations but employs a nonstandard scattering treatment.For
+ordinates equations but employs a nonstandard scattering treatment. For
 an \sn\ order $N$, a given Galerkin quadrature set (as implemented in Exnihilo)
+% are there other ways to do it such that this was a choice in exnihilo?
 has a total of $N(N+2)$ angles. For reasons noted below, the Galerkin quadrature
 orders used were 2 and 4; the Galerkin quadrature sets
 used in this work have 8 and 24 total angles, respectively.
@@ -756,8 +768,7 @@ impact of angular mesh refinement on flux tally solution for the different
 quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
 value for an unbiased Monte Carlo calculation as a reference point of
 comparison; it is shown as a horizontal black line with dashed lines on either
-side indicating the one standard deviation confidence interval. Recall that
-1\E{9} neutron histories were used in these calculations.
+side indicating the one standard deviation confidence interval.
 
 \begin{figure}[!hbt]
 \centering
@@ -819,7 +830,7 @@ at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 The Monte Carlo run with biasing parameters from the Galerkin quadrature set
 of order 2 was not able to finish in a timely manner for the hardware
 configuration used in this work, so Monte Carlo results for this data point
-are not included here. Again, 1\E{9} neutron histories were used here.
+are not included here.
 
 Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
 problem for the biased and unbiased calculations. The biased calculations are
@@ -874,13 +885,12 @@ Monte Carlo mesh tally using the \fwc\ method.
 
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
-experiment. Note that 1\E{10} particle histories were simulated in the Monte
-Carlo calculations. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally
-for the forward scalar flux at the location of detector \#14;. Here we see
-that all of the biased calculation values fall within the error of the
-unbiased result. However, all of these tally calculations (biased and
-unbiased) do not match the experimentally calculated flux value of 2.74\E{-7}
-$\pm$ 5\% n/cm$^2$/s at detector \#14.
+experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
+forward scalar flux at the location of detector \#14. Here we see that all of
+the biased calculation values fall within the error of the unbiased result.
+However, all of these tally calculations (biased and unbiased) do not match
+the experimentally calculated flux value of 2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
+at detector \#14.
 
 \begin{figure}[!htb]
 \centering
@@ -915,8 +925,7 @@ benchmark problem in the CADIS context.
 
 Considering the DLVN case with the \fwc\ method, the adjoint source was
 specified to be the combination of all of the detector locations in the
-problem. Recall that 1\E{10} neutron histories were simulated for the DLVN
-tests.
+problem.
 
 Figures \ref{dlvn-fwc-5} and \ref{dlvn-fwc-9} exhibit the same lack of trend in
 flux tally as a function of angular mesh refinement. That is, in general, for
@@ -968,31 +977,31 @@ unbiased flux tally calculation.
 
 \begin{table}[!htb]
 \centering
-\footnotesize
+\scriptsize
 \caption{DLVN benchmark flux tallies [n/cm$^2$/s] calculated with \fwc.}
 \label{dlvn-fwc-det}
-\begin{tabular}{l|ccccc}
+\begin{tabularx}{\textwidth}{l|cccccX}
          & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
-         & \textbf{LDO} & \textbf{Unbiased}  \\ \hline
- Det. \#5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
-            \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
-    (\E{-7})      &    &   &  &   &    \\
- Det. \#9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
-            \mr{2.2555 $\pm$ 0.0004} & \mr{2.5104 $\pm$ 0.0127} \rule{0pt}{2.6ex}  \\
-   (\E{-7}) &   &  &  &  &   \\
- Det. \#11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
-            \mr{1.4463 $\pm$ 0.0015} & \mr{1.4463 $\pm$ 0.0010} \rule{0pt}{2.6ex} \\
-   (\E{-5}) &   &  &  &  &   \\
- Det. \#12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
-            \mr{2.4744 $\pm$ 0.0004} & \mr{2.4684 $\pm$ 0.0042}  \rule{0pt}{2.6ex} \\
-    (\E{-6}) &   &  &  &  &   \\
- Det. \#13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
-            \mr{4.3983 $\pm$ 0.0011} & \mr{4.4170 $\pm$ 0.0175}  \rule{0pt}{2.6ex} \\
-    (\E{-7}) &   &  &  &  &   \\
- Det. \#14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
-            \mr{7.0834 $\pm$ 0.0032} & \mr{7.0694 $\pm$ 0.0216}  \rule{0pt}{2.6ex} \\
-    (\E{-7}) &   &  &  &  &   \\ \hline
-\end{tabular}
+         & \textbf{LDO} & \textbf{Unbiased} & \\ \hline
+ Det. \#5 & (1.3341 $\pm$ 0.0003) & (1.3344 $\pm$ 0.0003) & (1.3347 $\pm$ 0.0004) &
+            (1.3344 $\pm$ 0.0003) & (1.3315 $\pm$ 0.0092) & \rule{0pt}{2.6ex} \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#9 & (2.5225 $\pm$ 0.0005) & (2.5224 $\pm$ 0.0005) & (2.5229 $\pm$ 0.0004) &
+            (2.2555 $\pm$ 0.0004) & (2.5104 $\pm$ 0.0127) & \rule{0pt}{2.6ex} \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#11 & (1.4420 $\pm$ 0.0005) & (1.4451 $\pm$ 0.0027) & (1.4446 $\pm$ 0.0026) &
+            (1.4463 $\pm$ 0.0015) & (1.4463 $\pm$ 0.0010) & \rule{0pt}{2.6ex} \\
+          &  \E{-5} & \E{-5} & \E{-5} & \E{-5} & \E{-5} & \\
+ Det. \#12 & (2.4749 $\pm$ 0.0004) & (2.4743 $\pm$ 0.0004) & (2.4751 $\pm$ 0.0004) &
+            (2.4744 $\pm$ 0.0004) & (2.4684 $\pm$ 0.0042) \rule{0pt}{2.6ex} & \\
+          &  \E{-6} & \E{-6} & \E{-6} & \E{-6} & \E{-6} & \\
+ Det. \#13 & (4.3984 $\pm$ 0.0011) & (4.3997 $\pm$ 0.0011) & (4.3994 $\pm$ 0.0011) &
+            (4.3983 $\pm$ 0.0011) & (4.4170 $\pm$ 0.0175) \rule{0pt}{2.6ex} & \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
+ Det. \#14 & (7.0070 $\pm$ 0.0025) & (7.0829 $\pm$ 0.0045) & (7.0813 $\pm$ 0.0026) &
+            (7.0834 $\pm$ 0.0032) & (7.0694 $\pm$ 0.0216) \rule{0pt}{2.6ex} & \\
+          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\ \hline
+\end{tabularx}
 \end{table}
 
 To examine the FOM values in a more quantifiable way, Table 
@@ -1022,38 +1031,38 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 & \multicolumn{1}{l}{Det. \#14}
 \\ \hline
 \begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 483.01 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 483.012 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 709.51 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} \textbf{202.66} \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 747.91 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 380.84 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 747.914 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 380.843 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} \textbf{185.40} \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} \textbf{527.79} \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} \textbf{527.794} \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 649.88 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 5.9934 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 798.88 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 326.11 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 798.878 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 326.107 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 52.098 \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 310.28 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 310.276 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} 710.43 \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 6.6749 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} 926.28 \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} \textbf{391.62} \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} 926.278 \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} \textbf{391.624} \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 166.51 \end{tabular} % fom for #14
 \\
 \begin{tabular}[c]{@{}l@{}}   LDO \end{tabular}
-& \begin{tabular}[c]{@{}c@{}} 478.24 \end{tabular} % fom for #5
+& \begin{tabular}[c]{@{}c@{}} 478.242 \end{tabular} % fom for #5
 & \begin{tabular}[c]{@{}c@{}} \textbf{721.22} \end{tabular} % fom for #9
 & \begin{tabular}[c]{@{}c@{}} 19.959 \end{tabular} % fom for #11
-& \begin{tabular}[c]{@{}c@{}} \textbf{943.96} \end{tabular} % fom for #12
-& \begin{tabular}[c]{@{}c@{}} 369.42 \end{tabular} % fom for #13
+& \begin{tabular}[c]{@{}c@{}} \textbf{943.959} \end{tabular} % fom for #12
+& \begin{tabular}[c]{@{}c@{}} 369.423 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 110.40 \end{tabular} % fom for #14
 \\
-Unbiased  & 0.14912 & 0.27845 & 14.555 & 2.5256 & 0.45376 & 0.76362
+Unbiased  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
 \end{tabular}
 \end{table}
 
@@ -1135,8 +1144,7 @@ point set of order 5 or 8.
 
 To study calculations for the simplified portal monitor scenario in the context
 of the CADIS method, the adjoint source was set to be the top detector in the
-small array. Here, 1\E{9} particle histories were used in the Monte Carlo
-calculations.
+small array.
 
 Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
 forward scalar flux tally values and Figures of Merit, respectively. As with
@@ -1176,8 +1184,7 @@ Monte Carlo biasing parameters.
 
 To generate Monte Carlo variance reduction parameters for the simplified portal
 monitor using the \fwc\ method, the adjoint source was set to be all four
-detector locations in the problem's detector array. Again, 1\E{9} photon
-histories were used in the calculations here.
+detector locations in the problem's detector array.
 
 Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
@@ -1215,30 +1222,30 @@ for the bottom detector in the array.
 & \multicolumn{1}{l}{Bottom Detector}
 \\ \hline
 \begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 76.115 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 121.24 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 76.1145 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 121.241 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 128.9 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} \textbf{81.125} \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   Galerkin \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 30.249 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 38.139 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 30.2458 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 38.1391 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 34.01 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 29.016 \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   LDFE \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} 65.613 \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} 96.156 \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} 65.6132 \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} 96.1557 \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} 115.5 \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 61.655 \end{tabular} % fom for #44
 \\
 \begin{tabular}[c]{@{}l@{}}   LDO \end{tabular} 
-& \begin{tabular}[c]{@{}c@{}} \textbf{85.707} \end{tabular} % fom for #14
-& \begin{tabular}[c]{@{}c@{}} \textbf{132.96} \end{tabular} % fom for #24
+& \begin{tabular}[c]{@{}c@{}} \textbf{85.7067} \end{tabular} % fom for #14
+& \begin{tabular}[c]{@{}c@{}} \textbf{132.962} \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} \textbf{140.3} \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 75.135 \end{tabular} % fom for #44
 \\
-Unbiased & 4.4096 & 3.1520 & 2.096 & 2.8313
+Unbiased & 4.40963 & 3.15204 & 2.096 & 2.8313
 \end{tabular}
 \end{table}
 
