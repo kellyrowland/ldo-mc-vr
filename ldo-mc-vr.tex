@@ -81,7 +81,6 @@
 \usepackage[pdftex,hidelinks]{hyperref}
 \usepackage[super]{nth}
 \usepackage[export]{adjustbox}
-\usepackage{tabularx}
 \usepackage{placeins} % for float barriers
 \usepackage{stmaryrd} % for short right arrow
 
@@ -99,6 +98,7 @@
 \newcommand{\Yo}[2]{\ensuremath{Y^o_{#1}(\bo_#2)}}
 \newcommand{\sa}{\shortrightarrow}
 \newcommand{\co}{\mbox{CADIS-$\Omega$}}
+\newcommand{\mr}[1]{\multirow{2}{*}{#1}}
 
 \begin{document}
 
@@ -315,7 +315,7 @@ discretization for angle. This approximation is written as
 \noindent where a standard multigroup energy approximation is used ($G$ is the
 number of discrete energy groups corresponding to the discretization index
 $g$) and the upper limit of summation for the scattering term spherical
-harmonic expansion, denoted as $P$ in Eq. (\ref{eq:sn}), is known as the
+harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
 ``\pn\ order''. Angular integration is approximated with the quadrature rule 
 %
 \begin{equation}
@@ -324,7 +324,7 @@ harmonic expansion, denoted as $P$ in Eq. (\ref{eq:sn}), is known as the
 \end{equation}
 %
 where $N$ is the number of ordinates. We refer the reader to Reference
-\ref{denovo} and the references therein for a complete discussion of the
+\cite{denovo} and the references therein for a complete discussion of the
 derivation of the \sn\ equations as well as solution methods for the equations.
 
 %%---------------------------------------------------------------------------%%
@@ -825,7 +825,7 @@ we will look at the average FOM values over the entire adjoint source mesh
 tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
 value in combination with the MCNP-reported computer time and Equation
-\ref{eq:fom}. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
+\eqref{eq:fom}. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
 as a function of the number of angles used in generating the biasing
 parameters. The average FOM for the unbiased calculation is shown as a
 horizontal black line.
@@ -949,28 +949,28 @@ unbiased flux tally calculation.
 \scriptsize
 \caption{DLVN benchmark flux tallies [n/cm$^2$/s] calculated with \fwc.}
 \label{dlvn-fwc-det}
-\begin{tabularx}{\textwidth}{l|cccccX}
+\begin{tabular}{l|ccccc}
          & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
-         & \textbf{LDO} & \textbf{Unbiased} & \\ \hline
- Det. \#5 & (1.3341 $\pm$ 0.0003) & (1.3344 $\pm$ 0.0003) & (1.3347 $\pm$ 0.0004) &
-            (1.3344 $\pm$ 0.0003) & (1.3315 $\pm$ 0.0092) & \rule{0pt}{2.6ex} \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#9 & (2.5225 $\pm$ 0.0005) & (2.5224 $\pm$ 0.0005) & (2.5229 $\pm$ 0.0004) &
-            (2.2555 $\pm$ 0.0004) & (2.5104 $\pm$ 0.0127) & \rule{0pt}{2.6ex} \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#11 & (1.4420 $\pm$ 0.0005) & (1.4451 $\pm$ 0.0027) & (1.4446 $\pm$ 0.0026) &
-            (1.4463 $\pm$ 0.0015) & (1.4463 $\pm$ 0.0010) & \rule{0pt}{2.6ex} \\
-          &  \E{-5} & \E{-5} & \E{-5} & \E{-5} & \E{-5} & \\
- Det. \#12 & (2.4749 $\pm$ 0.0004) & (2.4743 $\pm$ 0.0004) & (2.4751 $\pm$ 0.0004) &
-            (2.4744 $\pm$ 0.0004) & (2.4684 $\pm$ 0.0042) \rule{0pt}{2.6ex} & \\
-          &  \E{-6} & \E{-6} & \E{-6} & \E{-6} & \E{-6} & \\
- Det. \#13 & (4.3984 $\pm$ 0.0011) & (4.3997 $\pm$ 0.0011) & (4.3994 $\pm$ 0.0011) &
-            (4.3983 $\pm$ 0.0011) & (4.4170 $\pm$ 0.0175) \rule{0pt}{2.6ex} & \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\
- Det. \#14 & (7.0070 $\pm$ 0.0025) & (7.0829 $\pm$ 0.0045) & (7.0813 $\pm$ 0.0026) &
-            (7.0834 $\pm$ 0.0032) & (7.0694 $\pm$ 0.0216) \rule{0pt}{2.6ex} & \\
-          &  \E{-7} & \E{-7} & \E{-7} & \E{-7} & \E{-7} & \\ \hline
-\end{tabularx}
+         & \textbf{LDO} & \textbf{Unbiased}  \\ \hline
+ Det. \#5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
+            \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
+    (\E{-7})      &    &   &  &   &    \\
+ Det. \#9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
+            \mr{2.2555 $\pm$ 0.0004} & \mr{2.5104 $\pm$ 0.0127} \rule{0pt}{2.6ex}  \\
+   (\E{-7}) &   &  &  &  &   \\
+ Det. \#11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
+            \mr{1.4463 $\pm$ 0.0015} & \mr{1.4463 $\pm$ 0.0010} \rule{0pt}{2.6ex} \\
+   (\E{-5}) &   &  &  &  &   \\
+ Det. \#12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
+            \mr{2.4744 $\pm$ 0.0004} & \mr{2.4684 $\pm$ 0.0042}  \rule{0pt}{2.6ex} \\
+    (\E{-6}) &   &  &  &  &   \\
+ Det. \#13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
+            \mr{4.3983 $\pm$ 0.0011} & \mr{4.4170 $\pm$ 0.0175}  \rule{0pt}{2.6ex} \\
+    (\E{-7}) &   &  &  &  &   \\
+ Det. \#14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
+            \mr{7.0834 $\pm$ 0.0032} & \mr{7.0694 $\pm$ 0.0216}  \rule{0pt}{2.6ex} \\
+    (\E{-7}) &   &  &  &  &   \\ \hline
+\end{tabular}
 \end{table}
 
 To examine the FOM values in a more quantifiable way, Table 
@@ -1136,7 +1136,7 @@ the impact of angular mesh refinement on flux tally and FOM.
 \end{figure}
 
 Similar to other test cases, the flux tally values reported in Figure 
-\ref {cargo-cad-tally} show a trend of converging to a stable value after the
+\ref{cargo-cad-tally} show a trend of converging to a stable value after the
 first few coarsest angular meshes. The flux tally values from the biased
 calculations all fall within the statistical error of that of the unbiased
 calculation but appear to require a minimum value of approximately 100
