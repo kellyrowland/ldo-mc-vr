@@ -173,14 +173,24 @@ response of interest (e.g., neutron flux at a given location) can be
 computationally difficult in the context of the magnitude of particle
 attenuation often seen in shielding problems.
 
-The steady-state Boltzmann transport equation is typically solved using either
-deterministic methods or stochastic (Monte Carlo) methods. So-called
-``hybrid'' methods aim to combine the favorable aspects of deterministic and
-Monte Carlo methods to achieve more accurate results more quickly. The CADIS
-(consistent adjoint driven importance sampling) and \fwc\ (forward-weighted
-CADIS) methods are the current state of the art in Monte Carlo variance
-reduction parameter generation for shielding. However, these methods do not
-entirely mitigate the negative aspects of the combined simulation types.
+The steady-state Boltzmann transport equation, shown below in Equation
+\eqref{eq:bte}, is typically solved using either deterministic methods or
+stochastic (Monte Carlo) methods.
+%
+\begin{multline}
+\bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
+\int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
+\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo)
+\label{eq:bte}
+\end{multline}
+%
+So-called ``hybrid'' methods aim to combine the favorable aspects of
+deterministic and Monte Carlo methods to achieve more accurate results more
+quickly. The CADIS (consistent adjoint driven importance sampling) and \fwc\
+(forward-weighted CADIS) methods are the current state of the art in Monte
+Carlo variance reduction parameter generation for shielding. However, these
+methods do not entirely mitigate the negative aspects of the combined
+simulation types.
 
 One particular area of interest where even hybrid methods struggle to yield
 accurate results quickly is in shielding problems with highly anisotropic
@@ -239,7 +249,7 @@ for automated optimization of localized response values.
 
 Using this method, source particles' energy and position are sampled from the
 biased source distribution
-
+%
 \begin{equation}
 \qhat(\vecr,E) = 
 \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}
@@ -247,8 +257,8 @@ biased source distribution
 = \frac{\phi^{\dagger}(\vecr,E)q(\vecr,E)}{R},
 \label{eq:cadis_sb}
 \end{equation}
-
-\noindent where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
+%
+where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
 is the particle source density, and $R$ is some response of interest.
 
 A key result of the CADIS method is that the statistical weights of
@@ -278,12 +288,12 @@ importance function that represents the importance of particles to achieving
 the goal of uniform particle distribution.
 
 With this new problem formulation, the adjoint source is defined as
-
+%
 \begin{equation}
 q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 \end{equation}
-
-\noindent where $\psi$ denotes the angular neutron flux. From this,
+%
+where $\psi$ denotes the angular neutron flux. From this,
 we can calculate an adjoint importance function that represents the
 importance of particles to achieving the desired objective of uniformly
 distributed Monte Carlo particles. This should, in turn, correspond to
@@ -301,7 +311,7 @@ When solving the steady-state Boltzmann transport equation using deterministic
 methods, as is done in the initial phase(s) of a hybrid methods calculation, the
 discrete ordinates, or \sn, approximation is the most commonly-used
 discretization for angle. This approximation is written as
-
+%
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
 \sum_{g'=0}^{G-1}\sum_{\ell=0}^{P}\Sigma_{s,\ell}^{g'\sa g}(\vecr)
@@ -311,8 +321,8 @@ discretization for angle. This approximation is written as
 + Q_n^g(\vecr),
 \label{eq:sn}
 \end{multline}
-
-\noindent where a standard multigroup energy approximation is used ($G$ is the
+%
+where a standard multigroup energy approximation is used ($G$ is the
 number of discrete energy groups corresponding to the discretization index
 $g$). The scattering term is expanded in terms of spherical harmonics
 $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$; $\phi$ and $\vartheta$ are the
@@ -338,7 +348,7 @@ derivation of the \sn\ equations as well as solution methods for the equations.
 The Lagrange Discrete Ordinates (LDO) equations are formally the same as the
 classical \sn\ equations and are written for each discrete angle in the angle
 set as
-
+%
 \begin{multline}
 \bo_n\cdot\nabla\psi_{n}(\vecr,E) + 
 \Sigma_{t}(\vecr,E)\psi_{n}(\vecr,E) = \\
@@ -346,8 +356,8 @@ set as
 \Sigma_{s,L}(\vecr,E'\rightarrow E)(\bo_{m}\cdot\bo_n)\psi_{n'}(E')dE'
 + Q_{n}(E),
 \end{multline}
-
-\noindent where $N$ is the number of discrete angles used in the formulation
+%
+where $N$ is the number of discrete angles used in the formulation
 and is a property of the maximum degree of integration of the quadrature set
 on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
 $\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
@@ -710,13 +720,13 @@ types.
 For the three test case scenarios described above, we will examine the flux
 tally results and Figure of Merit (FOM) values reported by MCNP. We note that
 Figures of Merit are calculated as
-
+%
 \begin{equation}
 \text{FOM} = \frac{1}{R^2T},
 \label{eq:fom}
 \end{equation}
-
-\noindent where $R$ is the estimated relative error and $T$ is the computer
+%
+where $R$ is the estimated relative error and $T$ is the computer
 time taken to complete the calculation \cite{mcnp}. Flux tally and FOM values
 are presented for the test case scenarios in the contexts of both the CADIS and
 \fwc\ methods, with additional focus on how the results vary as a function of
