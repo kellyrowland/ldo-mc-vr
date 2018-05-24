@@ -314,9 +314,14 @@ discretization for angle. This approximation is written as
 
 \noindent where a standard multigroup energy approximation is used ($G$ is the
 number of discrete energy groups corresponding to the discretization index
-$g$) and the upper limit of summation for the scattering term spherical
+$g$). The scattering term is expanded in terms of spherical harmonics
+$\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$; $\phi$ and $\vartheta$ are the
+``flux moments'' that are eventually used to  solve for the scalar flux
+solution. The upper limit of summation for the scattering term spherical
 harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
-``\pn\ order''. Angular integration is approximated with the quadrature rule 
+``\pn\ order''.
+
+Angular integration is approximated with the quadrature rule 
 %
 \begin{equation}
 \int_{4\pi} f\left(\bo\right) d\bo \approx \sum_{n=1}^{N}w_n f\left(\bo_n\right).
