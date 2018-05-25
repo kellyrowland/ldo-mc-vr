@@ -693,7 +693,7 @@ The step characteristics (SC) spatial discretization was used in all of the
 deterministic calculations based on the recommendation listed in Section 9.1.3
 of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
 scenarios, the point sources are approximated as small spherical volumetric
-sources. Except for the Galerkin quadratures, all runs used a P$_5$ scattering
+sources. Except for the Galerkin quadratures, all calculations used a P$_5$ scattering
 expansion. At the time of this writing, Galerkin quadrature sets are
 implemented in the Exnihilo framework with the restriction that the \pn\ order
 be one greater than the \sn\ order. That is, for the Galerkin quadrature set of
@@ -715,6 +715,7 @@ with 1\E{10} neutron histories as it was modeled after calculations in
 Reference \cite{sw-dlvn}. All Monte Carlo tally results are reported with the
 one standard deviation confidence interval $\xbar(1\pm R)$ where the relative
 error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
+% need to define \xbar and R
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor scenarios,
 we examine Monte Carlo results corresponding to biasing parameters from a
