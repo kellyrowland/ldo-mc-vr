@@ -310,7 +310,7 @@ to calculate consistent source biasing parameters and weight windows.
 When solving the steady-state Boltzmann transport equation using deterministic
 methods, as is done in the initial phase(s) of a hybrid methods calculation, the
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. This approximation is written as
+discretization for angle. This approximation gives one equation for each angle, index $n$:
 %
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -334,11 +334,11 @@ harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
 Angular integration is approximated with the quadrature rule 
 %
 \begin{equation}
-\int_{4\pi} f\left(\bo\right) d\bo \approx \sum_{n=1}^{N}w_n f\left(\bo_n\right).
+\int_{4\pi} f\left(\bo\right) d\bo \approx \sum_{n=1}^{N}w_n f\left(\bo_n\right)\:,
 \label{eq:quadrule}
 \end{equation}
 %
-where $N$ is the number of ordinates. We refer the reader to Reference
+where $w_n$ are the integration weights and $N$ is the number of ordinates. We refer the reader to Reference
 \cite{denovo} and the references therein for a complete discussion of the
 derivation of the \sn\ equations as well as solution methods for the equations.
 
@@ -419,7 +419,7 @@ than from just using the standard space/energy CADIS.''
 
 One of the most recent developments in the area of angle-informed hybrid
 methods is \co, introduced by Munk et al.\ in 2016 \cite{cadisom}. This method
-calculates an alternate form of the adjoint scalar flux quantity that is then
+calculates an alternative form of the adjoint scalar flux quantity that is then
 used in the CADIS and \fwc\ methods for generation of variance reduction
 parameters for local and global response functions, respectively. The \co\
 method was implemented in the ADVANTG framework, with numerical experiments
@@ -442,6 +442,11 @@ quadrature and \pn\ orders at high energies. Similarly, for a simple labyrinth
 geometry of an air maze through a concrete block, \co\ achieved lower relative
 errors than did standard CADIS in the epithermal and fast neutron energy
 groups.
+
+There have been several other efforts to improve variance reduction techniques for problems with strong particle streaming anisotropies such as  (list several here).
+See (is this in your background section? if not, list Madicken's) for full details. 
+The conclusions of these research efforts have been that methods either work predictably but are complex to use, putting a high burden on user expertise, or are simple to use but do not consistently perform well. 
+% something like that just so the world knows there are other places to look.  
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
@@ -688,7 +693,7 @@ The step characteristics (SC) spatial discretization was used in all of the
 deterministic calculations based on the recommendation listed in Section 9.1.3
 of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
 scenarios, the point sources are approximated as small spherical volumetric
-sources. Except for the Galerkin quadratures, all runs used a P$_5$ scattering
+sources. Except for the Galerkin quadratures, all calculations used a P$_5$ scattering
 expansion. At the time of this writing, Galerkin quadrature sets are
 implemented in the Exnihilo framework with the restriction that the \pn\ order
 be one greater than the \sn\ order. That is, for the Galerkin quadrature set of
@@ -710,6 +715,7 @@ with 1\E{10} neutron histories as it was modeled after calculations in
 Reference \cite{sw-dlvn}. All Monte Carlo tally results are reported with the
 one standard deviation confidence interval $\xbar(1\pm R)$ where the relative
 error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
+% need to define \xbar and R
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor scenarios,
 we examine Monte Carlo results corresponding to biasing parameters from a
@@ -754,11 +760,11 @@ For the CADIS calculations for the steel plate embedded in water, the adjoint
 source was set to be the detector tally. Figure \ref{steel-cad-tally} shows
 the MCNP-reported flux tally for the detector at the end of the steel plate
 for each angular mesh refinement for each quadrature type. We note that the
-Monte Carlo runs with biasing parameters from the Galerkin quadrature set of
+Monte Carlo calculations with biasing parameters from the Galerkin quadrature set of
 order 2 and the LDO quadrature set of order 5 were not able to finish in a
 timely manner for the hardware configuration used in this work, so Monte Carlo
 results for those two data points are not included here. The flux tally
-results are plotted as a function of angular mesh refinement to observe the
+results are plotted as a function of angular mesh refinement to demonstrate the
 impact of angular mesh refinement on flux tally solution for the different
 quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
 value for an unbiased Monte Carlo calculation as a reference point of
@@ -778,10 +784,10 @@ $10^{-10}$. This phenomenon has been previously documented
 \cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
 iron cross section; the unresolved resonance region in the iron cross section
 spans multiple energy groups, leading to inaccuracies in the discretized
-multigroup cross section values used in deterministic calculations.
+multigroup cross section values used in deterministic calculations. 
 
-We move on to looking at the Figures of Merit for the various Monte Carlo run
-results. Figure \ref{steel-cad-fom} shows the reported FOM value for the
+While the results from this problem are incorrect, it is instructive to look at the Figures of Merit for the various 
+results to observe trends that could translate to other problems where correct results are obtained. Figure \ref{steel-cad-fom} shows the reported FOM value for the
 detector tally for the various quadrature sets and orders. We again plot the
 results as a function of angular mesh refinement with a black horizontal line
 denoting the FOM for the unbiased Monte Carlo calculation. The biasing
@@ -800,13 +806,13 @@ calculation.
 
 To conclude this section, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
-appears that the angular mesh refinement does not have a great impact on the
+appears that the angular mesh refinement does not have a large impact on the
 flux tally value in this scenario, as all of the biased tally results fall
 within the same order of magnitude and do not exhibit any trends as a function
 of the number of discrete angles used. The Figures of Merit vary somewhat
 more greatly. Specifically, the LDO biasing parameters appear to gather around
 FOM values of 0.005 even as the number of discrete angles used is increased.
-So, for the steel plate in water detector tally in the context of the CADIS
+So, for the steel plate in water problem solved with the CADIS
 method, one could use a relatively low-order (i.e., order 8) LDO quadrature
 set to generate Monte Carlo biasing parameters that result in a Figure of
 Merit comparable to (and better than most of, as seen here) those produced by
@@ -822,7 +828,7 @@ discretization for the adjoint source mesh tally is the same as that listed in
 Section \ref{sec:steel_params}\ Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but starts
 at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
-The Monte Carlo run with biasing parameters from the Galerkin quadrature set
+The Monte Carlo calculation with biasing parameters from the Galerkin quadrature set
 of order 2 was not able to finish in a timely manner for the hardware
 configuration used in this work, so Monte Carlo results for this data point
 are not included here.
@@ -834,7 +840,7 @@ value is shown as a black horizontal line. Like the CADIS method, the \fwc\
 method generates biasing parameters such that the biased Monte Carlo flux
 tally results all fall far below that of the unbiased calculation. Similarly,
 in this case, the angular mesh refinement has little impact on the tally
-result. So, if using an LDO quadrature set to generate biasing parameters with
+result. If using an LDO quadrature set to generate biasing parameters with
 the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
 used to good effect.
 
