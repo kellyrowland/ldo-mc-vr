@@ -760,11 +760,11 @@ For the CADIS calculations for the steel plate embedded in water, the adjoint
 source was set to be the detector tally. Figure \ref{steel-cad-tally} shows
 the MCNP-reported flux tally for the detector at the end of the steel plate
 for each angular mesh refinement for each quadrature type. We note that the
-Monte Carlo runs with biasing parameters from the Galerkin quadrature set of
+Monte Carlo calculations with biasing parameters from the Galerkin quadrature set of
 order 2 and the LDO quadrature set of order 5 were not able to finish in a
 timely manner for the hardware configuration used in this work, so Monte Carlo
 results for those two data points are not included here. The flux tally
-results are plotted as a function of angular mesh refinement to observe the
+results are plotted as a function of angular mesh refinement to demonstrate the
 impact of angular mesh refinement on flux tally solution for the different
 quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
 value for an unbiased Monte Carlo calculation as a reference point of
@@ -784,10 +784,10 @@ $10^{-10}$. This phenomenon has been previously documented
 \cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
 iron cross section; the unresolved resonance region in the iron cross section
 spans multiple energy groups, leading to inaccuracies in the discretized
-multigroup cross section values used in deterministic calculations.
+multigroup cross section values used in deterministic calculations. 
 
-We move on to looking at the Figures of Merit for the various Monte Carlo run
-results. Figure \ref{steel-cad-fom} shows the reported FOM value for the
+While the results from this problem are incorrect, it is instructive to look at the Figures of Merit for the various 
+results to observe trends that could translate to other problems where correct results are obtained. Figure \ref{steel-cad-fom} shows the reported FOM value for the
 detector tally for the various quadrature sets and orders. We again plot the
 results as a function of angular mesh refinement with a black horizontal line
 denoting the FOM for the unbiased Monte Carlo calculation. The biasing
@@ -806,13 +806,13 @@ calculation.
 
 To conclude this section, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
-appears that the angular mesh refinement does not have a great impact on the
+appears that the angular mesh refinement does not have a large impact on the
 flux tally value in this scenario, as all of the biased tally results fall
 within the same order of magnitude and do not exhibit any trends as a function
 of the number of discrete angles used. The Figures of Merit vary somewhat
 more greatly. Specifically, the LDO biasing parameters appear to gather around
 FOM values of 0.005 even as the number of discrete angles used is increased.
-So, for the steel plate in water detector tally in the context of the CADIS
+So, for the steel plate in water problem solved with the CADIS
 method, one could use a relatively low-order (i.e., order 8) LDO quadrature
 set to generate Monte Carlo biasing parameters that result in a Figure of
 Merit comparable to (and better than most of, as seen here) those produced by
