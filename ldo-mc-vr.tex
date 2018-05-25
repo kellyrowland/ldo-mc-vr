@@ -310,7 +310,8 @@ to calculate consistent source biasing parameters and weight windows.
 When solving the steady-state Boltzmann transport equation using deterministic
 methods, as is done in the initial phase(s) of a hybrid methods calculation, the
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. This approximation gives one equation for each angle, index $n$:
+discretization for angle. This approximation gives one equation for each angle,
+index $n$:
 %
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -338,7 +339,8 @@ Angular integration is approximated with the quadrature rule
 \label{eq:quadrule}
 \end{equation}
 %
-where $w_n$ are the integration weights and $N$ is the number of ordinates. We refer the reader to Reference
+where $w_n$ are the integration weights and $N$ is the number of ordinates.
+We refer the reader to Reference
 \cite{denovo} and the references therein for a complete discussion of the
 derivation of the \sn\ equations as well as solution methods for the equations.
 
@@ -403,12 +405,13 @@ versions of directional CADIS were explored: one method that biases the source
 in space and energy while preserving the original angular distribution of the
 particles, and one method that biases the source in space, energy, and angle.
 Both new methods were tested against standard CADIS for seven example
-problems, with the Monte Carlo FOM compared among the methods for each
-problem. For most of these problems, directional CADIS outperformed standard
-CADIS, increasing the Monte Carlo FOM by a factor of around 2. Notable cases
-in which directional CADIS performed more poorly than standard CADIS are a
-neutron porosity tool problem and a gamma-ray litho-density tool problem with
-the detector far away from the source. It should also be noted that, for a
+problems, with the Monte Carlo calculation Figure of Merit (FOM), defined
+below in Equation \eqref{eq:fom}, compared among the methods for each problem.
+For most of these problems, directional CADIS outperformed standard CADIS,
+increasing the Monte Carlo FOM by a factor of around 2. Notable cases in which
+directional CADIS performed more poorly than standard CADIS are a neutron
+porosity tool problem and a gamma-ray litho-density tool problem with the
+detector far away from the source. It should also be noted that, for a
 spherical boat test problem with a source far away from the boat, both
 standard CADIS and directional CADIS performed more poorly than an analog
 Monte Carlo calculation. For full details on the test results, we refer the
@@ -443,10 +446,14 @@ geometry of an air maze through a concrete block, \co\ achieved lower relative
 errors than did standard CADIS in the epithermal and fast neutron energy
 groups.
 
-There have been several other efforts to improve variance reduction techniques for problems with strong particle streaming anisotropies such as  (list several here).
-See (is this in your background section? if not, list Madicken's) for full details. 
-The conclusions of these research efforts have been that methods either work predictably but are complex to use, putting a high burden on user expertise, or are simple to use but do not consistently perform well. 
-% something like that just so the world knows there are other places to look.  
+There have been several other efforts to improve variance reduction techniques
+for problems with strong particle streaming anisotropies such as AVATAR
+(Automatic Variance And Time of Analysis Reduction) \cite{avatar}, Cooper and
+Larsen's Weight Windows \cite{clww}, and LIFT, the local importance function
+transform \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
+conclusions of these research efforts have been that methods either work
+predictably but are complex to use, putting a high burden on user expertise,
+or are simple to use but do not consistently perform well.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
@@ -707,15 +714,14 @@ reserves one ``master'' process for communication and transports particles with
 the remaining available tasks \cite{mcnp}. So, for the purpose of parallel
 efficiency, one transport process per hardware core was used here.
 
-All of the Monte Carlo calculations were run with a fixed number of particle 
-histories to simulate. For the steel plate in water and simplified portal 
+All of the Monte Carlo calculations were run with a fixed number of particle
+histories to simulate. For the steel plate in water and simplified portal
 monitor cases, all calculations used 1\E{9} particle histories in both the
-CADIS and \fwc\ contexts. The DLVN experimental benchmark case was simulated 
+CADIS and \fwc\ contexts. The DLVN experimental benchmark case was simulated
 with 1\E{10} neutron histories as it was modeled after calculations in
-Reference \cite{sw-dlvn}. All Monte Carlo tally results are reported with the
-one standard deviation confidence interval $\xbar(1\pm R)$ where the relative
-error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
-% need to define \xbar and R
+Reference \cite{sw-dlvn}. All Monte Carlo tally results $\xbar$ are reported
+with the one standard deviation confidence interval $\xbar(1\pm R)$ where the
+relative error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor scenarios,
 we examine Monte Carlo results corresponding to biasing parameters from a
@@ -786,16 +792,17 @@ iron cross section; the unresolved resonance region in the iron cross section
 spans multiple energy groups, leading to inaccuracies in the discretized
 multigroup cross section values used in deterministic calculations. 
 
-While the results from this problem are incorrect, it is instructive to look at the Figures of Merit for the various 
-results to observe trends that could translate to other problems where correct results are obtained. Figure \ref{steel-cad-fom} shows the reported FOM value for the
-detector tally for the various quadrature sets and orders. We again plot the
-results as a function of angular mesh refinement with a black horizontal line
-denoting the FOM for the unbiased Monte Carlo calculation. The biasing
-parameters corresponding to the LDFE quadrature set of order 1 result in the
-highest FOM value while those of the QR set of order 1 result in the lowest
-FOM value. For all LDO quadrature sets of order 8 and above, the Figures of
-Merit are one order of magnitude greater than that of the unbiased
-calculation.
+While the results from this problem are incorrect, it is instructive to look
+at the Figures of Merit for the various results to observe trends that could
+translate to other problems where correct results are obtained. Figure 
+\ref{steel-cad-fom} shows the reported FOM value for the detector tally for the
+various quadrature sets and orders. We again plot the results as a function of
+angular mesh refinement with a black horizontal line denoting the FOM for the
+unbiased Monte Carlo calculation. The biasing parameters corresponding to the
+LDFE quadrature set of order 1 result in the highest FOM value while those of
+the QR set of order 1 result in the lowest FOM value. For all LDO quadrature
+sets of order 8 and above, the Figures of Merit are one order of magnitude
+greater than that of the unbiased calculation.
 
 \begin{figure}[!htb]
 \centering
