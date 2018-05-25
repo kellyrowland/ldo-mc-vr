@@ -310,7 +310,7 @@ to calculate consistent source biasing parameters and weight windows.
 When solving the steady-state Boltzmann transport equation using deterministic
 methods, as is done in the initial phase(s) of a hybrid methods calculation, the
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. This approximation is written as
+discretization for angle. This approximation gives one equation for each angle, index $n$:
 %
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -334,11 +334,11 @@ harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
 Angular integration is approximated with the quadrature rule 
 %
 \begin{equation}
-\int_{4\pi} f\left(\bo\right) d\bo \approx \sum_{n=1}^{N}w_n f\left(\bo_n\right).
+\int_{4\pi} f\left(\bo\right) d\bo \approx \sum_{n=1}^{N}w_n f\left(\bo_n\right)\:,
 \label{eq:quadrule}
 \end{equation}
 %
-where $N$ is the number of ordinates. We refer the reader to Reference
+where $w_n$ are the integration weights and $N$ is the number of ordinates. We refer the reader to Reference
 \cite{denovo} and the references therein for a complete discussion of the
 derivation of the \sn\ equations as well as solution methods for the equations.
 
