@@ -828,7 +828,7 @@ discretization for the adjoint source mesh tally is the same as that listed in
 Section \ref{sec:steel_params}\ Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but starts
 at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
-The Monte Carlo run with biasing parameters from the Galerkin quadrature set
+The Monte Carlo calculation with biasing parameters from the Galerkin quadrature set
 of order 2 was not able to finish in a timely manner for the hardware
 configuration used in this work, so Monte Carlo results for this data point
 are not included here.
@@ -840,7 +840,7 @@ value is shown as a black horizontal line. Like the CADIS method, the \fwc\
 method generates biasing parameters such that the biased Monte Carlo flux
 tally results all fall far below that of the unbiased calculation. Similarly,
 in this case, the angular mesh refinement has little impact on the tally
-result. So, if using an LDO quadrature set to generate biasing parameters with
+result. If using an LDO quadrature set to generate biasing parameters with
 the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
 used to good effect.
 
