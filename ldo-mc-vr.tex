@@ -169,56 +169,47 @@ Keywords: hybrid methods; transport; Lagrange discrete ordinates
 Radiation shielding is an important and interesting problem from various
 perspectives. Simulation of shielding scenarios is critical for health physics
 and nuclear security applications, but arriving at a solution for a given
-response of interest (e.g., neutron flux at a given location) can be
+response of interest (\textit{e.g.}, neutron flux at a given location) can be
 computationally difficult in the context of the magnitude of particle
 attenuation often seen in shielding problems.
 
-The steady-state Boltzmann transport equation, shown below in Equation
-\eqref{eq:bte}, is typically solved using either deterministic methods or
+The steady-state Boltzmann transport equation that we use in shielding calculations is typically solved using either deterministic methods or
 stochastic (Monte Carlo) methods.
-%
-\begin{multline}
-\bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
-\int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
-\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo)
-\label{eq:bte}
-\end{multline}
-%
 So-called ``hybrid'' methods aim to combine the favorable aspects of
 deterministic and Monte Carlo methods to achieve more accurate results more
 quickly. The CADIS (consistent adjoint driven importance sampling) and \fwc\
 (forward-weighted CADIS) methods are the current state of the art in Monte
-Carlo variance reduction parameter generation for shielding. However, these
+Carlo variance reduction parameter generation for shielding. These methods use the results of deterministic calculation to create variance reduction (VR) parameters for improving the Monte Carlo transport game. However, these
 methods do not entirely mitigate the negative aspects of the combined
 simulation types.
 
 One particular area of interest where even hybrid methods struggle to yield
 accurate results quickly is in shielding problems with highly anisotropic
-particle movement and particle streaming pathways. This is because the
-standard implementation of the CADIS and \fwc\ methods is based on scalar
-particle flux rather than angular particle flux. So, solutions from
-deterministic calculations exclude information about how particles move toward
+particle movement. This is because the
+standard implementations of the CADIS and \fwc\ methods are based on scalar
+particle flux rather than angular particle flux. Thus, solutions used to create variance reduction parameters exclude information about how particles move toward
 a response of interest. For problems with strong anisotropies in the particle
-flux, the importance map and biased source  developed using the standard
+flux, the VR parameters calculated using the standard
 space/energy treatment may not represent the real importance well enough to
 sufficiently improve efficiency in the Monte Carlo calculation.
 
-This work aims to gauge the performance of Monte Carlo biasing parameters
+This work aims to characterize the performance of Monte Carlo biasing parameters
 based on scalar flux solutions from solving the Lagrange Discrete Ordinates
-(LDO) equations.  We employ the LDO equations' solutions in the standard CADIS
+(LDO) formulation of the transport equation \cite{ahrens}. We employ the LDO equations' solutions in the standard CADIS
 and \fwc\ methods to assess how well the LDO representation's unique treatment
 of scattering and asymmetry in angle incorporate angular information into the
 resultant scalar flux solutions and corresponding Monte Carlo biasing
-parameters. Deterministic calculations were performed with the Denovo
-radiation transport code developed by Oak Ridge National Laboratory
+parameters. The results for several test problems are compared to results where the biasing parameters were generated with standard formulations of the transport equation.
+All deterministic calculations were performed with the Denovo
+radiation transport code 
 \cite{denovo} in the Exnihilo framework, with Monte Carlo biasing parameters
 generated via the ADVANTG software \cite{advantg} and Monte Carlo calculations
-run with MCNP5 \cite{mcnp}.
+done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
 given regarding the CADIS and \fwc\ methods as well as about the LDO
-equations. Test case scenarios are then described with relevant calculation
-parameters listed; numerical results and discussion follow. We conclude with a
+equations in Section II. Test case scenarios are then described with relevant calculation
+parameters listed in Section III; numerical results and discussion follow in Section IV. We conclude in Section V with a
 summary of the results and a discussion of suggested pathways for future work.
 
 %%---------------------------------------------------------------------------%%
@@ -307,10 +298,21 @@ to calculate consistent source biasing parameters and weight windows.
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
 
-When solving the steady-state Boltzmann transport equation using deterministic
+When solving the steady-state Boltzmann transport equation shown in Equation
+\eqref{eq:bte}, using deterministic
 methods, as is done in the initial phase(s) of a hybrid methods calculation, the
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. This approximation gives one equation for each angle,
+discretization for angle. 
+%
+\begin{multline}
+\bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
+\int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
+\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo)
+\label{eq:bte}
+\end{multline}
+
+
+This approximation gives one equation for each angle,
 index $n$:
 %
 \begin{multline}
