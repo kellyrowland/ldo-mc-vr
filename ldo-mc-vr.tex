@@ -300,21 +300,19 @@ to calculate consistent source biasing parameters and weight windows.
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
 
-When solving the steady-state Boltzmann transport equation shown in Equation
-\eqref{eq:bte}, using deterministic
-methods, as is done in the initial phase(s) of a hybrid methods calculation, the
+The
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. 
+discretization for angle to deterministically solve the steady-state Boltzmann transport equation, 
 %
 \begin{multline}
 \bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
 \int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
-\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo)
+\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo) \:,
 \label{eq:bte}
 \end{multline}
-
-
-This approximation gives one equation for each angle,
+%
+where $\Sigma_t$ is the probably of all interactions, $\Sigma_s$ is the probability of scattering interactions, and $Q$ is the source.
+Th \sn\ approximation gives one equation for each angle,
 index $n$:
 %
 \begin{multline}
@@ -383,13 +381,13 @@ equations can be summarized as:
       can integrate spherical harmonics ranging from degree 0 to degree 165.}
 \end{enumerate}
 
-For a given fixed maximum degree of integration $L$, the corresponding number
+For a given fixed maximum degree of integration, $L$, the corresponding number
 of ordinates in the LDO formulation is $(L+1)^2$. The LDO equations are
 developed with and must be evaluated at a fundamental system of points for the
 subspace of spherical harmonics. Ahrens provides references for examples of
 construction methods of these point systems \cite{ahrens}. As in the 
 fundamental studies of the LDO equations conducted by Ahrens, we
-have chosen to use the extremal point sets developed and distributed by
+ chose to use the extremal point sets developed and distributed by
 Womersley \cite{wom}.
 
 %%---------------------------------------------------------------------------%%
