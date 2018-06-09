@@ -207,8 +207,8 @@ generated via the ADVANTG software \cite{advantg} and Monte Carlo calculations
 done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
-given regarding the CADIS and \fwc\ methods as well as about the LDO
-equations in Section II. Test case scenarios are then described with relevant calculation
+given regarding the CADIS and \fwc\ methods, the discrete ordinates equations, the LDO
+equations, and previous related work in Section II. Test case scenarios are then described with relevant calculation
 parameters listed in Section III; numerical results and discussion follow in Section IV. We conclude in Section V with a
 summary of the results and a discussion of suggested pathways for future work.
 
@@ -394,15 +394,15 @@ Womersley \cite{wom}.
 \subsection{Previous Work}
 
 Substantial effort has been placed into the development and automated
-execution of hybrid methods. This section will discuss previous work in this
-field with a  particular emphasis on hybrid methods  that incorporate neutron
-direction of travel. As CADIS and \fwc\ are the current state of the art in
+execution of hybrid methods. This section discusses previous work in this
+field with a  particular emphasis on hybrid methods that incorporate 
+direction of particle travel. As CADIS and \fwc\ are the current state of the art in
 Monte Carlo variance reduction parameter generation, we will see that the
 angle-informed hybrid methods are generally variants of CADIS and \fwc.
 
-Noting the marked performance of the CADIS and \fwc\ methods, their limited
-implementation in only space and energy, and the importance of particle
-direction, Peplow introduced directional CADIS in 2012 \cite{peplow}. Two
+Noting that the CADIS and \fwc\ methods have only been
+implemented as a function space and energy, excluding angle, and that direction of particle
+travel can be important, Peplow introduced directional CADIS in 2012 \cite{peplow}. Two
 versions of directional CADIS were explored: one method that biases the source
 in space and energy while preserving the original angular distribution of the
 particles, and one method that biases the source in space, energy, and angle.
@@ -410,7 +410,7 @@ Both new methods were tested against standard CADIS for seven example
 problems, with the Monte Carlo calculation Figure of Merit (FOM), defined
 below in Equation \eqref{eq:fom}, compared among the methods for each problem.
 For most of these problems, directional CADIS outperformed standard CADIS,
-increasing the Monte Carlo FOM by a factor of around 2. Notable cases in which
+increasing the Monte Carlo FOM by a factor of about two. Notable cases in which
 directional CADIS performed more poorly than standard CADIS are a neutron
 porosity tool problem and a gamma-ray litho-density tool problem with the
 detector far away from the source. It should also be noted that, for a
@@ -419,7 +419,7 @@ standard CADIS and directional CADIS performed more poorly than an analog
 Monte Carlo calculation. For full details on the test results, we refer the
 reader to Reference \cite{peplow}. In the conclusions of the report, Peplow
 notes that ``it is difficult to know \textit{a priori} which problems would
-benefit  from the space/energy/angular treatments presented in this work more
+benefit from the space/energy/angular treatments presented in this work more
 than from just using the standard space/energy CADIS.''
 
 One of the most recent developments in the area of angle-informed hybrid
@@ -427,23 +427,18 @@ methods is \co, introduced by Munk et al.\ in 2016 \cite{cadisom}. This method
 calculates an alternative form of the adjoint scalar flux quantity that is then
 used in the CADIS and \fwc\ methods for generation of variance reduction
 parameters for local and global response functions, respectively. The \co\
-method was implemented in the ADVANTG framework, with numerical experiments
-performed testing variance reduction for problems run in MCNP5. Several
-characterization problems with spatially-induced anisotropies were tested to
-evaluate the new method when used with CADIS and \fwc. Munk identified three
-categories of processes that affect particle flux  anisotropy: strongly
-directional particle sources, strong differences between material properties,
-and algorithmic limitations that result in ray effects. Having grouped these
-processes, Munk tested a set of characterization problems, each of which have
-different combinations of the above anisotropy-inducing mechanisms. Munk also
-developed a set of metrics by which the anisotropy of the flux may be
-quantified over the various problems. Similar to the conclusions drawn by
+method was implemented in the ADVANTG framework using MCNP5. Munk identified three
+categories of processes that affect particle flux anisotropy: strongly-directional particle sources, strong differences between material properties,
+and algorithmic limitations that result in ray effects. Munk then tested a set of problems containing
+different combinations of these anisotropy-inducing mechanisms and compared the results to CADIS. Munk also
+developed a set of metrics by which the degree of anisotropy of the flux may be
+quantified. Similar to the conclusions drawn by
 Peplow, Munk found that it was difficult to predict for which problems \co\
-should outperform CADIS. When considering a parametric study of deterministic
+would outperform CADIS. When considering a parametric study of deterministic
 variables likely to affect angular flux (varying quadrature set order and \pn\
-order) in a characteristic problem composed of a steel beam embedded in
+order) in a test problem composed of a steel beam embedded in
 concrete, \co\ achieved higher FOM values than standard CADIS for all
-quadrature and \pn\ orders at high energies. Similarly, for a simple labyrinth
+quadrature and \pn\ orders at high energies. Conversely, for a simple labyrinth
 geometry of an air maze through a concrete block, \co\ achieved lower relative
 errors than did standard CADIS in the epithermal and fast neutron energy
 groups.
@@ -451,8 +446,8 @@ groups.
 There have been several other efforts to improve variance reduction techniques
 for problems with strong particle streaming anisotropies such as AVATAR
 (Automatic Variance And Time of Analysis Reduction) \cite{avatar}, Cooper and
-Larsen's Weight Windows \cite{clww}, and LIFT, the local importance function
-transform \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
+Larsen's Weight Windows \cite{clww}, and LIFT (Local Importance Function
+Transform) \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
 conclusions of these research efforts have been that methods either work
 predictably but are complex to use, putting a high burden on user expertise,
 or are simple to use but do not consistently perform well.
