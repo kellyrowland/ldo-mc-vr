@@ -177,8 +177,8 @@ The steady-state Boltzmann transport equation that we use in shielding calculati
 stochastic (Monte Carlo) methods.
 So-called ``hybrid'' methods aim to combine the favorable aspects of
 deterministic and Monte Carlo methods to achieve more accurate results more
-quickly. The CADIS (consistent adjoint driven importance sampling) and \fwc\
-(forward-weighted CADIS) methods are the current state of the art in Monte
+quickly. The CADIS (consistent adjoint driven importance sampling) \cite{cadis} and \fwc\
+(forward-weighted CADIS) \cite{fwcadis} methods are the current state of the art in Monte
 Carlo variance reduction parameter generation for shielding. These methods use the results of deterministic calculation to create variance reduction (VR) parameters for improving the Monte Carlo transport game. However, these
 methods do not entirely mitigate the negative aspects of the combined
 simulation types.
@@ -216,9 +216,8 @@ summary of the results and a discussion of suggested pathways for future work.
 \section{Background}
 \label{sec:background}
 
-Here we begin by describing the CADIS (consistent adjoint driven importance
-sampling) and \fwc\ (forward-weighted CADIS) methods, which are the current
-state of the art of Monte Carlo variance reduction parameter generation. A
+We begin by describing the CADIS and \fwc\ methods, which are the current
+state of the art of Monte Carlo variance reduction parameter generation for shielding. A
 brief introduction to the LDO equations is then given to demonstrate
 the difference between the LDO representation and the classical discrete
 ordinates (\sn) equations.
@@ -233,10 +232,12 @@ The CADIS method was introduced by Wagner and Haghighat to automate Monte
 Carlo variance reduction parameter generation \cite{cadis}. CADIS is based on
 the source biasing and weight window techniques, does not depend heavily on
 user experience, and was first implemented as described in Reference
-\cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
-method is source biasing parameters and weight window target values such that
+\cite{cadis} in the MCNP code. The results of using the CADIS
+method are source biasing parameters and weight window target values used to play variance reduction games such that
 particles are born with the target weights. The CADIS method is very effective
 for automated optimization of localized response values.
+
+% you describe the theory of fw-cadis and why you choose the adjoint source below, but it is out of context because we don't know anything about adjoint source and why you would choose it here. I'd add a paragraph giving a little more of the theory about that. 
 
 Using this method, source particles' energy and position are sampled from the
 biased source distribution
@@ -249,8 +250,11 @@ biased source distribution
 \label{eq:cadis_sb}
 \end{equation}
 %
+% I feel like we also need the ww centers. This section is too truncated. 
+%
 where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
 is the particle source density, and $R$ is some response of interest.
+$\phi^{\dagger}$ and $R$ are calculated from coarse, inexpensive, adjoint deterministic calculations.
 
 A key result of the CADIS method is that the statistical weights of
 the source particles are the weight windows centers. In other
@@ -259,17 +263,15 @@ consistent. This circumvents the potential of particles being immediately split
 or rouletted upon birth and avoids the resultant degradation in computational
 efficiency. We refer the reader to Reference \cite{cadis} for a complete
 discussion of results and analysis of the initial implementation of the CADIS
-method. The CADIS method is very effective for automated optimization of
-localized detectors but falls short of efficiently optimizing distributed
-responses. \fwc, discussed in the next section, was developed to address this
-issue.
+method. The CADIS method is very effective for automatically improving calculations for 
+localized responses, but is not designed for distributed
+responses. \fwc, discussed in the next section, was developed to improve distributed response calculations.
 
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
-\fwc\ is a variation on the CADIS method to increase the efficiency of Monte
-Carlo calculations of distributions and responses at multiple localized
-detectors \cite{fwcadis}. For this global variance reduction method, a
+\fwc\ adds a step to the CADIS method to increase the efficiency of Monte
+Carlo calculations of global quantities; the details of this method can be found in Reference \cite{fwcadis}. For this global variance reduction method, a
 response with uniformly-low statistical uncertainty across all phase-space is
 desired. One way to target this for a given Monte Carlo simulation is to
 uniformly distribute the particles throughout the system. Though this is not a
@@ -278,13 +280,13 @@ uncertainty. It also indicates the possibility of developing an adjoint
 importance function that represents the importance of particles to achieving
 the goal of uniform particle distribution.
 
-With this new problem formulation, the adjoint source is defined as
+With the goal of uniform particle distribution in mind, the adjoint source is defined as
 %
 \begin{equation}
 q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 \end{equation}
 %
-where $\psi$ denotes the angular neutron flux. From this,
+where $\psi$ denotes the angular neutron flux. Note that $\psi$ is obtained from a course, inexpensive, forward deterministic calculation. From this,
 we can calculate an adjoint importance function that represents the
 importance of particles to achieving the desired objective of uniformly
 distributed Monte Carlo particles. This should, in turn, correspond to
