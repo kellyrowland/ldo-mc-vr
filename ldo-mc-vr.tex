@@ -810,18 +810,18 @@ greater than that of the unbiased calculation.
 \label{steel-cad-fom}
 \end{figure}
 
-To conclude this section, we consider the overall trends in angular mesh
+To conclude this subsection, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
 appears that the angular mesh refinement does not have a large impact on the
 flux tally value in this scenario, as all of the biased tally results fall
 within the same order of magnitude and do not exhibit any trends as a function
-of the number of discrete angles used. The Figures of Merit vary somewhat
+of the number of discrete angles used. This indicates that any improvement gained by more accurate angular information is offset by the increased computational cost. The Figures of Merit vary somewhat
 more greatly. Specifically, the LDO biasing parameters appear to gather around
 FOM values of 0.005 even as the number of discrete angles used is increased.
-So, for the steel plate in water problem solved with the CADIS
-method, one could use a relatively low-order (i.e., order 8) LDO quadrature
+Thus, for the steel plate in water problem solved with the CADIS
+method, one could use a relatively low-order (\textit{i.e.}, order 8) LDO quadrature
 set to generate Monte Carlo biasing parameters that result in a Figure of
-Merit comparable to (and better than most of, as seen here) those produced by
+Merit comparable to or better than those produced by
 finer angular meshes.
 
 \FloatBarrier
@@ -844,9 +844,8 @@ problem for the biased and unbiased calculations. The biased calculations are
 plotted as a function of angular mesh refinement and the unbiased calculation
 value is shown as a black horizontal line. Like the CADIS method, the \fwc\
 method generates biasing parameters such that the biased Monte Carlo flux
-tally results all fall far below that of the unbiased calculation. Similarly,
-in this case, the angular mesh refinement has little impact on the tally
-result. If using an LDO quadrature set to generate biasing parameters with
+tally results all fall far below that of the unbiased calculation. Again, the angular mesh refinement has little impact on the tally
+results. If using an LDO quadrature set to generate biasing parameters with
 the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
 used to good effect.
 
@@ -862,8 +861,7 @@ reduction parameters for the steel plate in water case using the \fwc\ method,
 we will look at the average FOM values over the entire adjoint source mesh
 tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
-value in combination with the MCNP-reported computer time and Equation
-\eqref{eq:fom}. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
+value in combination with the MCNP-reported computer time. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
 as a function of the number of angles used in generating the biasing
 parameters. The average FOM for the unbiased calculation is shown as a
 horizontal black line.
@@ -875,11 +873,11 @@ horizontal black line.
 \label{steel-fwc-fom}
 \end{figure}
 
-We see a different trend here in that the highest average FOM values tend to
+We see a different trend here than with CADIS in that the highest average FOM values tend to
 come from quadrature sets with mid-range angular mesh refinement; the coarsest
 and finest angular meshes produce Monte Carlo biasing parameters that result
-in reduced Figures of Merit. Considering Figures \ref{steel-fwc-tally} and
-\ref{steel-fwc-fom}, we note that one would wish to use a lower-order (e.g.,
+in reduced Figures of Merit. This indicates that too low an angular resolution likely does not provide enough accuracy, while a high resolution adds computational cost without much accuracy benefit. Considering Figures \ref{steel-fwc-tally} and
+\ref{steel-fwc-fom}, we note that one would wish to use a lower-order (\textit{e.g.},
 order 5) LDO quadrature set to generate variance reduction parameters for a
 Monte Carlo mesh tally using the \fwc\ method.
 
