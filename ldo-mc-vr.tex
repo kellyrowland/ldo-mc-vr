@@ -783,7 +783,7 @@ side indicating the one standard deviation confidence interval.
 \label{steel-cad-tally}
 \end{figure}
 
-All of the biased results tend towards a tally calculation on the order of
+All of the results with variance reduction tend towards a tally calculation on the order of
 $10^{-12}$, while the unbiased tally calculation is on the order of
 $10^{-10}$. This phenomenon has been previously documented
 \cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
@@ -891,9 +891,9 @@ Monte Carlo mesh tally using the \fwc\ method.
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
 experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
-forward scalar flux at the location of detector \#14. Here we see that all of
-the biased calculation values fall within the error of the unbiased result.
-However, all of these tally calculations (biased and unbiased) do not match
+forward scalar flux at the location of detector \#14. Here, we see that all of
+the calculation values using variance fall within the error of the results without variance reduction.
+However, all of these tally calculations (with and without CADIS VR) do not match
 the experimentally calculated flux value of 2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
 at detector \#14.
 
@@ -920,7 +920,7 @@ detector location using the CADIS method is not impacted by further refining
 the angular mesh. The Figures of Merit for the tally calculations reach a
 similar upper bound, but this happens more slowly with respect to angular mesh
 refinement for the LDO quadrature sets. Like the tally in the steel plate case
-above, the LDO quadrature set of order 8 is the optimal choice with respect to
+above, the LDO quadrature set of order 8 is the best choice with respect to
 flux tally result and FOM value for detector \#14 in the DLVN experimental
 benchmark problem in the CADIS context.
 
@@ -937,7 +937,7 @@ flux tally as a function of angular mesh refinement. That is, in general, for
 detector locations \#5 and \#9, using more discrete angles in the \fwc\
 deterministic calculations does not greatly impact the flux tally result from
 MCNP. Figures \ref{dlvn-fwc-13} and \ref{dlvn-fwc-14} show similar behavior
-with the exception of the most coarse angular meshes. For these detector
+with the exception of the coarsest angular meshes. For these detector
 locations, any angular mesh refinement other than the coarsest angular mesh
 will produce a consistent forward scalar flux tally result. Figures
 \ref{dlvn-fwc-11} and \ref{dlvn-fwc-12} show slightly more variation in flux
@@ -962,13 +962,13 @@ angular mesh refinement with the exception of the finest QR set. Lastly,
 quadrature types, with the Figure of Merit largely consistent across
 quadrature types with the exception of QR angular meshes.
 
-In Table \ref{dlvn-fwc-det} we compare the Monte Carlo forward flux tally
+In Table \ref{dlvn-fwc-det}, we compare the Monte Carlo forward flux tally
 results for the representative quadrature sets listed in Section \ref{params}\
-Results from the unbiased Monte Carlo calculation are also included for
+Results from the Monte Carlo calculation with VR are also included for
 comparison. All Monte Carlo flux tally values are reported with an uncertainty
 of one standard deviation. For all detector locations, the Monte Carlo flux
-tallies do not match the experimentally measured flux values for any of the
-representative quadrature sets or the unbiased calculation, so we only compare
+tallies do not match the experimentally-measured flux values from using CADIS with any of the
+representative quadrature sets or the no-VR calculation, so we only compare
 the Monte Carlo calculations in this table. We do note that the Monte Carlo
 calculations overestimate the flux tally at all detector locations with the
 exception of detector \#13. The flux tallies at detectors 5, 9, 13, and 14 all
@@ -979,6 +979,7 @@ of the error bounds of the unbiased calculation. Somewhat similarly, at
 detector \#14, all of the biased calculations match one another within
 statistical uncertainty, but they are all outside of the error bounds of the
 unbiased flux tally calculation.
+% universally, we need a different word than biased. You're not biasing the calculations. You're using variance redution. They're not biased results. Can you go through and update? I'm getting tired enough that I don't have a good idea. I'm sorry I didn't notice that before. 
 
 \begin{table}[!htb]
 \centering
