@@ -13,9 +13,9 @@
 %package needed for next lines
 %makes section headings bold and upper case characters
 %makes subsubsection headings in italics
-\usepackage[explicit]{titlesec}
-\titleformat{\section}{\bfseries}{\thesection}{1em}{\MakeUppercase{#1}}
-\titleformat{\subsubsection}{\itshape}{\thesubsubsection}{1em}{#1}
+% \usepackage[explicit]{titlesec}
+% \titleformat{\section}{\bfseries}{\thesection}{1em}{\MakeUppercase{#1}}
+% \titleformat{\subsubsection}{\itshape}{\thesubsubsection}{1em}{#1}
 
 
 %\linespread{2}       %option 1 for making text double-spaced
@@ -989,22 +989,22 @@ unbiased flux tally calculation.
 \begin{tabular}{l|ccccc}
          & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
          & \textbf{LDO} & \textbf{Unbiased}  \\ \hline
- Det. \#5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
+ Detector 5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
             \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
     (\E{-7})      &    &   &  &   &    \\
- Det. \#9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
+ Detector 9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
             \mr{2.2555 $\pm$ 0.0004} & \mr{2.5104 $\pm$ 0.0127} \rule{0pt}{2.6ex}  \\
    (\E{-7}) &   &  &  &  &   \\
- Det. \#11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
+ Detector 11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
             \mr{1.4463 $\pm$ 0.0015} & \mr{1.4463 $\pm$ 0.0010} \rule{0pt}{2.6ex} \\
    (\E{-5}) &   &  &  &  &   \\
- Det. \#12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
+ Detector 12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
             \mr{2.4744 $\pm$ 0.0004} & \mr{2.4684 $\pm$ 0.0042}  \rule{0pt}{2.6ex} \\
     (\E{-6}) &   &  &  &  &   \\
- Det. \#13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
+ Detector 13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
             \mr{4.3983 $\pm$ 0.0011} & \mr{4.4170 $\pm$ 0.0175}  \rule{0pt}{2.6ex} \\
     (\E{-7}) &   &  &  &  &   \\
- Det. \#14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
+ Detector 14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
             \mr{7.0834 $\pm$ 0.0032} & \mr{7.0694 $\pm$ 0.0216}  \rule{0pt}{2.6ex} \\
     (\E{-7}) &   &  &  &  &   \\ \hline
 \end{tabular}
@@ -1028,13 +1028,13 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 \caption{\fwc\ FOM values for representative quadratures for the DLVN problem.}
 \label{dlvn-fwc-fom-table}
 \begin{tabular}{l|cccccc}
-\multicolumn{1}{l|}{Quad. Type}
-& \multicolumn{1}{l}{Det. \#5}
-& \multicolumn{1}{l}{Det. \#9}
-& \multicolumn{1}{l}{Det. \#11}
-& \multicolumn{1}{l}{Det. \#12}
-& \multicolumn{1}{l}{Det. \#13}
-& \multicolumn{1}{l}{Det. \#14}
+\multicolumn{1}{l|}{Quadrature}
+& \multicolumn{1}{l}{Detector 5}
+& \multicolumn{1}{l}{Detector 9}
+& \multicolumn{1}{l}{Detector 11}
+& \multicolumn{1}{l}{Detector 12}
+& \multicolumn{1}{l}{Detector 13}
+& \multicolumn{1}{l}{Detector 14}
 \\ \hline
 \begin{tabular}[c]{@{}l@{}}   QR \end{tabular} 
 & \begin{tabular}[c]{@{}c@{}} 483.012 \end{tabular} % fom for #5
@@ -1221,7 +1221,7 @@ for the bottom detector in the array.
 \caption{\fwc\ FOM values for representative quadratures for the portal monitor.}
 \label{cargo-fwc-fom-table}
 \begin{tabular}{l|cccc}
-\multicolumn{1}{l|}{Quad. Type}
+\multicolumn{1}{l|}{Quadrature}
 & \multicolumn{1}{l}{Top Detector}
 & \multicolumn{1}{l}{\nth{2} Detector}
 & \multicolumn{1}{l}{\nth{3} Detector}
