@@ -169,65 +169,55 @@ Keywords: hybrid methods; transport; Lagrange discrete ordinates
 Radiation shielding is an important and interesting problem from various
 perspectives. Simulation of shielding scenarios is critical for health physics
 and nuclear security applications, but arriving at a solution for a given
-response of interest (e.g., neutron flux at a given location) can be
+response of interest (\textit{e.g.}, neutron flux at a given location) can be
 computationally difficult in the context of the magnitude of particle
 attenuation often seen in shielding problems.
 
-The steady-state Boltzmann transport equation, shown below in Equation
-\eqref{eq:bte}, is typically solved using either deterministic methods or
+The steady-state Boltzmann transport equation that we use in shielding calculations is typically solved using either deterministic methods or
 stochastic (Monte Carlo) methods.
-%
-\begin{multline}
-\bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
-\int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
-\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo)
-\label{eq:bte}
-\end{multline}
-%
 So-called ``hybrid'' methods aim to combine the favorable aspects of
 deterministic and Monte Carlo methods to achieve more accurate results more
-quickly. The CADIS (consistent adjoint driven importance sampling) and \fwc\
-(forward-weighted CADIS) methods are the current state of the art in Monte
-Carlo variance reduction parameter generation for shielding. However, these
+quickly. The CADIS (consistent adjoint driven importance sampling) \cite{cadis} and \fwc\
+(forward-weighted CADIS) \cite{fwcadis} methods are the current state of the art in Monte
+Carlo variance reduction parameter generation for shielding. These methods use the results of deterministic calculation to create variance reduction (VR) parameters for improving the Monte Carlo transport game. However, these
 methods do not entirely mitigate the negative aspects of the combined
 simulation types.
 
 One particular area of interest where even hybrid methods struggle to yield
 accurate results quickly is in shielding problems with highly anisotropic
-particle movement and particle streaming pathways. This is because the
-standard implementation of the CADIS and \fwc\ methods is based on scalar
-particle flux rather than angular particle flux. So, solutions from
-deterministic calculations exclude information about how particles move toward
+particle movement. This is because the
+standard implementations of the CADIS and \fwc\ methods are based on scalar
+particle flux rather than angular particle flux. Thus, solutions used to create variance reduction parameters exclude information about how particles move toward
 a response of interest. For problems with strong anisotropies in the particle
-flux, the importance map and biased source  developed using the standard
+flux, the VR parameters calculated using the standard
 space/energy treatment may not represent the real importance well enough to
 sufficiently improve efficiency in the Monte Carlo calculation.
 
-This work aims to gauge the performance of Monte Carlo biasing parameters
+This work aims to characterize the performance of Monte Carlo biasing parameters
 based on scalar flux solutions from solving the Lagrange Discrete Ordinates
-(LDO) equations.  We employ the LDO equations' solutions in the standard CADIS
+(LDO) formulation of the transport equation \cite{ahrens}. We employ the LDO equations' solutions in the standard CADIS
 and \fwc\ methods to assess how well the LDO representation's unique treatment
 of scattering and asymmetry in angle incorporate angular information into the
 resultant scalar flux solutions and corresponding Monte Carlo biasing
-parameters. Deterministic calculations were performed with the Denovo
-radiation transport code developed by Oak Ridge National Laboratory
+parameters. The results for several test problems are compared to results where the biasing parameters were generated with standard formulations of the transport equation.
+All deterministic calculations were performed with the Denovo
+radiation transport code 
 \cite{denovo} in the Exnihilo framework, with Monte Carlo biasing parameters
 generated via the ADVANTG software \cite{advantg} and Monte Carlo calculations
-run with MCNP5 \cite{mcnp}.
+done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
-given regarding the CADIS and \fwc\ methods as well as about the LDO
-equations. Test case scenarios are then described with relevant calculation
-parameters listed; numerical results and discussion follow. We conclude with a
+given regarding the CADIS and \fwc\ methods, the discrete ordinates equations, the LDO
+equations, and previous related work in Section II. Test case scenarios are then described with relevant calculation
+parameters listed in Section III; numerical results and discussion follow in Section IV. We conclude in Section V with a
 summary of the results and a discussion of suggested pathways for future work.
 
 %%---------------------------------------------------------------------------%%
 \section{Background}
 \label{sec:background}
 
-Here we begin by describing the CADIS (consistent adjoint driven importance
-sampling) and \fwc\ (forward-weighted CADIS) methods, which are the current
-state of the art of Monte Carlo variance reduction parameter generation. A
+We begin by describing the CADIS and \fwc\ methods, which are the current
+state of the art of Monte Carlo variance reduction parameter generation for shielding. A
 brief introduction to the LDO equations is then given to demonstrate
 the difference between the LDO representation and the classical discrete
 ordinates (\sn) equations.
@@ -242,10 +232,12 @@ The CADIS method was introduced by Wagner and Haghighat to automate Monte
 Carlo variance reduction parameter generation \cite{cadis}. CADIS is based on
 the source biasing and weight window techniques, does not depend heavily on
 user experience, and was first implemented as described in Reference
-\cite{cadis} in the MCNP code. Most importantly, the result of using the CADIS
-method is source biasing parameters and weight window target values such that
+\cite{cadis} in the MCNP code. The results of using the CADIS
+method are source biasing parameters and weight window target values used to play variance reduction games such that
 particles are born with the target weights. The CADIS method is very effective
 for automated optimization of localized response values.
+
+% you describe the theory of fw-cadis and why you choose the adjoint source below, but it is out of context because we don't know anything about adjoint source and why you would choose it here. I'd add a paragraph giving a little more of the theory about that. 
 
 Using this method, source particles' energy and position are sampled from the
 biased source distribution
@@ -258,8 +250,11 @@ biased source distribution
 \label{eq:cadis_sb}
 \end{equation}
 %
+% I feel like we also need the ww centers. This section is too truncated. 
+%
 where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
 is the particle source density, and $R$ is some response of interest.
+$\phi^{\dagger}$ and $R$ are calculated from coarse, inexpensive, adjoint deterministic calculations.
 
 A key result of the CADIS method is that the statistical weights of
 the source particles are the weight windows centers. In other
@@ -268,17 +263,15 @@ consistent. This circumvents the potential of particles being immediately split
 or rouletted upon birth and avoids the resultant degradation in computational
 efficiency. We refer the reader to Reference \cite{cadis} for a complete
 discussion of results and analysis of the initial implementation of the CADIS
-method. The CADIS method is very effective for automated optimization of
-localized detectors but falls short of efficiently optimizing distributed
-responses. \fwc, discussed in the next section, was developed to address this
-issue.
+method. The CADIS method is very effective for automatically improving calculations for 
+localized responses, but is not designed for distributed
+responses. \fwc, discussed in the next section, was developed to improve distributed response calculations.
 
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
-\fwc\ is a variation on the CADIS method to increase the efficiency of Monte
-Carlo calculations of distributions and responses at multiple localized
-detectors \cite{fwcadis}. For this global variance reduction method, a
+\fwc\ adds a step to the CADIS method to increase the efficiency of Monte
+Carlo calculations of global quantities; the details of this method can be found in Reference \cite{fwcadis}. For this global variance reduction method, a
 response with uniformly-low statistical uncertainty across all phase-space is
 desired. One way to target this for a given Monte Carlo simulation is to
 uniformly distribute the particles throughout the system. Though this is not a
@@ -287,13 +280,13 @@ uncertainty. It also indicates the possibility of developing an adjoint
 importance function that represents the importance of particles to achieving
 the goal of uniform particle distribution.
 
-With this new problem formulation, the adjoint source is defined as
+With the goal of uniform particle distribution in mind, the adjoint source is defined as
 %
 \begin{equation}
 q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 \end{equation}
 %
-where $\psi$ denotes the angular neutron flux. From this,
+where $\psi$ denotes the angular neutron flux. Note that $\psi$ is obtained from a course, inexpensive, forward deterministic calculation. From this,
 we can calculate an adjoint importance function that represents the
 importance of particles to achieving the desired objective of uniformly
 distributed Monte Carlo particles. This should, in turn, correspond to
@@ -307,10 +300,19 @@ to calculate consistent source biasing parameters and weight windows.
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
 
-When solving the steady-state Boltzmann transport equation using deterministic
-methods, as is done in the initial phase(s) of a hybrid methods calculation, the
+The
 discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle. This approximation gives one equation for each angle,
+discretization for angle to deterministically solve the steady-state Boltzmann transport equation, 
+%
+\begin{multline}
+\bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
+\int_0^\infty\int_{4\pi} \Sigma_s(\vecr,E'\rightarrow E,\bo'\cdot\bo)
+\psi(\vecr,E',\bo')d\bo'dE' + Q(\vecr,E,\bo) \:,
+\label{eq:bte}
+\end{multline}
+%
+where $\Sigma_t$ is the probably of all interactions, $\Sigma_s$ is the probability of scattering interactions, and $Q$ is the source.
+Th \sn\ approximation gives one equation for each angle,
 index $n$:
 %
 \begin{multline}
@@ -379,28 +381,28 @@ equations can be summarized as:
       can integrate spherical harmonics ranging from degree 0 to degree 165.}
 \end{enumerate}
 
-For a given fixed maximum degree of integration $L$, the corresponding number
+For a given fixed maximum degree of integration, $L$, the corresponding number
 of ordinates in the LDO formulation is $(L+1)^2$. The LDO equations are
 developed with and must be evaluated at a fundamental system of points for the
 subspace of spherical harmonics. Ahrens provides references for examples of
 construction methods of these point systems \cite{ahrens}. As in the 
 fundamental studies of the LDO equations conducted by Ahrens, we
-have chosen to use the extremal point sets developed and distributed by
+ chose to use the extremal point sets developed and distributed by
 Womersley \cite{wom}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Previous Work}
 
 Substantial effort has been placed into the development and automated
-execution of hybrid methods. This section will discuss previous work in this
-field with a  particular emphasis on hybrid methods  that incorporate neutron
-direction of travel. As CADIS and \fwc\ are the current state of the art in
+execution of hybrid methods. This section discusses previous work in this
+field with a  particular emphasis on hybrid methods that incorporate 
+direction of particle travel. As CADIS and \fwc\ are the current state of the art in
 Monte Carlo variance reduction parameter generation, we will see that the
 angle-informed hybrid methods are generally variants of CADIS and \fwc.
 
-Noting the marked performance of the CADIS and \fwc\ methods, their limited
-implementation in only space and energy, and the importance of particle
-direction, Peplow introduced directional CADIS in 2012 \cite{peplow}. Two
+Noting that the CADIS and \fwc\ methods have only been
+implemented as a function space and energy, excluding angle, and that direction of particle
+travel can be important, Peplow introduced directional CADIS in 2012 \cite{peplow}. Two
 versions of directional CADIS were explored: one method that biases the source
 in space and energy while preserving the original angular distribution of the
 particles, and one method that biases the source in space, energy, and angle.
@@ -408,7 +410,7 @@ Both new methods were tested against standard CADIS for seven example
 problems, with the Monte Carlo calculation Figure of Merit (FOM), defined
 below in Equation \eqref{eq:fom}, compared among the methods for each problem.
 For most of these problems, directional CADIS outperformed standard CADIS,
-increasing the Monte Carlo FOM by a factor of around 2. Notable cases in which
+increasing the Monte Carlo FOM by a factor of about two. Notable cases in which
 directional CADIS performed more poorly than standard CADIS are a neutron
 porosity tool problem and a gamma-ray litho-density tool problem with the
 detector far away from the source. It should also be noted that, for a
@@ -417,7 +419,7 @@ standard CADIS and directional CADIS performed more poorly than an analog
 Monte Carlo calculation. For full details on the test results, we refer the
 reader to Reference \cite{peplow}. In the conclusions of the report, Peplow
 notes that ``it is difficult to know \textit{a priori} which problems would
-benefit  from the space/energy/angular treatments presented in this work more
+benefit from the space/energy/angular treatments presented in this work more
 than from just using the standard space/energy CADIS.''
 
 One of the most recent developments in the area of angle-informed hybrid
@@ -425,23 +427,18 @@ methods is \co, introduced by Munk et al.\ in 2016 \cite{cadisom}. This method
 calculates an alternative form of the adjoint scalar flux quantity that is then
 used in the CADIS and \fwc\ methods for generation of variance reduction
 parameters for local and global response functions, respectively. The \co\
-method was implemented in the ADVANTG framework, with numerical experiments
-performed testing variance reduction for problems run in MCNP5. Several
-characterization problems with spatially-induced anisotropies were tested to
-evaluate the new method when used with CADIS and \fwc. Munk identified three
-categories of processes that affect particle flux  anisotropy: strongly
-directional particle sources, strong differences between material properties,
-and algorithmic limitations that result in ray effects. Having grouped these
-processes, Munk tested a set of characterization problems, each of which have
-different combinations of the above anisotropy-inducing mechanisms. Munk also
-developed a set of metrics by which the anisotropy of the flux may be
-quantified over the various problems. Similar to the conclusions drawn by
+method was implemented in the ADVANTG framework using MCNP5. Munk identified three
+categories of processes that affect particle flux anisotropy: strongly-directional particle sources, strong differences between material properties,
+and algorithmic limitations that result in ray effects. Munk then tested a set of problems containing
+different combinations of these anisotropy-inducing mechanisms and compared the results to CADIS. Munk also
+developed a set of metrics by which the degree of anisotropy of the flux may be
+quantified. Similar to the conclusions drawn by
 Peplow, Munk found that it was difficult to predict for which problems \co\
-should outperform CADIS. When considering a parametric study of deterministic
+would outperform CADIS. When considering a parametric study of deterministic
 variables likely to affect angular flux (varying quadrature set order and \pn\
-order) in a characteristic problem composed of a steel beam embedded in
+order) in a test problem composed of a steel beam embedded in
 concrete, \co\ achieved higher FOM values than standard CADIS for all
-quadrature and \pn\ orders at high energies. Similarly, for a simple labyrinth
+quadrature and \pn\ orders at high energies. Conversely, for a simple labyrinth
 geometry of an air maze through a concrete block, \co\ achieved lower relative
 errors than did standard CADIS in the epithermal and fast neutron energy
 groups.
@@ -449,8 +446,8 @@ groups.
 There have been several other efforts to improve variance reduction techniques
 for problems with strong particle streaming anisotropies such as AVATAR
 (Automatic Variance And Time of Analysis Reduction) \cite{avatar}, Cooper and
-Larsen's Weight Windows \cite{clww}, and LIFT, the local importance function
-transform \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
+Larsen's Weight Windows \cite{clww}, and LIFT (Local Importance Function
+Transform) \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
 conclusions of these research efforts have been that methods either work
 predictably but are complex to use, putting a high burden on user expertise,
 or are simple to use but do not consistently perform well.
@@ -458,8 +455,8 @@ or are simple to use but do not consistently perform well.
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
-In this section we introduce and describe the test case scenarios examined as
-well as the various parameters chosen for the calculations in this work.
+In this Section, we introduce and describe the test case scenarios examined and the various parameters chosen for the calculations in this work.
+% what are these parameters compared to the MC and deterministic parameters? What else is there?
 First, we present descriptions of the geometry and materials used in the test
 cases as well as why each problem was chosen. Then, we discuss the parameters
 chosen for the various deterministic and Monte Carlo calculations performed in
@@ -468,6 +465,8 @@ this work.
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 \label{sec:steel_params}
+
+% Add a description of why this problem is interesting for this work
 
 The first test case we describe is an idealized geometry of a steel plate 
 embedded in water; it is modeled after the scenario presented in Reference 
@@ -563,7 +562,7 @@ source was approximated as a small volumetric source in the tests in this
 work. We are interested in the forward flux solutions at the various detector
 locations shown in Figure \ref{dlvn}; this test case scenario is of interest 
 because the streaming pathways in the configuration make the problem computationally
-challenging. Additionally, the availability of experimental flux solution data
+challenging. It is particularly interesting because DLVN contains both physical streaming in air and energy streaming in iron. Additionally, the availability of experimental flux solution data
 provides actual values against which to compare the calculated solutions.
 
 The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
@@ -576,7 +575,7 @@ Vacuum boundary conditions were applied to the outside of the entire problem.
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
 
-The final problem described here is a simplified portal monitor scenario.
+The final problem described here, a simplified portal monitor scenario, is photon rather than a neutron problem.
 Portal monitors are large detector panels used to screen cargo for illicit
 radioactive materials. The problem models a cargo container holding a Ba-133
 photon point source and large blocks of homogenized iron and polyethylene.
@@ -585,7 +584,8 @@ example problem listed in Section 7.2 of the ADVANTG technical report
 \cite{advantg}. Diagrams of the simplified portal monitor problem are shown in
 Figure \ref{p1}. The scenario is of interest because of the computational
 challenge generated by the particle streaming pathways in the problem's
-geometry as well as the aforementioned usage of portal monitors.
+geometry as well as the importance of portal monitors.
+% there wasn't anything aforementioned. Is there something specific you'd like to point out?
 
 \begin{figure}[!htb]
 \centering
@@ -617,13 +617,12 @@ edges.
 
 All of the deterministic calculations used 32 processes on a 2.8GHz AMD 
 Opteron\texttrademark\ 6320 Processor \cite{amd}, two for each logical CPU
-unit. With this in mind, all deterministic calculations were set to use the
+unit. Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep algorithm for high
+parallel efficiency in calculating transport sweeps \cite{denovo}. With this in mind, all deterministic calculations were set to use the
 same Denovo computational block structure of 8 blocks in the $x-$dimension, 4
 blocks in the $y-$dimension, and 1 block in the $z-$dimension;
 thus the total number of computational blocks equals the number of processes.
-Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep algorithm for high
-parallel efficiency in calculating transport sweeps \cite{denovo}; the
-aforementioned block structure was chosen to achieve the same parallel
+This block structure was chosen to achieve the same parallel
 decomposition among all test case deterministic simulations. 
 
 All but one of the test cases use the same coarse energy group structure
@@ -643,7 +642,7 @@ generated using quadruple range (QR), Galerkin, linear-discontinuous finite
 element (LDFE), and LDO quadrature sets. All test cases were run with the same 
 quadrature sets; increasing sizes of quadrature sets were used to ascertain the
 angular mesh refinement necessary for a given quadrature type to converge to a 
-solution. The degrees and sizes of the LDO quadrature sets used are listed in
+solution. The orders and sizes of the LDO quadrature sets used are listed in
 Table \ref{ldo-n}.
 
 \begin{table}[!htb]
@@ -666,7 +665,7 @@ Table \ref{ldo-n}.
 \end{table}
 
 QR quadrature sets were chosen to generate the reference results against which
-the LDO results are compared. QR was selected because they are commonly used 
+the LDO results are compared. QR was selected because it is commonly used 
 in hybrid methods for Monte Carlo variance reduction parameter generation and 
 therefore provide a relevant baseline. The Exnihilo framework allows the user
 to select the number of polar and azimuthal angles in each octant when using a
@@ -711,17 +710,17 @@ The Monte Carlo calculations in this work were run on one Dell PowerEdge C6220
 server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total of
 20 cores) \cite{savio}. All calculations were specified to use 21 MPI tasks; MCNP
 reserves one ``master'' process for communication and transports particles with
-the remaining available tasks \cite{mcnp}. So, for the purpose of parallel
+the remaining available tasks \cite{mcnp}. For the purpose of parallel
 efficiency, one transport process per hardware core was used here.
 
 All of the Monte Carlo calculations were run with a fixed number of particle
 histories to simulate. For the steel plate in water and simplified portal
-monitor cases, all calculations used 1\E{9} particle histories in both the
-CADIS and \fwc\ contexts. The DLVN experimental benchmark case was simulated
+monitor cases, all calculations used 1\E{9} particle histories. The DLVN experimental benchmark case was simulated
 with 1\E{10} neutron histories as it was modeled after calculations in
-Reference \cite{sw-dlvn}. All Monte Carlo tally results $\xbar$ are reported
-with the one standard deviation confidence interval $\xbar(1\pm R)$ where the
-relative error $R \equiv S_{\xbar}/\xbar$ \cite{mcnp}.
+Reference \cite{sw-dlvn}. All Monte Carlo tally results, $\xbar$, are reported
+with the one standard deviation confidence interval, $\xbar(1\pm R)$, where the
+relative error, $R$, is defined as $S_{\xbar}/\xbar$ \cite{mcnp}.
+% define S_{\xbar}
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor scenarios,
 we examine Monte Carlo results corresponding to biasing parameters from a
@@ -784,7 +783,7 @@ side indicating the one standard deviation confidence interval.
 \label{steel-cad-tally}
 \end{figure}
 
-All of the biased results tend towards a tally calculation on the order of
+All of the results with variance reduction tend towards a tally calculation on the order of
 $10^{-12}$, while the unbiased tally calculation is on the order of
 $10^{-10}$. This phenomenon has been previously documented
 \cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
@@ -811,18 +810,18 @@ greater than that of the unbiased calculation.
 \label{steel-cad-fom}
 \end{figure}
 
-To conclude this section, we consider the overall trends in angular mesh
+To conclude this subsection, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
 appears that the angular mesh refinement does not have a large impact on the
 flux tally value in this scenario, as all of the biased tally results fall
 within the same order of magnitude and do not exhibit any trends as a function
-of the number of discrete angles used. The Figures of Merit vary somewhat
+of the number of discrete angles used. This indicates that any improvement gained by more accurate angular information is offset by the increased computational cost. The Figures of Merit vary somewhat
 more greatly. Specifically, the LDO biasing parameters appear to gather around
 FOM values of 0.005 even as the number of discrete angles used is increased.
-So, for the steel plate in water problem solved with the CADIS
-method, one could use a relatively low-order (i.e., order 8) LDO quadrature
+Thus, for the steel plate in water problem solved with the CADIS
+method, one could use a relatively low-order (\textit{i.e.}, order 8) LDO quadrature
 set to generate Monte Carlo biasing parameters that result in a Figure of
-Merit comparable to (and better than most of, as seen here) those produced by
+Merit comparable to or better than those produced by
 finer angular meshes.
 
 \FloatBarrier
@@ -845,9 +844,8 @@ problem for the biased and unbiased calculations. The biased calculations are
 plotted as a function of angular mesh refinement and the unbiased calculation
 value is shown as a black horizontal line. Like the CADIS method, the \fwc\
 method generates biasing parameters such that the biased Monte Carlo flux
-tally results all fall far below that of the unbiased calculation. Similarly,
-in this case, the angular mesh refinement has little impact on the tally
-result. If using an LDO quadrature set to generate biasing parameters with
+tally results all fall far below that of the unbiased calculation. Again, the angular mesh refinement has little impact on the tally
+results. If using an LDO quadrature set to generate biasing parameters with
 the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
 used to good effect.
 
@@ -863,8 +861,7 @@ reduction parameters for the steel plate in water case using the \fwc\ method,
 we will look at the average FOM values over the entire adjoint source mesh
 tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
-value in combination with the MCNP-reported computer time and Equation
-\eqref{eq:fom}. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
+value in combination with the MCNP-reported computer time. Figure \ref{steel-fwc-fom} shows these average Figures of Merit
 as a function of the number of angles used in generating the biasing
 parameters. The average FOM for the unbiased calculation is shown as a
 horizontal black line.
@@ -876,11 +873,11 @@ horizontal black line.
 \label{steel-fwc-fom}
 \end{figure}
 
-We see a different trend here in that the highest average FOM values tend to
+We see a different trend here than with CADIS in that the highest average FOM values tend to
 come from quadrature sets with mid-range angular mesh refinement; the coarsest
 and finest angular meshes produce Monte Carlo biasing parameters that result
-in reduced Figures of Merit. Considering Figures \ref{steel-fwc-tally} and
-\ref{steel-fwc-fom}, we note that one would wish to use a lower-order (e.g.,
+in reduced Figures of Merit. This indicates that too low an angular resolution likely does not provide enough accuracy, while a high resolution adds computational cost without much accuracy benefit. Considering Figures \ref{steel-fwc-tally} and
+\ref{steel-fwc-fom}, we note that one would wish to use a lower-order (\textit{e.g.},
 order 5) LDO quadrature set to generate variance reduction parameters for a
 Monte Carlo mesh tally using the \fwc\ method.
 
@@ -894,9 +891,9 @@ Monte Carlo mesh tally using the \fwc\ method.
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
 experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
-forward scalar flux at the location of detector \#14. Here we see that all of
-the biased calculation values fall within the error of the unbiased result.
-However, all of these tally calculations (biased and unbiased) do not match
+forward scalar flux at the location of detector \#14. Here, we see that all of
+the calculation values using variance fall within the error of the results without variance reduction.
+However, all of these tally calculations (with and without CADIS VR) do not match
 the experimentally calculated flux value of 2.74\E{-7} $\pm$ 5\% n/cm$^2$/s
 at detector \#14.
 
@@ -923,7 +920,7 @@ detector location using the CADIS method is not impacted by further refining
 the angular mesh. The Figures of Merit for the tally calculations reach a
 similar upper bound, but this happens more slowly with respect to angular mesh
 refinement for the LDO quadrature sets. Like the tally in the steel plate case
-above, the LDO quadrature set of order 8 is the optimal choice with respect to
+above, the LDO quadrature set of order 8 is the best choice with respect to
 flux tally result and FOM value for detector \#14 in the DLVN experimental
 benchmark problem in the CADIS context.
 
@@ -940,7 +937,7 @@ flux tally as a function of angular mesh refinement. That is, in general, for
 detector locations \#5 and \#9, using more discrete angles in the \fwc\
 deterministic calculations does not greatly impact the flux tally result from
 MCNP. Figures \ref{dlvn-fwc-13} and \ref{dlvn-fwc-14} show similar behavior
-with the exception of the most coarse angular meshes. For these detector
+with the exception of the coarsest angular meshes. For these detector
 locations, any angular mesh refinement other than the coarsest angular mesh
 will produce a consistent forward scalar flux tally result. Figures
 \ref{dlvn-fwc-11} and \ref{dlvn-fwc-12} show slightly more variation in flux
@@ -965,13 +962,13 @@ angular mesh refinement with the exception of the finest QR set. Lastly,
 quadrature types, with the Figure of Merit largely consistent across
 quadrature types with the exception of QR angular meshes.
 
-In Table \ref{dlvn-fwc-det} we compare the Monte Carlo forward flux tally
+In Table \ref{dlvn-fwc-det}, we compare the Monte Carlo forward flux tally
 results for the representative quadrature sets listed in Section \ref{params}\
-Results from the unbiased Monte Carlo calculation are also included for
+Results from the Monte Carlo calculation with VR are also included for
 comparison. All Monte Carlo flux tally values are reported with an uncertainty
 of one standard deviation. For all detector locations, the Monte Carlo flux
-tallies do not match the experimentally measured flux values for any of the
-representative quadrature sets or the unbiased calculation, so we only compare
+tallies do not match the experimentally-measured flux values from using CADIS with any of the
+representative quadrature sets or the no-VR calculation, so we only compare
 the Monte Carlo calculations in this table. We do note that the Monte Carlo
 calculations overestimate the flux tally at all detector locations with the
 exception of detector \#13. The flux tallies at detectors 5, 9, 13, and 14 all
@@ -982,6 +979,7 @@ of the error bounds of the unbiased calculation. Somewhat similarly, at
 detector \#14, all of the biased calculations match one another within
 statistical uncertainty, but they are all outside of the error bounds of the
 unbiased flux tally calculation.
+% universally, we need a different word than biased. You're not biasing the calculations. You're using variance redution. They're not biased results. Can you go through and update? I'm getting tired enough that I don't have a good idea. I'm sorry I didn't notice that before. 
 
 \begin{table}[!htb]
 \centering
