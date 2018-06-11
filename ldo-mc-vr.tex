@@ -138,8 +138,8 @@ Hybrid radiation transport methods that use deterministic solutions to speed
 up stochastic calculations are rarely effective for shielding problems with
 highly anisotropic particle movement and particle streaming pathways. In this
 work, we investigate using a different deterministic formulation, the Lagrange
-Discrete Ordinates (LDO), for variance reduction parameter generation in
-hybrid methods.  The LDO equations retain the formal structure of the
+Discrete Ordinates (LDO), for variance reduction (VR) parameter generation in
+hybrid methods. The LDO equations retain the formal structure of the
 traditional discrete ordinates approximation of the Boltzmann transport
 equation while handling the angular variable and particle scattering in a
 unique fashion. The LDO equations' solutions have an interpolatory structure
@@ -150,8 +150,8 @@ particular interest is that the LDO equations have been shown to mitigate ray
 effects at increased angular resolutions. Here, we assess the LDO equations'
 scalar flux solutions as input in the CADIS and \fwc\ methods for Monte Carlo
 variance reduction parameter generation. Monte Carlo calculations and Figures
-of Merit using biasing parameters from the LDO equations are compared against
-those using biasing parameters from standard quadrature set types for a small
+of Merit using VR parameters from the LDO equations are compared against
+those using VR parameters from standard quadrature set types for a small
 variety of test case scenarios in both neutron and photon transport. The LDO
 equations' variance reduction parameters see their best performance in the
 \fwc\ method, especially for photon transport.
@@ -196,17 +196,17 @@ calculated using the standard space/energy treatment may not represent the
 real importance well enough to sufficiently improve efficiency in the Monte
 Carlo calculation.
 
-This work aims to characterize the performance of Monte Carlo biasing
+This work aims to characterize the performance of Monte Carlo VR
 parameters based on scalar flux solutions from solving the Lagrange Discrete
 Ordinates (LDO) formulation of the transport equation \cite{ahrens}. We employ
 the LDO equations' solutions in the standard CADIS and \fwc\ methods to assess
 how well the LDO representation's unique treatment of scattering and asymmetry
 in angle incorporate angular information into the resultant scalar flux
-solutions and corresponding Monte Carlo biasing parameters. The results for
-several test problems are compared to results where the biasing parameters
+solutions and corresponding Monte Carlo VR parameters. The results for
+several test problems are compared to results where the VR parameters
 were generated with standard formulations of the transport equation. All
 deterministic calculations were performed with the Denovo radiation transport
-code \cite{denovo} in the Exnihilo framework, with Monte Carlo biasing
+code \cite{denovo} in the Exnihilo framework, with Monte Carlo VR
 parameters generated via the ADVANTG software \cite{advantg} and Monte Carlo
 calculations done with MCNP5 \cite{mcnp}.
 
@@ -244,8 +244,6 @@ variance reduction games such that particles are born with the target weights.
 The CADIS method is very effective for automated optimization of localized
 response values.
 
-% you describe the theory of fw-cadis and why you choose the adjoint source below, but it is out of context because we don't know anything about adjoint source and why you would choose it here. I'd add a paragraph giving a little more of the theory about that. 
-
 Using this method, source particles' energy and position are sampled from the
 biased source distribution
 %
@@ -257,15 +255,32 @@ biased source distribution
 \label{eq:cadis_sb}
 \end{equation}
 %
-% I feel like we also need the ww centers. This section is too truncated. 
-%
-where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$
-is the particle source density, and $R$ is some response of interest.
+where $\phi^{\dagger}$ denotes the adjoint scalar neutron flux, $q$ is the
+particle source density, and $R$ is some response of interest.
 $\phi^{\dagger}$ and $R$ are calculated from coarse, inexpensive, adjoint
-deterministic calculations.
+deterministic calculations. The adjoint neutron flux function $\phi^{\dagger}$
+has physical meaning as the expected contribution to the response $R$ from a
+particle in phase-space $(\vecr,E)$. In other words, the adjoint flux
+function is significant because it represents the importance of source
+particles to the response of interest.
 
-A key result of the CADIS method is that the statistical weights of the source
-particles are the weight windows centers. In other words, the source-biasing
+To bias particles undergoing the transport process, the weight window
+technique is applied. Weight window lower bounds $w_{\ell}$ must be
+calculated such that the statistical particle weights defined fall at the
+center of the weight window intervals. The width of a given interval is
+denoted by $c_u = w_u/w_{\ell}$, the ratio of upper and lower weight window
+values. The weight window lower bounds are then given by
+%
+\begin{equation}
+w_{\ell}(\vecr,E) = \frac{w}{\left(\frac{c_u +1}{2}\right)} 
+= \frac{R}{\phi^{\dagger}(\vecr,E)}\frac{1}{\left(\frac{c_u +1}{2}\right)}.
+\label{eq:cadis_tb}
+\end{equation}
+%
+Using this definition, the weight window technique then performs particle
+splitting and/or rouletting based on the particle's statistical weight. A key
+result of the CADIS method is that the statistical weights of the source
+particles are at the weight windows' centers. In other words, the source-biasing
 parameters and the weight window target values are consistent. This
 circumvents the potential of particles being immediately split or rouletted
 upon birth and avoids the resultant degradation in computational efficiency.
@@ -302,7 +317,7 @@ from a coarse, inexpensive, forward deterministic calculation. From this, we
 can calculate an adjoint importance function that represents the importance of
 particles to achieving the desired objective of uniformly distributed Monte
 Carlo particles. This should, in turn, correspond to approximately uniform
-statistical uncertainties. The method physically  corresponds to weighting the
+statistical uncertainties. The method physically corresponds to weighting the
 adjoint source with the inverse of the forward flux; the adjoint source will
 be high where the forward flux is low and the adjoint source will be low where
 the forward flux is high. With this method, after the adjoint has been
@@ -341,7 +356,7 @@ where a standard multigroup energy approximation is used ($G$ is the
 number of discrete energy groups corresponding to the discretization index
 $g$). The scattering term is expanded in terms of spherical harmonics
 $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$; $\phi$ and $\vartheta$ are the
-``flux moments'' that are eventually used to  solve for the scalar flux
+``flux moments'' that are eventually used to solve for the scalar flux
 solution. The upper limit of summation for the scattering term spherical
 harmonic expansion, denoted as $P$ in Eq. \eqref{eq:sn}, is known as the
 ``\pn\ order''.
@@ -406,7 +421,7 @@ the extremal point sets developed and distributed by Womersley \cite{wom}.
 
 Substantial effort has been placed into the development and automated
 execution of hybrid methods. This section discusses previous work in this
-field with a  particular emphasis on hybrid methods that incorporate
+field with a particular emphasis on hybrid methods that incorporate
 direction of particle travel. As CADIS and \fwc\ are the current state of the
 art in Monte Carlo variance reduction parameter generation, we will see that
 the angle-informed hybrid methods are generally variants of CADIS and \fwc.
@@ -467,32 +482,30 @@ or are simple to use but do not consistently perform well.
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
-In this Section, we introduce and describe the test case scenarios examined and the various parameters chosen for the calculations in this work.
-% what are these parameters compared to the MC and deterministic parameters? What else is there?
-First, we present descriptions of the geometry and materials used in the test
-cases as well as why each problem was chosen. Then, we discuss the parameters
-chosen for the various deterministic and Monte Carlo calculations performed in
-this work.
+In this section, we first present descriptions of the geometry and materials
+used in the test cases as well as why each problem was chosen. Then, we
+discuss the parameters chosen for the various deterministic and Monte Carlo
+calculations performed in this work.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
 \label{sec:steel_params}
 
-% Add a description of why this problem is interesting for this work
-
-The first test case we describe is an idealized geometry of a steel plate 
-embedded in water; it is modeled after the scenario presented in Reference 
+The first test case we describe is an idealized geometry of a steel plate
+embedded in water; it is modeled after the scenario presented in Reference
 \cite{wilsonslaybaugh}. This idealized geometry is of interest because it has
 been shown to be computationally challenging: resonances in the iron cause
 self-shielding in energy, and spatial self-shielding comes from the presence
-of a thin plate of resonance material embedded in a moderating material. In 
+of a thin plate of resonance material embedded in a moderating material. In
 turn, Monte Carlo variance reduction parameters generated from deterministic
-solutions exhibit slow Monte Carlo error reduction.
-A diagram of the problem geometry is shown in Figure \ref{steelxz} and a list
-of material properties used in the problem is given in Table \ref{steel-mat}.
-In Figure \ref{steelxz}, the orange region contains the source material, the 
-black region is composed of steel, the blue regions indicate water, and the 
-white region is composed of air.
+solutions exhibit slow Monte Carlo error reduction; we aim to discern if
+angular mesh refinement in generating VR parameters has any impact on Monte
+Carlo error reduction as well as how the LDO equations perform in this regard
+when compared to standard quadrature types. A diagram of the problem geometry
+is shown in Figure \ref{steelxz} and a list of material properties used in the
+problem is given in Table \ref{steel-mat}. In Figure \ref{steelxz}, the orange
+region contains the source material, the black region is composed of steel,
+the blue regions indicate water, and the white region is composed of air.
 
 \begin{figure}[!htb]
 \centering
@@ -542,9 +555,9 @@ $z = 140$ cm.
 The composition of the neutron source block is a homogenization of water,
 zirconium, and uranium and was calculated based on the geometry and
 composition of the Rowlands UO$_2$ pin cell benchmark specification
-\cite{pincell}. The source is a U-235 fission  spectrum that is uniformly
+\cite{pincell}. The source is a U-235 fission spectrum that is uniformly
 distributed throughout the homogenized material. The compositions of air,
-carbon steel, and water were taken from the Compendium of  Material
+carbon steel, and water were taken from the Compendium of Material
 Composition Data for Radiation Transport Modeling \cite{pnnl}. For this
 scenario, we are interested in the flux solutions at the end of the steel plate.
 
@@ -700,33 +713,34 @@ the order of the quadrature, there are $4^{(N+1)}$ angles per octant
 \cite{exum}. In this work, the LDFE quadrature orders used were one (128 total
 angles) and two (8192 total angles).
 
-Galerkin quadrature sets offer several advantages relative to the standard \sn\
-method for problems with highly anisotropic scattering \cite{morel}. Similar to
-the LDO equations, the ``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method
-developed by Morel has the same algebraic structure as the traditional discrete
-ordinates equations but employs a nonstandard scattering treatment. For
-an \sn\ order $N$, a given Galerkin quadrature set
-has a total of $N(N+2)$ angles. For reasons noted below, the Galerkin quadrature
-orders used were 2 and 4; the Galerkin quadrature sets
-used in this work have 8 and 24 total angles, respectively.
+Galerkin quadrature sets offer several advantages relative to the standard
+\sn\ method for problems with highly anisotropic scattering \cite{morel}.
+Similar to the LDO equations, the 
+``hybrid collocation- Galerkin-S$_\mathrm{N}$'' method developed by Morel 
+has the same algebraic structure as the traditional discrete ordinates
+equations but employs a nonstandard scattering treatment. For an \sn\ order
+$N$, a given Galerkin quadrature set has a total of $N(N+2)$ angles. For
+reasons noted below, the Galerkin quadrature orders used were 2 and 4; the
+Galerkin quadrature sets used in this work have 8 and 24 total angles,
+respectively.
 
 The step characteristics (SC) spatial discretization was used in all of the
 deterministic calculations based on the recommendation listed in Section 9.1.3
 of the Exnihilo user manual \cite{exum}. In the DLVN and portal monitor
 scenarios, the point sources are approximated as small spherical volumetric
-sources. Except for the Galerkin quadratures, all calculations used a P$_5$ scattering
-expansion. At the time of this writing, Galerkin quadrature sets are
-implemented in the Exnihilo framework with the restriction that the \pn\ order
-be one greater than the \sn\ order. That is, for the Galerkin quadrature set of
-\sn\ order 2, the corresponding \pn\ order is set equal to 3, and for the
-Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5.
+sources. Except for the Galerkin quadratures, all calculations used a P$_5$
+scattering expansion. At the time of this writing, Galerkin quadrature sets
+are implemented in the Exnihilo framework with the restriction that the \pn\
+order be one greater than the \sn\ order. That is, for the Galerkin quadrature
+set of \sn\ order 2, the corresponding \pn\ order is set equal to 3, and for
+the Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5.
 
 The Monte Carlo calculations in this work were run on one Dell PowerEdge C6220
-server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total of
-20 cores) \cite{savio}. All calculations were specified to use 21 MPI tasks; MCNP
-reserves one ``master'' process for communication and transports particles with
-the remaining available tasks \cite{mcnp}. For the purpose of parallel
-efficiency, one transport process per hardware core was used here.
+server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total
+of 20 cores) \cite{savio}. All calculations were specified to use 21 MPI
+tasks; MCNP reserves one ``master'' process for communication and transports
+particles with the remaining available tasks \cite{mcnp}. For the purpose of
+parallel efficiency, one transport process per hardware core was used here.
 
 All of the Monte Carlo calculations were run with a fixed number of particle
 histories to simulate. For the steel plate in water and simplified portal
@@ -735,19 +749,20 @@ experimental benchmark case was simulated with 1\E{10} neutron histories as it
 was modeled after calculations in Reference \cite{sw-dlvn}. All Monte Carlo
 tally results, $\xbar$, are reported with the one standard deviation
 confidence interval, $\xbar(1\pm R)$, where the relative error, $R$, is
-defined as $S_{\xbar}/\xbar$ \cite{mcnp}. % define S_{\xbar}
+defined as $S_{\xbar}/\xbar$ and $S_{\xbar}$ is the standard deviation of the
+tally result estimate \cite{mcnp}.
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor
-scenarios, we examine Monte Carlo results corresponding to biasing parameters
-from a chosen representative subset of the quadrature sets. For these
-comparisons, quadrature sets of similar angular mesh refinement were chosen
-such that the quadrature sets have approximately the  same total number of
-angles, with the exception of the Galerkin quadrature set. The QR quadrature
-set is of order 4 and has 128 angles, the LDFE set is order 1 with 128 angles,
-and the LDO set is of order 11 with 144 angles.  The Galerkin quadrature set
-chosen as the representative example here is of order 4 and has 24 angles.
-This set was chosen because its corresponding \pn\ order is 5 and so the
-scattering data used matches that of the other quadrature types.
+scenarios, we examine Monte Carlo results corresponding to variance reduction
+parameters from a chosen representative subset of the quadrature sets. For
+these comparisons, quadrature sets of similar angular mesh refinement were
+chosen such that the quadrature sets have approximately the same total number
+of angles, with the exception of the Galerkin quadrature set. The QR
+quadrature set is of order 4 and has 128 angles, the LDFE set is order 1 with
+128 angles, and the LDO set is of order 11 with 144 angles. The Galerkin
+quadrature set chosen as the representative example here is of order 4 and has
+24 angles. This set was chosen because its corresponding \pn\ order is 5 and
+so the scattering data used matches that of the other quadrature types.
 
 %%---------------------------------------------------------------------------%%
 \section{Results}
@@ -779,14 +794,14 @@ For the CADIS calculations for the steel plate embedded in water, the adjoint
 source was set to be the detector tally. Figure \ref{steel-cad-tally} shows
 the MCNP-reported flux tally for the detector at the end of the steel plate
 for each angular mesh refinement for each quadrature type. We note that the
-Monte Carlo calculations with biasing parameters from the Galerkin quadrature
+Monte Carlo calculations with variance parameters from the Galerkin quadrature
 set of order 2 and the LDO quadrature set of order 5 were not able to finish
 in a timely manner for the hardware configuration used in this work, so Monte
 Carlo results for those two data points are not included here. The flux tally
 results are plotted as a function of angular mesh refinement to demonstrate
 the impact of angular mesh refinement on flux tally solution for the different
 quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
-value for an unbiased Monte Carlo calculation as a reference point of
+value for a Monte Carlo calculation without VR as a reference point of
 comparison; it is shown as a horizontal black line with dashed lines on either
 side indicating the one standard deviation confidence interval.
 
@@ -798,7 +813,7 @@ side indicating the one standard deviation confidence interval.
 \end{figure}
 
 All of the results with variance reduction tend towards a tally calculation on
-the order of $10^{-12}$, while the unbiased tally calculation is on the order
+the order of $10^{-12}$, while the no-VR tally calculation is on the order
 of $10^{-10}$. This phenomenon has been previously documented
 \cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
 iron cross section; the unresolved resonance region in the iron cross section
@@ -811,11 +826,11 @@ translate to other problems where correct results are obtained. Figure
 \ref{steel-cad-fom} shows the reported FOM value for the detector tally for the
 various quadrature sets and orders. We again plot the results as a function of
 angular mesh refinement with a black horizontal line denoting the FOM for the
-unbiased Monte Carlo calculation. The biasing parameters corresponding to the
+no-VR Monte Carlo calculation. The VR parameters corresponding to the
 LDFE quadrature set of order 1 result in the highest FOM value while those of
 the QR set of order 1 result in the lowest FOM value. For all LDO quadrature
 sets of order 8 and above, the Figures of Merit are one order of magnitude
-greater than that of the unbiased calculation.
+greater than that of the no-VR calculation.
 
 \begin{figure}[!htb]
 \centering
@@ -827,17 +842,17 @@ greater than that of the unbiased calculation.
 To conclude this subsection, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
 appears that the angular mesh refinement does not have a large impact on the
-flux tally value in this scenario, as all of the biased tally results fall
-within the same order of magnitude and do not exhibit any trends as a function
-of the number of discrete angles used. This indicates that any improvement
-gained by more accurate angular information is offset by the increased
-computational cost. The Figures of Merit vary somewhat more greatly.
-Specifically, the LDO biasing parameters appear to gather around FOM values of
-0.005 even as the number of discrete angles used is increased. Thus, for the
-steel plate in water problem solved with the CADIS method, one could use a
-relatively low-order (\textit{i.e.}, order 8) LDO quadrature set to generate
-Monte Carlo biasing parameters that result in a Figure of Merit comparable to
-or better than those produced by finer angular meshes.
+flux tally value in this scenario, as all of the tally results using VR
+parameters fall within the same order of magnitude and do not exhibit any
+trends as a function of the number of discrete angles used. This indicates
+that any improvement gained by more accurate angular information is offset by
+the increased computational cost. The Figures of Merit vary somewhat more
+greatly. Specifically, the LDO VR parameters appear to gather around FOM
+values of 0.005 even as the number of discrete angles used is increased. Thus,
+for the steel plate in water problem solved with the CADIS method, one could
+use a relatively low-order (\textit{i.e.}, order 8) LDO quadrature set to
+generate Monte Carlo VR parameters that result in a Figure of Merit comparable
+to or better than those produced by finer angular meshes.
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
@@ -849,20 +864,21 @@ discretization for the adjoint source mesh tally is the same as that listed in
 Section \ref{sec:steel_params}\ Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but
 starts at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
-The Monte Carlo calculation with biasing parameters from the Galerkin
+The Monte Carlo calculation with VR parameters from the Galerkin
 quadrature set of order 2 was not able to finish in a timely manner for the
 hardware configuration used in this work, so Monte Carlo results for this data
 point are not included here.
 
 Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
-problem for the biased and unbiased calculations. The biased calculations are
-plotted as a function of angular mesh refinement and the unbiased calculation
-value is shown as a black horizontal line. Like the CADIS method, the \fwc\
-method generates biasing parameters such that the biased Monte Carlo flux
-tally results all fall far below that of the unbiased calculation. Again, the
-angular mesh refinement has little impact on the tally results. If using an
-LDO quadrature set to generate biasing parameters with the \fwc\ method in a
-similar scenario, a low-order LDO angular mesh could be used to good effect.
+problem for the Monte Carlo calculations with and without VR parameters. The
+calculations with VR parameters are plotted as a function of angular mesh
+refinement and the no-VR calculation value is shown as a black horizontal
+line. Like the CADIS method, the \fwc\ method generates VR parameters such
+that the resultant Monte Carlo flux tally results all fall far below that of
+the no-VR calculation. Again, the angular mesh refinement has little impact on
+the tally results. If using an LDO quadrature set to generate VR parameters
+with the \fwc\ method in a similar scenario, a low-order LDO angular mesh
+could be used to good effect.
 
 \begin{figure}[!htb]
 \centering
@@ -878,8 +894,8 @@ tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
 value in combination with the MCNP-reported computer time. Figure 
 \ref{steel-fwc-fom} shows these average Figures of Merit as a function of the
-number of angles used in generating the biasing parameters. The average FOM for
-the unbiased calculation is shown as a horizontal black line.
+number of angles used in generating the VR parameters. The average FOM for
+the no-VR calculation is shown as a horizontal black line.
 
 \begin{figure}[!htb]
 \centering
@@ -890,7 +906,7 @@ the unbiased calculation is shown as a horizontal black line.
 
 We see a different trend here than with CADIS in that the highest average FOM
 values tend to come from quadrature sets with mid-range angular mesh
-refinement; the coarsest and finest angular meshes produce Monte Carlo biasing
+refinement; the coarsest and finest angular meshes produce Monte Carlo VR
 parameters that result in reduced Figures of Merit. This indicates that too
 low an angular resolution likely does not provide enough accuracy, while a
 high resolution adds computational cost without much accuracy benefit.
@@ -931,16 +947,16 @@ without CADIS VR) do not match the experimentally calculated flux value of
 \end{figure}
 
 Figures \ref{dlvn-cad-tally} and \ref{dlvn-cad-fom} show similar convergence
-behavior with respect to angular mesh refinement for the biased tally
-calculations and Figure of Merit values. Beyond the lowest-order angular mesh
-refinement for each quadrature type studied here, the tally result for this
-detector location using the CADIS method is not impacted by further refining
-the angular mesh. The Figures of Merit for the tally calculations reach a
-similar upper bound, but this happens more slowly with respect to angular mesh
-refinement for the LDO quadrature sets. Like the tally in the steel plate case
-above, the LDO quadrature set of order 8 is the best choice with respect to
-flux tally result and FOM value for detector \#14 in the DLVN experimental
-benchmark problem in the CADIS context.
+behavior with respect to angular mesh refinement for the tally calculations
+and Figure of Merit values resultant from calculations using VR parameters.
+Beyond the lowest-order angular mesh refinement for each quadrature type
+studied here, the tally result for this detector location using the CADIS
+method is not impacted by further refining the angular mesh. The Figures of
+Merit for the tally calculations reach a similar upper bound, but this happens
+more slowly with respect to angular mesh refinement for the LDO quadrature
+sets. Like the tally in the steel plate case above, the LDO quadrature set of
+order 8 is the best choice with respect to flux tally result and FOM value for
+detector \#14 in the DLVN experimental benchmark problem in the CADIS context.
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
@@ -963,7 +979,7 @@ tally result with angular mesh refinement. These two detector locations'
 tallies have also higher statistical error relative to those at the other
 detector locations. Overall, though, the flux tallies at detectors \#11 and
 \#12 are not heavily impacted by the refinement of the angular mesh used in
-generating the Monte Carlo biasing parameters, but a mid-range number of
+generating the Monte Carlo VR parameters, but a mid-range number of
 quadrature points should be used to avoid the large statistical errors seen at
 the extreme ends of the angular mesh refinement spectrum.
 
@@ -982,22 +998,21 @@ quadrature types with the exception of QR angular meshes.
 
 In Table \ref{dlvn-fwc-det}, we compare the Monte Carlo forward flux tally
 results for the representative quadrature sets listed in Section \ref{params}\
-Results from the Monte Carlo calculation with VR are also included for
+Results from the Monte Carlo calculation without VR are also included for
 comparison. All Monte Carlo flux tally values are reported with an uncertainty
 of one standard deviation. For all detector locations, the Monte Carlo flux
-tallies do not match the experimentally-measured flux values from using CADIS with any of the
-representative quadrature sets or the no-VR calculation, so we only compare
-the Monte Carlo calculations in this table. We do note that the Monte Carlo
-calculations overestimate the flux tally at all detector locations with the
-exception of detector \#13. The flux tallies at detectors 5, 9, 13, and 14 all
-match within statistical uncertainty for all of the Monte Carlo calculations.
-At detector \#11, the biased Monte Carlo calculations match within standard
-error, but the calculations using the QR and LDO biasing parameter fall outside
-of the error bounds of the unbiased calculation. Somewhat similarly, at
-detector \#14, all of the biased calculations match one another within
-statistical uncertainty, but they are all outside of the error bounds of the
-unbiased flux tally calculation.
-% universally, we need a different word than biased. You're not biasing the calculations. You're using variance redution. They're not biased results. Can you go through and update? I'm getting tired enough that I don't have a good idea. I'm sorry I didn't notice that before. 
+tallies do not match the experimentally-measured flux values from using CADIS
+with any of the representative quadrature sets or the no-VR calculation, so we
+only compare the Monte Carlo calculations in this table. We do note that the
+Monte Carlo calculations overestimate the flux tally at all detector locations
+with the exception of detector \#13. The flux tallies at detectors 5, 9, 13,
+and 14 all match within statistical uncertainty for all of the Monte Carlo
+calculations. At detector \#11, the Monte Carlo calculations using VR
+parameters match within standard error, but the calculations using the QR and
+LDO VR parameters fall outside of the error bounds of the no-VR calculation.
+Somewhat similarly, at detector \#14, all of the calculations using VR
+parameters match one another within statistical uncertainty, but they are all
+outside of the error bounds of the flux tally calculation without using VR.
 
 \begin{table}[!htb]
 \centering
@@ -1006,7 +1021,7 @@ unbiased flux tally calculation.
 \label{dlvn-fwc-det}
 \begin{tabular}{l|ccccc}
          & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
-         & \textbf{LDO} & \textbf{Unbiased}  \\ \hline
+         & \textbf{LDO} & \textbf{No VR}  \\ \hline
  Detector 5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
             \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
     (\E{-7})      &    &   &  &   &    \\
@@ -1030,14 +1045,14 @@ unbiased flux tally calculation.
 
 To examine the FOM values in a more quantifiable way, Table 
 \ref{dlvn-fwc-fom-table} lists the FOM values for all detector locations for
-each of the representative quadrature sets as well as the unbiased calculation.
+each of the representative quadrature sets as well as the no-VR calculation.
 The maximum FOM value in each detector location column is emphasized. Of the
 six detector locations, the representative LDO quadrature set achieves the
 highest FOM for two of the locations. The representative QR quadrature set is
 the only other type to also deliver the highest Figure of Merit for two out of
-six detectors; the Galerkin and LDFE quadrature set biasing parameters each
+six detectors; the Galerkin and LDFE quadrature set VR parameters each
 only achieve the highest FOM for one detector location. So, the representative
-LDO quadrature set's biasing parameters perform comparably to those from the
+LDO quadrature set's VR parameters perform comparably to those from the
 representative QR quadrature set with respect to obtaining high FOM values for
 multiple detector locations using the \fwc\ method for the DLVN problem.
 
@@ -1086,7 +1101,7 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 & \begin{tabular}[c]{@{}c@{}} 369.423 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 110.40 \end{tabular} % fom for #14
 \\
-Unbiased  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
+No VR  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
 \end{tabular}
 \end{table}
 
@@ -1173,7 +1188,7 @@ small array.
 Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
 forward scalar flux tally values and Figures of Merit, respectively. As with
 the other test cases, the values are plotted as a function of the number of
-quadrature points used to generate the biasing parameters in order to explore
+quadrature points used to generate the VR parameters in order to explore
 the impact of angular mesh refinement on flux tally and FOM.
 
 \begin{figure}[!htb]
@@ -1192,15 +1207,15 @@ the impact of angular mesh refinement on flux tally and FOM.
 
 Similar to other test cases, the flux tally values reported in Figure 
 \ref{cargo-cad-tally} show a trend of converging to a stable value after the
-first few coarsest angular meshes. The flux tally values from the biased
-calculations all fall within the statistical error of that of the unbiased
+first few coarsest angular meshes. The flux tally values from the
+calculations using VR all fall within the statistical error of that of the no-VR
 calculation but appear to require a minimum value of approximately 100
 discrete angular values in order to stabilize. Figure \ref{cargo-cad-fom}
 shows a strong correlation between the number of quadrature points and the
 flux tally FOM, eventually approaching an upper limit around 100. The LDO
 Figures of Merit increase most rapidly with the number of quadrature points
 used, so one would want to use a higher-order LDO quadrature set to generate
-Monte Carlo biasing parameters.
+Monte Carlo VR parameters.
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
@@ -1213,24 +1228,24 @@ detector locations in the problem's detector array.
 Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
 values are each plotted as a function of the number of discrete angles used in
-the quadrature sets that were used to generate biasing parameters. In all
-plots, the unbiased calculation result is shown as a horizontal black line. At
-all detector locations, the forward flux tallies and FOM values show the same
+the quadrature sets that were used to generate VR parameters. In all plots,
+the no-VR calculation result is shown as a horizontal black line. At all
+detector locations, the forward flux tallies and FOM values show the same
 trend of leveling off to a stable value once the angular mesh used for the
-\fwc\ biasing parameters has been refined past the few coarsest numbers of
-discrete angles. At all detector locations except for the \nth{2} in the array,
-the unbiased calculation and the calculations with biasing parameters resultant
-from the representative quadrature sets all match within statistical
-uncertainty. The \nth{2} detector sees all representative biased flux tallies
-matching one another but outside the error bounds of the unbiased flux tally
+\fwc\ VR parameters has been refined past the few coarsest numbers of discrete
+angles. At all detector locations except for the \nth{2} in the array, the no-
+VR calculation and the calculations with VR parameters resultant from the
+representative quadrature sets all match within statistical uncertainty. The
+\nth{2} detector sees all representative quadrature set VR flux tallies
+matching one another but outside the error bounds of the no-VR flux tally
 calculation.
 
 Table \ref{cargo-fwc-fom-table} lists the Figures of Merit for the various
-detector locations for the representative quadrature sets. The unbiased
+detector locations for the representative quadrature sets. The no-VR
 calculation FOM values are also tabulated for reference. We see that the
-biasing parameters from the representative LDO quadrature set produce the
+VR parameters from the representative LDO quadrature set produce the
 highest Figures of Merit for three out of four detector locations, with the
-representative QR quadrature set's biasing parameters achieving the highest FOM
+representative QR quadrature set's VR parameters achieving the highest FOM
 for the bottom detector in the array.
 
 \begin{table}[!hbt]
@@ -1269,11 +1284,11 @@ for the bottom detector in the array.
 & \begin{tabular}[c]{@{}c@{}} \textbf{140.3} \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 75.135 \end{tabular} % fom for #44
 \\
-Unbiased & 4.40963 & 3.15204 & 2.096 & 2.8313
+No VR & 4.40963 & 3.15204 & 2.096 & 2.8313
 \end{tabular}
 \end{table}
 
-To conclude, using LDO quadrature sets to generate Monte Carlo biasing
+To conclude, using LDO quadrature sets to generate Monte Carlo variance reduction
 parameters in the \fwc\ method is particularly promising for cases such as the
 simplified portal monitor scenario. When selecting an LDO quadrature set to
 generate variance reduction parameters for similar photon transport problems,
@@ -1320,10 +1335,10 @@ a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
 
 On the whole, little correlation was seen between angular mesh refinement and
 the MCNP-reported forward flux tally values in the CADIS context. If using an
-LDO quadrature set to generate biasing parameters in this context for any of
-the neutron transport scenarios, a low-order (3 - 8) quadrature set may be used
-to sufficient effect for flux tally value and FOM achievement. For generating
-biasing parameters in the CADIS context for a photon problem with an LDO
+LDO quadrature set to generate variance reduction parameters in this context
+for any of the neutron transport scenarios, a low-order (3 - 8) quadrature set
+may be used to sufficient effect for flux tally value and FOM achievement. For
+generating VR parameters in the CADIS context for a photon problem with an LDO
 quadrature set, the finest available angular mesh should be used. This is
 consistent with what is expected based on the difference between neutron and
 photon scattering in the materials in these test case scenarios.
@@ -1333,26 +1348,26 @@ meshes are sufficient to produce forward flux tally and Figure of Merit values
 comparable to those of more refined angular meshes when using LDO quadrature
 sets. The superior FOM values resultant from the representative LDO quadrature
 set for three of four detectors in the simplified portal monitor scenario
-begets interest in further exploration of LDO equations' solutions as input for
-Monte Carlo biasing parameters for photon transport in the \fwc\ context.
+begets interest in further exploration of LDO equations' solutions as input
+for Monte Carlo VR parameters for photon transport in the \fwc\ context.
 
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-The LDO equations saw their best-performing Monte Carlo biasing parameters in
+The LDO equations saw their best-performing Monte Carlo VR parameters in
 the \fwc\ context. For the DLVN experimental benchmark, LDO variance reduction
 parameters generated the highest Figures of Merit for two of the six detector
 locations in the assembly. Of those studied here, the only other quadrature
 type to achieve this was the QR quadrature set. In the case of the simplified
-portal monitor scenario studied in the \fwc\ context, the LDO biasing
+portal monitor scenario studied in the \fwc\ context, the LDO VR
 parameters attained the highest FOM values for three out of four detector
 locations. Considering results from the test case scenarios in which neutrons
 were transported using the CADIS and \fwc\ methods, we suggest a coarse
 angular mesh for Monte Carlo variance reduction parameter generation based on
 flux solutions resultant from solving the LDO equations. For photon transport
 problems, a more refined LDO angular mesh is recommended for generating Monte
-Carlo biasing parameters and achieving detector responses with high Figures of
+Carlo VR parameters and achieving detector responses with high Figures of
 Merit.
 
 In general, the LDO formulation is most useful in the specific context of
