@@ -1230,8 +1230,8 @@ the no-VR calculation result is shown as a horizontal black line. At all
 detector locations, the forward flux tallies and FOM values show the same
 trend of leveling off to a stable value once the angular mesh used for the
 \fwc\ VR parameters has been refined past the few coarsest numbers of discrete
-angles. At all detector locations except for the \nth{2} in the array, the no-
-VR calculation and the calculations with VR parameters resulting from the
+angles. At all detector locations except for the \nth{2} in the array, the 
+no-VR calculation and the calculations with VR parameters resulting from the
 representative quadrature sets all match within statistical uncertainty. The
 \nth{2} detector sees all representative quadrature set VR flux tallies
 matching one another but outside the error bounds of the no-VR flux tally
@@ -1333,7 +1333,7 @@ a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
 On the whole, little correlation was seen between angular mesh refinement and
 the MCNP-reported forward flux tally values in the CADIS context. If using an
 LDO quadrature set to generate variance reduction parameters in this context
-for any of the neutron transport scenarios, a low-order (3 - 8) quadrature set
+for any of the neutron transport scenarios, a low-order (3 to 8) quadrature set
 may be used to sufficient effect for flux tally value and FOM achievement. For
 generating VR parameters in the CADIS context for a photon problem with an LDO
 quadrature set, the finest available angular mesh should be used. This is
@@ -1374,12 +1374,15 @@ transport problems, though somewhat less so. However, the LDO representation
 is currently limited in applicability by its current implementation in the
 Exnihilo framework and the ADVANTG software. The problem space available to
 explore is limited to those with vacuum boundary conditions and isotropic
-fixed particle sources with non-zero volume. Adopting the LDO formulation in
-another radiation transport and Monte Carlo variance reduction parameter
-generation framework would be of interest if the framework is flexible in
-allowing for asymmetric quadrature sets to be used and if the framework allows
-for relative ease in implementing the unique features of the LDO
-representation such as interpolation in angle.
+fixed particle sources with non-zero volume. %Adopting the LDO formulation in
+%another radiation transport and Monte Carlo variance reduction parameter
+%generation framework would be of interest if the framework is flexible in
+%allowing for asymmetric quadrature sets to be used and if the framework allows
+%for relative ease in implementing the unique features of the LDO
+%representation such as interpolation in angle.
+It would be useful to a wider variety of sources, and using other boundary condition types could speed up calculation times. 
+
+An additional area of research that could prove interesting comes from the flexibility of the LDO equations. In this work we did not specifically adapt the angles of evaluation to the problems of interest. For example, one could use the interpolatory nature of the LDO formulation to cluster angles along the direction of streaming paths. It could be that improved angular resolution in key directions could improve performance of the VR parameters generated. The purpose of this work, however, was a first evaluation of using LDO solutions for Monte Carlo variance reduction. 
 
 \pagebreak
 \section*{Acknowledgments}
