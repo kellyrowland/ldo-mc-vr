@@ -119,7 +119,7 @@ Reduction Parameter Generation} %title of paper
 \textit{Los Alamos National Laboratory, Los Alamos, NM 87545, USA}\\[-5pt]
 \textit{$^c$Oak Ridge National Laboratory, Radiation Transport and Criticality Group} \\ [-10pt]
 \textit{P.O. Box 2008, Oak Ridge, TN 37831-6170, USA} \\ [-2pt]
-{$^\ast$slaybaugh@berkeley.edu}}       %address and email address for correspondence
+{$^\ast$krowland@berkeley.edu}}       %address and email address for correspondence
 
 %instead of returning the date, this repurposes the \maketitle command to print the number of pages, tables, and figures
 \date{
@@ -265,8 +265,9 @@ function is significant because it represents the importance of source
 particles to the response of interest.
 
 To bias particles undergoing the transport process, the weight window
-technique is applied. In the CADIS method, weight window target values, which are used to define the upper and lower weight window boundaries, are defined as
-% this seems simpler...
+technique is applied. In the CADIS method, weight window target values, which
+are used to define the upper and lower weight window boundaries, are defined
+as
 %
 \begin{equation}
 w(\vecr,E) 
@@ -277,16 +278,16 @@ w(\vecr,E)
 Using this definition, the weight window technique then performs particle
 splitting and/or rouletting based on the particle's statistical weight. A key
 result of the CADIS method is that the statistical weights of the source
-particles are at the weight windows' centers immediately upon birth. In other words, the source-biasing
-parameters and the weight window target values are consistent. This
-circumvents the potential of particles being immediately split or rouletted
-upon birth and avoids the resulting degradation in computational efficiency.
-We refer the reader to Reference \cite{cadis} for a complete discussion of
-results and analysis of the initial implementation of the CADIS method. The
-CADIS method is very effective for automatically improving calculations for
-localized responses, but is not designed for distributed responses. \fwc,
-discussed in the next section, was developed to improve distributed response
-calculations.
+particles are at the weight windows' centers immediately upon birth. In other
+words, the source-biasing parameters and the weight window target values are
+consistent. This circumvents the potential of particles being immediately
+split or rouletted upon birth and avoids the resulting degradation in
+computational efficiency. We refer the reader to Reference \cite{cadis} for a
+complete discussion of results and analysis of the initial implementation of
+the CADIS method. The CADIS method is very effective for automatically
+improving calculations for localized responses, but is not designed for
+distributed responses. \fwc, discussed in the next section, was developed to
+improve distributed response calculations.
 
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
@@ -1374,15 +1375,18 @@ transport problems, though somewhat less so. However, the LDO representation
 is currently limited in applicability by its current implementation in the
 Exnihilo framework and the ADVANTG software. The problem space available to
 explore is limited to those with vacuum boundary conditions and isotropic
-fixed particle sources with non-zero volume. %Adopting the LDO formulation in
-%another radiation transport and Monte Carlo variance reduction parameter
-%generation framework would be of interest if the framework is flexible in
-%allowing for asymmetric quadrature sets to be used and if the framework allows
-%for relative ease in implementing the unique features of the LDO
-%representation such as interpolation in angle.
-It would be useful to a wider variety of sources, and using other boundary condition types could speed up calculation times. 
+fixed particle sources with non-zero volume. It would be useful to test a
+wider variety of sources, and using other boundary condition types could speed
+up calculation times.
 
-An additional area of research that could prove interesting comes from the flexibility of the LDO equations. In this work we did not specifically adapt the angles of evaluation to the problems of interest. For example, one could use the interpolatory nature of the LDO formulation to cluster angles along the direction of streaming paths. It could be that improved angular resolution in key directions could improve performance of the VR parameters generated. The purpose of this work, however, was a first evaluation of using LDO solutions for Monte Carlo variance reduction. 
+An additional area of research that could prove interesting comes from the
+flexibility of the LDO equations. In this work we did not specifically adapt
+the angles of evaluation to the problems of interest. For example, one could
+use the interpolatory nature of the LDO formulation to cluster angles along
+the direction of streaming paths. It could be that improved angular resolution
+in key directions could improve performance of the VR parameters generated.
+The purpose of this work, however, was a first evaluation of using LDO
+solutions for Monte Carlo variance reduction.
 
 \pagebreak
 \section*{Acknowledgments}
