@@ -325,9 +325,9 @@ source biasing parameters and weight windows.
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
 
-The discrete ordinates, or \sn, approximation is the most commonly-used
-discretization for angle to deterministically solve the steady-state Boltzmann
-transport equation:
+The discrete ordinates, or \sn, approximation is one of the most commonly-used
+methods to discretize the angular variable in the linear Boltzmann
+transport equation, which we write as
 %
 \begin{multline}
 \bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
@@ -338,7 +338,7 @@ transport equation:
 %
 where $\Sigma_t$ is the probability of all interactions, $\Sigma_s$ is the
 probability of scattering interactions, and $Q$ is the source. The \sn\
-approximation gives one equation for each angle, index $n$:
+approximation gives one equation for each angle, index with the integer $n$:
 %
 \begin{multline}
 \bo_n \cdot \nabla \psi_n^g(\vecr) + \Sigma_t^g(\vecr)\psi_n^g(\vecr) = \\
@@ -350,9 +350,9 @@ approximation gives one equation for each angle, index $n$:
 \label{eq:sn}
 \end{multline}
 %
-where a standard multigroup energy approximation is used ($G$ is the
+where a standard multigroup energy approximation is used; $G$ is the
 number of discrete energy groups corresponding to the discretization index
-$g$). The scattering term is expanded in terms of spherical harmonics
+$g$. The scattering term is expanded in terms of spherical harmonics
 $\Ye{\ell m}{n}$ and $\Yo{\ell m}{n}$; $\phi$ and $\vartheta$ are the
 ``flux moments'' that are eventually used to solve for the scalar flux
 solution. The upper limit of summation for the scattering term spherical
@@ -375,7 +375,7 @@ solution methods for the equations.
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
 
 The Lagrange Discrete Ordinates (LDO) equations are formally the same as the
-classical \sn\ equations and are written for each discrete angle in the angle
+classical \sn\ equations and are written for each discrete angle in the quadrature
 set as
 %
 \begin{multline}
@@ -404,6 +404,9 @@ equations can be summarized as:
       moments.}
 \item{The positive-weight quadrature sets on which the LDO equations are based
       can integrate spherical harmonics ranging from degree 0 to degree 165.}
+\item{The LDO equations are spectrally accurate in angle. Said differently, if the solution of the
+transport equation is smooth in angle, then the error in the angular approximation decreases
+exponentially fast.}
 \end{enumerate}
 
 For a given fixed maximum degree of integration, $L$, the corresponding number
