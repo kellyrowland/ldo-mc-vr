@@ -3,9 +3,13 @@
 %set capital Roman numeral section headings
 %set capital Aramaic letters subsection headings
 %set capital Arabic numbers subsubsection headings
-\renewcommand\thesection{\Roman{section}.}
-\renewcommand\thesubsection{\thesection\Alph{subsection}.}
-\renewcommand\thesubsubsection{\thesubsection\arabic{subsubsection}.}
+\renewcommand{\thesection}{\Roman{section}}
+\renewcommand{\thesubsection}{\thesection.\Alph{subsection}}
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}
+
+\makeatletter
+\renewcommand\@seccntformat[1]{\csname the#1\endcsname.\quad}
+\makeatother
 
 %set capital Roman numeral table numeration
 \renewcommand*\thetable{\Roman{table}} 
@@ -510,7 +514,7 @@ the blue regions indicate water, and the white region is composed of air.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.4\textwidth]{img/steel-xz.png}
+\includegraphics[width=0.4\textwidth]{steel-xz.png}
 \caption{Steel plate in water geometry ($x-z$ slice through $y = 25$ cm) 
          \cite{wilsonslaybaugh}.}
 \label{steelxz}
@@ -536,7 +540,7 @@ $z = 140$ cm.
 \caption{Materials and compositions in the steel plate in water scenario.}
 \label{steel-mat}
 \begin{tabular}{l|cc}
-\textbf{Material} & \multicolumn{2}{c}{\textbf{Isotopes (Atomic \%)}} \\ \hline
+\textbf{Material} & \multicolumn{2}{c}{\textbf{Isotopes (Atomic Ratio)}} \\ \hline
 \multirow{5}{*}{Source}   & U-235   & (0.000247) \\
                           & U-238   & (0.009287) \\
                           & Zr-nat. & (0.004009) \\
@@ -575,7 +579,7 @@ was C$_2$H$_4$. This is listed as ``polyethylene, non-borated'' and is material
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[width=0.5\textwidth]{img/dlvn.png}
+\includegraphics[width=0.5\textwidth]{dlvn.png}
 \caption{Centerline cutaway of DLVN setup \cite{sw-dlvn}.}
 \label{dlvn}
 \end{figure}
@@ -618,10 +622,10 @@ monitors.
 \begin{figure}[!htb]
 \centering
 \begin{subfigure}{0.475\textwidth}
-\includegraphics[width=\textwidth]{img/portal1.png}
+\includegraphics[width=\textwidth]{portal1.png}
 \end{subfigure}
 \begin{subfigure}{0.475\textwidth}
-\includegraphics[width=\textwidth]{img/portal2.png}
+\includegraphics[width=\textwidth]{portal2.png}
 \end{subfigure}
 \caption{Top and side views of simplified portal problem \cite{advantg}.}
 \label{p1}
@@ -808,7 +812,7 @@ side indicating the one standard deviation confidence interval.
 
 \begin{figure}[!hbt]
 \centering
-\includegraphics[max height=0.445\textheight]{img/steel-cadis-tally.eps}
+\includegraphics[max height=0.445\textheight]{steel-cadis-tally.eps}
 \caption{MCNP-reported flux tally values at the end of the steel plate.}
 \label{steel-cad-tally}
 \end{figure}
@@ -835,7 +839,7 @@ greater than that of the no-VR calculation.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/steel-cadis-fom.eps}
+\includegraphics[max height=0.445\textheight]{steel-cadis-fom.eps}
 \caption{FOM values for MCNP flux tally at the end of the steel plate.}
 \label{steel-cad-fom}
 \end{figure}
@@ -883,7 +887,7 @@ could be used to good effect.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/steel-fwcadis-tally.eps}
+\includegraphics[max height=0.445\textheight]{steel-fwcadis-tally.eps}
 \caption{Flux tally over the air region in the steel plate test with the \fwc\ method.}
 \label{steel-fwc-tally}
 \end{figure}
@@ -900,7 +904,7 @@ the no-VR calculation is shown as a horizontal black line.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/steel-fwcadis-fom.eps}
+\includegraphics[max height=0.445\textheight]{steel-fwcadis-fom.eps}
 \caption{Average FOM values for the mesh tally in the \fwc\ steel plate scenario.}
 \label{steel-fwc-fom}
 \end{figure}
@@ -934,14 +938,14 @@ without CADIS VR) do not match the experimentally calculated flux value of
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/dlvn-cadis-tally.eps}
+\includegraphics[max height=0.445\textheight]{dlvn-cadis-tally.eps}
 \caption{Flux tally at detector \#14 in the DLVN problem with the CADIS method.}
 \label{dlvn-cad-tally}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/dlvn-cadis-fom.eps}
+\includegraphics[max height=0.445\textheight]{dlvn-cadis-fom.eps}
 \caption{FOM values for the DLVN problem detector \#14 tally with the CADIS 
          method.}
 \label{dlvn-cad-fom}
@@ -1121,7 +1125,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-5.eps}
+{dlvn-fwcadis-5.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#5.}
 \label{dlvn-fwc-5}
 \end{subfigure} 
@@ -1129,7 +1133,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-9.eps}
+{dlvn-fwcadis-9.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#9.}
 \label{dlvn-fwc-9}
 \end{subfigure}
@@ -1140,7 +1144,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-11.eps}
+{dlvn-fwcadis-11.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#11.}
 \label{dlvn-fwc-11}
 \end{subfigure}
@@ -1148,7 +1152,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-12.eps}
+{dlvn-fwcadis-12.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#12.}
 \label{dlvn-fwc-12}
 \end{subfigure}
@@ -1159,7 +1163,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-13.eps}
+{dlvn-fwcadis-13.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#13.}
 \label{dlvn-fwc-13}
 \end{subfigure} 
@@ -1167,7 +1171,7 @@ point set of order 5 or 8.
 \begin{subfigure}{\linewidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/dlvn-fwcadis-14.eps}
+{dlvn-fwcadis-14.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at detector \#14.}
 \label{dlvn-fwc-14}
 \end{subfigure}
@@ -1194,14 +1198,14 @@ the impact of angular mesh refinement on flux tally and FOM.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/portal-cadis-tally.eps}
+\includegraphics[max height=0.445\textheight]{portal-cadis-tally.eps}
 \caption{Flux tally in the portal monitor top detector using the CADIS method.}
 \label{cargo-cad-tally}
 \end{figure}
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{img/portal-cadis-fom.eps}
+\includegraphics[max height=0.445\textheight]{portal-cadis-fom.eps}
 \caption{CADIS method FOM values for the portal monitor top detector flux tally.}
 \label{cargo-cad-fom}
 \end{figure}
@@ -1299,14 +1303,14 @@ a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-1.eps}
+{portal-fwcadis-1.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at the top detector.}
 \end{subfigure}
 \\
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-2.eps}
+{portal-fwcadis-2.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at the second detector.}
 \end{subfigure}
 \end{figure}
@@ -1316,14 +1320,14 @@ a relatively coarse angular mesh of order 5 or 8 may be used to good effect.
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-3.eps}
+{portal-fwcadis-3.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at the third detector.}
 \end{subfigure}
 \\
 \begin{subfigure}{\textwidth}
 \centering
 \includegraphics[max height=0.445\textheight]
-{img/portal-fwcadis-4.eps}
+{portal-fwcadis-4.eps}
 \subcaption{MCNP-reported forward flux tally and FOM values at the bottom detector.}
 \end{subfigure}
 \caption{\fwc\ flux tallies and FOM values for the portal monitor scenario.}
