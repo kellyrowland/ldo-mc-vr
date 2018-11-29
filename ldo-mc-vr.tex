@@ -241,8 +241,8 @@ discrete ordinates (\sn) equations.
 The CADIS method was introduced by Wagner and Haghighat to automate Monte
 Carlo variance reduction parameter generation \cite{cadis}. CADIS is based on
 the source biasing and weight window techniques, does not depend heavily on
-user experience, and was first implemented as described in Reference
-\cite{cadis} in the MCNP code. The results of using the CADIS method are
+user experience, and was first implemented as described 
+in the MCNP code \cite{cadis}. The results of using the CADIS method are
 source biasing parameters and weight window target values used to play
 variance reduction games such that particles are born with the target weights.
 The CADIS method is very effective for automated optimization of localized
@@ -286,19 +286,19 @@ particles are at the weight windows' centers immediately upon birth. In other
 words, the source-biasing parameters and the weight window target values are
 consistent. This circumvents the potential of particles being immediately
 split or rouletted upon birth and avoids the resulting degradation in
-computational efficiency. We refer the reader to Reference \cite{cadis} for a
-complete discussion of results and analysis of the initial implementation of
-the CADIS method. The CADIS method is very effective for automatically
-improving calculations for localized responses, but is not designed for
-distributed responses. \fwc, discussed in the next section, was developed to
-improve distributed response calculations.
+computational efficiency \cite{cadis}. The CADIS method is very effective for
+automatically improving calculations for localized responses, but is not
+designed for distributed responses. Wagner and Haghighat provide a complete
+discussion of results and analysis of the initial implementation of the CADIS
+method in their publication \cite{cadis}. \fwc, discussed in the next section,
+was developed to improve distributed response calculations.
 
 %%---------------------------------------------------------------------------%%
 \subsubsection{\fwc}
 
 \fwc\ adds a step to the CADIS method to increase the efficiency of Monte
-Carlo calculations of global quantities; the details of this method can be
-found in Reference \cite{fwcadis}. For this global variance reduction method,
+Carlo calculations of global quantities \cite{fwcadis}.
+For this global variance reduction method,
 a response with uniformly-low statistical uncertainty across all phase-space
 is desired. One way to target this for a given Monte Carlo simulation is to
 uniformly distribute the particles throughout the system. Though this is not a
@@ -370,10 +370,10 @@ Angular integration is approximated with the quadrature rule
 \label{eq:quadrule}
 \end{equation}
 %
-where $w_n$ are the integration weights and $N$ is the number of ordinates. We
-refer the reader to Reference \cite{denovo} and the references therein for a
-complete discussion of the derivation of the \sn\ equations as well as
-solution methods for the equations.
+where $w_n$ are the integration weights and $N$ is the number of ordinates.
+Evans et al.\ provide a more complete disscussion and references to the
+derivation of the \sn\ equations as well as solution methods for the equations
+\cite{denovo}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Lagrange Discrete Ordinates (LDO) Equations}
@@ -394,7 +394,7 @@ where $N$ is the number of discrete angles used in the formulation
 and is a property of the maximum degree of integration of the quadrature set
 on which the equations are based, $L_n$ is the $n^{th}$ Lagrange function, and
 $\Sigma_{s,L}$ is the scattering cross section restricted to maximum degree
-$L$. A full derivation can be found in Reference \cite{ahrens}.
+$L$. Ahrens provides a full derivation of the LDO equations \cite{ahrens}.
 
 The notable differences between the LDO equations and the classical \sn\
 equations can be summarized as:
@@ -433,7 +433,7 @@ the angle-informed hybrid methods are generally variants of CADIS and \fwc.
 
 Noting that the CADIS and \fwc\ methods have only been implemented as a
 function space and energy, excluding angle, and that direction of particle
-travel can be important, Peplow introduced directional CADIS in 2012
+travel can be important, Peplow et al.\ introduced directional CADIS in 2012
 \cite{peplow}. Two versions of directional CADIS were explored: one method
 that biases the source in space and energy while preserving the original
 angular distribution of the particles, and one method that biases the source
@@ -447,8 +447,8 @@ standard CADIS are a neutron porosity tool problem and a gamma-ray litho-density
  tool problem with the detector far away from the source. It should
 also be noted that, for a spherical boat test problem with a source far away
 from the boat, both standard CADIS and directional CADIS performed more poorly
-than an analog Monte Carlo calculation. For full details on the test results,
-we refer the reader to Reference \cite{peplow}. In the conclusions of the
+than an analog Monte Carlo calculation. Peplow et al.\ provide full details on
+the test results \cite{peplow}. In the conclusions of the
 report, Peplow notes that ``it is difficult to know \textit{a priori} which
 problems would benefit from the space/energy/angular treatments presented in
 this work more than from just using the standard space/energy CADIS.''
@@ -465,7 +465,7 @@ and algorithmic limitations that result in ray effects. Munk then tested a set
 of problems containing different combinations of these anisotropy-inducing
 mechanisms and compared the results to CADIS. Munk also developed a set of
 metrics by which the degree of anisotropy of the flux may be quantified.
-Similar to the conclusions drawn by Peplow, Munk found that it was difficult
+Similar to the conclusions drawn by Peplow et al.\, Munk found that it was difficult
 to predict for which problems \co\ would outperform CADIS. When considering a
 parametric study of deterministic variables likely to affect angular flux
 (varying quadrature set order and \pn\ order) in a test problem composed of a
@@ -479,10 +479,11 @@ There have been several other efforts to improve variance reduction techniques
 for problems with strong particle streaming anisotropies such as AVATAR
 (Automatic Variance And Time of Analysis Reduction) \cite{avatar}, Cooper and
 Larsen's Weight Windows \cite{clww}, and LIFT (Local Importance Function
-Transform) \cite{lift1, lift2}. See Reference \cite{kr} for more detail. The
-conclusions of these research efforts have been that methods either work
-predictably but are complex to use, putting a high burden on user expertise,
-or are simple to use but do not consistently perform well.
+Transform) \cite{lift1, lift2}. Rowland provides a comprehensive summary of the
+methods \cite{kr}. The conclusions of these research efforts have
+been that methods either work predictably but are complex to use, putting a
+high burden on user expertise, or are simple to use but do not consistently
+perform well.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
@@ -497,20 +498,21 @@ calculations performed in this work.
 \label{sec:steel_params}
 
 The first test case we describe is an idealized geometry of a steel plate
-embedded in water; it is modeled after the scenario presented in Reference
-\cite{wilsonslaybaugh}. This idealized geometry is of interest because it has
-been shown to be computationally challenging: resonances in the iron cause
-self-shielding in energy, and spatial self-shielding comes from the presence
-of a thin plate of resonance material embedded in a moderating material. In
-turn, Monte Carlo variance reduction parameters generated from deterministic
-solutions exhibit slow Monte Carlo error reduction; we aim to discern if
-angular mesh refinement in generating VR parameters has any impact on Monte
-Carlo error reduction as well as how the LDO equations perform in this regard
-when compared to standard quadrature types. A diagram of the problem geometry
-is shown in Figure \ref{steelxz} and a list of material properties used in the
-problem is given in Table \ref{steel-mat}. In Figure \ref{steelxz}, the orange
-region contains the source material, the black region is composed of steel,
-the blue regions indicate water, and the white region is composed of air.
+embedded in water; it is modeled after the scenario presented by Wilson and
+Slaybaugh \cite{wilsonslaybaugh}. This idealized geometry is of interest
+because it has been shown to be computationally challenging: resonances in the
+iron cause self-shielding in energy, and spatial self-shielding comes from the
+presence of a thin plate of resonance material embedded in a moderating
+material. In turn, Monte Carlo variance reduction parameters generated from
+deterministic solutions exhibit slow Monte Carlo error reduction; we aim to
+discern if angular mesh refinement in generating VR parameters has any impact
+on Monte Carlo error reduction as well as how the LDO equations perform in
+this regard when compared to standard quadrature types. A diagram of the
+problem geometry is shown in Figure \ref{steelxz} and a list of material
+properties used in the problem is given in Table \ref{steel-mat}. In Figure
+\ref{steelxz}, the orange region contains the source material, the black
+region is composed of steel, the blue regions indicate water, and the white
+region is composed of air.
 
 \begin{figure}[!htb]
 \centering
@@ -569,13 +571,15 @@ scenario, we are interested in the flux solutions at the end of the steel plate.
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
 
-The next problem modeled is the dog-legged void neutron (DLVN) experimental 
+The next problem modeled is the dog-legged void neutron (DLVN) experimental
 benchmark, which was designed to measure neutron streaming in iron with air
 voids. The model used in the following calculations was constructed from
-References \cite{sw-dlvn,j-dlvn,dlvn1991}. The two materials used in the
+publications by Slaybaugh and Wilson \cite{sw-dlvn}, Jarrell et al.\
+\cite{j-dlvn}, and Barnett \cite{dlvn1991}. The two materials used in the
 problem are elemental iron and polyethylene. The polyethylene composition used
-was C$_2$H$_4$. This is listed as ``polyethylene, non-borated'' and is material
-248 in Reference \cite{pnnl}. 
+was C$_2$H$_4$. This is listed as ``polyethylene, non-borated'' and is
+material 248 in the Compendium of Material Composition Data for Radiation
+Transport Modeling \cite{pnnl}.
 
 \begin{figure}[!htb]
 \centering
@@ -751,11 +755,11 @@ All of the Monte Carlo calculations were run with a fixed number of particle
 histories to simulate. For the steel plate in water and simplified portal
 monitor cases, all calculations used 1\E{9} particle histories. The DLVN
 experimental benchmark case was simulated with 1\E{10} neutron histories as it
-was modeled after calculations in Reference \cite{sw-dlvn}. All Monte Carlo
-tally results, $\xbar$, are reported with the one standard deviation
-confidence interval, $\xbar(1\pm R)$, where the relative error, $R$, is
-defined as $S_{\xbar}/\xbar$ and $S_{\xbar}$ is the standard deviation of the
-tally result estimate \cite{mcnp}.
+was modeled after calculations performed by Slaybaugh and Wilson
+\cite{sw-dlvn}. All Monte Carlo tally results, $\xbar$, are reported with the
+one standard deviation confidence interval, $\xbar(1\pm R)$, where the relative
+error, $R$, is defined as $S_{\xbar}/\xbar$ and $S_{\xbar}$ is the standard
+deviation of the tally result estimate \cite{mcnp}.
 
 In the \fwc\ calculations for the DLVN and simplified portal monitor
 scenarios, we examine Monte Carlo results corresponding to variance reduction
