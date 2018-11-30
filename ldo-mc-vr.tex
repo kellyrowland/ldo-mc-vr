@@ -791,7 +791,10 @@ to complete the calculation \cite{mcnp}. Flux tally and FOM values are
 presented for the test case scenarios in the contexts of both the CADIS and
 \fwc\ methods, with additional focus on how the results vary as a function of
 angular mesh refinement used in the deterministic calculations from which
-Monte Carlo variance reduction parameters were generated.
+Monte Carlo variance reduction parameters were generated. For additional
+results and analysis, including comparisons with experimentally-gathered
+data where available, we refer the reader to Rowland's previous publication
+\cite{kr}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -809,10 +812,7 @@ in a timely manner for the hardware configuration used in this work, so Monte
 Carlo results for those two data points are not included here. The flux tally
 results are plotted as a function of angular mesh refinement to demonstrate
 the impact of angular mesh refinement on flux tally solution for the different
-quadrature types. Figure \ref{steel-cad-tally} also includes the flux tally
-value for a Monte Carlo calculation without VR as a reference point of
-comparison; it is shown as a horizontal black line with dashed lines on either
-side indicating the one standard deviation confidence interval.
+quadrature types.
 
 \begin{figure}[!hbt]
 \centering
@@ -821,25 +821,13 @@ side indicating the one standard deviation confidence interval.
 \label{steel-cad-tally}
 \end{figure}
 
-All of the results with variance reduction tend towards a tally calculation on
-the order of $10^{-12}$, while the no-VR tally calculation is on the order
-of $10^{-10}$. This phenomenon has been previously documented
-\cite{wilsonslaybaugh} and can be largely attributed to the resonances in the
-iron cross section; the unresolved resonance region in the iron cross section
-spans multiple energy groups, leading to inaccuracies in the discretized
-multigroup cross section values used in deterministic calculations.
-
-While the results from this problem are incorrect, it is instructive to look
+Additionally, it is instructive to look
 at the Figures of Merit for the various results to observe trends that could
 translate to other problems where correct results are obtained. Figure 
 \ref{steel-cad-fom} shows the reported FOM value for the detector tally for the
-various quadrature sets and orders. We again plot the results as a function of
-angular mesh refinement with a black horizontal line denoting the FOM for the
-no-VR Monte Carlo calculation. The VR parameters corresponding to the
+various quadrature sets and orders. The VR parameters corresponding to the
 LDFE quadrature set of order 1 result in the highest FOM value while those of
-the QR set of order 1 result in the lowest FOM value. For all LDO quadrature
-sets of order 8 and above, the Figures of Merit are one order of magnitude
-greater than that of the no-VR calculation.
+the QR set of order 1 result in the lowest FOM value.
 
 \begin{figure}[!htb]
 \centering
@@ -879,15 +867,12 @@ hardware configuration used in this work, so Monte Carlo results for this data
 point are not included here.
 
 Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
-problem for the Monte Carlo calculations with and without VR parameters. The
-calculations with VR parameters are plotted as a function of angular mesh
-refinement and the no-VR calculation value is shown as a black horizontal
-line. Like the CADIS method, the \fwc\ method generates VR parameters such
-that the Monte Carlo flux tally results all fall far below that of
-the no-VR calculation. Again, the angular mesh refinement has little impact on
-the tally results. If using an LDO quadrature set to generate VR parameters
-with the \fwc\ method in a similar scenario, a low-order LDO angular mesh
-could be used to good effect.
+problem for the Monte Carlo calculations with VR parameters. The calculations
+with VR parameters are plotted as a function of angular mesh refinement. Like
+in the CADIS method, the angular mesh refinement has little impact on the
+tally results. If using an LDO quadrature set to generate VR parameters with
+the \fwc\ method in a similar scenario, a low-order LDO angular mesh could be
+used to good effect.
 
 \begin{figure}[!htb]
 \centering
@@ -903,8 +888,7 @@ tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
 value in combination with the MCNP-reported computer time. Figure 
 \ref{steel-fwc-fom} shows these average Figures of Merit as a function of the
-number of angles used in generating the VR parameters. The average FOM for
-the no-VR calculation is shown as a horizontal black line.
+number of angles used in generating the VR parameters.
 
 \begin{figure}[!htb]
 \centering
@@ -934,11 +918,7 @@ mesh tally using the \fwc\ method.
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
 experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
-forward scalar flux at the location of detector \#14. Here, we see that all of
-the calculation values using variance fall within the error of the results
-without variance reduction. However, all of these tally calculations (with and
-without CADIS VR) do not match the experimentally calculated flux value of
-2.74\E{-7} $\pm$ 5\% n/cm$^2$/s at detector \#14.
+forward scalar flux at the location of detector \#14.
 
 \begin{figure}[!htb]
 \centering
@@ -1005,56 +985,11 @@ angular mesh refinement with the exception of the finest QR set. Lastly,
 quadrature types, with the Figure of Merit largely consistent across
 quadrature types with the exception of QR angular meshes.
 
-In Table \ref{dlvn-fwc-det}, we compare the Monte Carlo forward flux tally
-results for the representative quadrature sets listed in Section \ref{params}\
-Results from the Monte Carlo calculation without VR are also included for
-comparison. All Monte Carlo flux tally values are reported with an uncertainty
-of one standard deviation. For all detector locations, the Monte Carlo flux
-tallies do not match the experimentally-measured flux values from using CADIS
-with any of the representative quadrature sets or the no-VR calculation, so we
-only compare the Monte Carlo calculations in this table. We do note that the
-Monte Carlo calculations overestimate the flux tally at all detector locations
-with the exception of detector \#13. The flux tallies at detectors 5, 9, 13,
-and 14 all match within statistical uncertainty for all of the Monte Carlo
-calculations. At detector \#11, the Monte Carlo calculations using VR
-parameters match within standard error, but the calculations using the QR and
-LDO VR parameters fall outside of the error bounds of the no-VR calculation.
-Somewhat similarly, at detector \#14, all of the calculations using VR
-parameters match one another within statistical uncertainty, but they are all
-outside of the error bounds of the flux tally calculation without using VR.
 
-\begin{table}[!htb]
-\centering
-\scriptsize
-\caption{DLVN benchmark flux tallies [n/cm$^2$/s] calculated with \fwc.}
-\label{dlvn-fwc-det}
-\begin{tabular}{l|ccccc}
-         & \textbf{QR} & \textbf{Galerkin} & \textbf{LDFE} 
-         & \textbf{LDO} & \textbf{No VR}  \\ \hline
- Detector 5 & \mr{1.3341 $\pm$ 0.0003} & \mr{1.3344 $\pm$ 0.0003} & \mr{1.3347 $\pm$ 0.0004} &
-            \mr{1.3344 $\pm$ 0.0003} & \mr{1.3315 $\pm$ 0.0092} \rule{0pt}{2.6ex} \\
-    (\E{-7})      &    &   &  &   &    \\
- Detector 9 & \mr{2.5225 $\pm$ 0.0005} & \mr{2.5224 $\pm$ 0.0005} & \mr{2.5229 $\pm$ 0.0004} &
-            \mr{2.2555 $\pm$ 0.0004} & \mr{2.5104 $\pm$ 0.0127} \rule{0pt}{2.6ex}  \\
-   (\E{-7}) &   &  &  &  &   \\
- Detector 11 & \mr{1.4420 $\pm$ 0.0005} & \mr{1.4451 $\pm$ 0.0027} & \mr{1.4446 $\pm$ 0.0026} &
-            \mr{1.4463 $\pm$ 0.0015} & \mr{1.4463 $\pm$ 0.0010} \rule{0pt}{2.6ex} \\
-   (\E{-5}) &   &  &  &  &   \\
- Detector 12 & \mr{2.4749 $\pm$ 0.0004} & \mr{2.4743 $\pm$ 0.0004} & \mr{2.4751 $\pm$ 0.0004} &
-            \mr{2.4744 $\pm$ 0.0004} & \mr{2.4684 $\pm$ 0.0042}  \rule{0pt}{2.6ex} \\
-    (\E{-6}) &   &  &  &  &   \\
- Detector 13 & \mr{4.3984 $\pm$ 0.0011} & \mr{4.3997 $\pm$ 0.0011} & \mr{4.3994 $\pm$ 0.0011} &
-            \mr{4.3983 $\pm$ 0.0011} & \mr{4.4170 $\pm$ 0.0175}  \rule{0pt}{2.6ex} \\
-    (\E{-7}) &   &  &  &  &   \\
- Detector 14 & \mr{7.0070 $\pm$ 0.0025} & \mr{7.0829 $\pm$ 0.0045} & \mr{7.0813 $\pm$ 0.0026} &
-            \mr{7.0834 $\pm$ 0.0032} & \mr{7.0694 $\pm$ 0.0216}  \rule{0pt}{2.6ex} \\
-    (\E{-7}) &   &  &  &  &   \\ \hline
-\end{tabular}
-\end{table}
 
 To examine the FOM values in a more quantifiable way, Table 
 \ref{dlvn-fwc-fom-table} lists the FOM values for all detector locations for
-each of the representative quadrature sets as well as the no-VR calculation.
+each of the representative quadrature sets listed in Section \ref{params}\
 The maximum FOM value in each detector location column is emphasized. Of the
 six detector locations, the representative LDO quadrature set achieves the
 highest FOM for two of the locations. The representative QR quadrature set is
@@ -1109,8 +1044,6 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 & \begin{tabular}[c]{@{}c@{}} \textbf{943.959} \end{tabular} % fom for #12
 & \begin{tabular}[c]{@{}c@{}} 369.423 \end{tabular} % fom for #13
 & \begin{tabular}[c]{@{}c@{}} 110.40 \end{tabular} % fom for #14
-\\
-No VR  & 0.149122 & 0.27845 & 14.555 & 2.52563 & 0.453763 & 0.76362
 \end{tabular}
 \end{table}
 
@@ -1217,8 +1150,7 @@ the impact of angular mesh refinement on flux tally and FOM.
 Similar to other test cases, the flux tally values reported in Figure 
 \ref{cargo-cad-tally} show a trend of converging to a stable value after the
 first few coarsest angular meshes. The flux tally values from the
-calculations using VR all fall within the statistical error of that of the no-VR
-calculation but appear to require a minimum value of approximately 100
+calculations using VR appear to require a minimum value of approximately 100
 discrete angular values in order to stabilize. Figure \ref{cargo-cad-fom}
 shows a strong correlation between the number of quadrature points and the
 flux tally FOM, eventually approaching an upper limit around 100. The LDO
@@ -1237,21 +1169,14 @@ detector locations in the problem's detector array.
 Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
 values are each plotted as a function of the number of discrete angles used in
-the quadrature sets that were used to generate VR parameters. In all plots,
-the no-VR calculation result is shown as a horizontal black line. At all
+the quadrature sets that were used to generate VR parameters. At all
 detector locations, the forward flux tallies and FOM values show the same
 trend of leveling off to a stable value once the angular mesh used for the
 \fwc\ VR parameters has been refined past the few coarsest numbers of discrete
-angles. At all detector locations except for the \nth{2} in the array, the 
-no-VR calculation and the calculations with VR parameters resulting from the
-representative quadrature sets all match within statistical uncertainty. The
-\nth{2} detector sees all representative quadrature set VR flux tallies
-matching one another but outside the error bounds of the no-VR flux tally
-calculation.
+angles.
 
 Table \ref{cargo-fwc-fom-table} lists the Figures of Merit for the various
-detector locations for the representative quadrature sets. The no-VR
-calculation FOM values are also tabulated for reference. We see that the
+detector locations for the representative quadrature sets. We see that the
 VR parameters from the representative LDO quadrature set produce the
 highest Figures of Merit for three out of four detector locations, with the
 representative QR quadrature set's VR parameters achieving the highest FOM
@@ -1292,8 +1217,6 @@ for the bottom detector in the array.
 & \begin{tabular}[c]{@{}c@{}} \textbf{132.962} \end{tabular} % fom for #24
 & \begin{tabular}[c]{@{}c@{}} \textbf{140.3} \end{tabular} % fom for #34
 & \begin{tabular}[c]{@{}c@{}} 75.135 \end{tabular} % fom for #44
-\\
-No VR & 4.40963 & 3.15204 & 2.096 & 2.8313
 \end{tabular}
 \end{table}
 
