@@ -114,7 +114,7 @@ Reduction Parameter Generation} %title of paper
 \author{
 \vspace{20mm}
 %list of authors, with corresponding author marked by asterisk
-\\Kelly L.\ Rowland,$^{\text{a},\ast}$  Cory D.\ Ahrens,$^\text{b}$ Steven Hamilton,$^\text{c}$ 
+\\Kelly L.\ Rowland,$^{\text{a},\ast}$ Cory D.\ Ahrens,$^\text{b}$ Steven Hamilton,$^\text{c}$ 
 \\and R.N.\ Slaybaugh$^{\text{a}}$\\[4pt] 
 %affiliations of authors
 \textit{$^a$University of California, Berkeley, Nuclear Engineering Department}\\[-10pt]
@@ -128,7 +128,7 @@ Reduction Parameter Generation} %title of paper
 %instead of returning the date, this repurposes the \maketitle command to print the number of pages, tables, and figures
 \date{
 \vspace{40mm}
-Number of pages: \pageref{LastPage} \\  
+Number of pages: \pageref{LastPage} \\
 Number of tables: \totaltables \\
 Number of figures: \totalfigures \\}
 
@@ -447,7 +447,7 @@ forward flux; this alternative adjoint scalar flux is then used in the CADIS
 and \fwc\ methods for generation of variance reduction parameters for local
 and global response functions, respectively. The \co\ method was implemented
 in the ADVANTG framework using MCNP5. Munk et al.\ identified three categories
-of processes that affect particle flux anisotropy:  strongly-directional
+of processes that affect particle flux anisotropy: strongly-directional
 particle sources, strong differences between material properties, and
 algorithmic limitations that result in ray effects. Munk et al.\ then tested a
 set of problems containing different combinations of these anisotropy-inducing
@@ -479,6 +479,13 @@ In this section, we first present descriptions of the geometry and materials
 used in the test cases as well as why each problem was chosen. Then, we
 discuss the parameters chosen for the various deterministic and Monte Carlo
 calculations performed in this work.
+
+Deterministic solutions for the test cases using the various quadrature sets
+are provided in Rowland's earlier publication \cite{kr18}. Generally, the
+problems were chosen because they are computationally challenging due to
+streaming pathways and ray effects; the test cases are also of interest in
+that they are relevant to real-world application problems. We direct the
+reader to Rowland's earlier article for full detail \cite{kr18}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -640,28 +647,29 @@ edges.
 \subsection{Calculation Parameters}
 \label{params}
 
+To ensure consistent comparisons between MC VR parameters generated from the
+different quadrature types and sets, the deterministic calculations used the
+same spatial computational block structure and energy discretization.
 All of the deterministic calculations used 32 processes on a 2.8GHz AMD
 Opteron\texttrademark\ 6320 Processor \cite{amd}, two for each logical CPU
 unit. Denovo uses the Koch-Baker-Alcouffe (KBA) parallel sweep algorithm for
-high parallel efficiency in calculating transport sweeps \cite{denovo}. With
-this in mind, all deterministic calculations were set to use the same Denovo
-computational block structure of 8 blocks in the $x-$dimension, 4 blocks in
-the $y-$dimension, and 1 block in the $z-$dimension; thus the total number of
-computational blocks equals the number of processes. This block structure was
-chosen to achieve the same parallel decomposition among all test case
-deterministic simulations.
+high parallel efficiency in calculating transport sweeps \cite{denovo}. All
+deterministic calculations were set to use the same Denovo computational block
+structure of 8 blocks in the $x-$dimension, 4 blocks in the $y-$dimension, and
+1 block in the $z-$dimension such that the total number of computational blocks
+equals the number of processes.
 
-All but one of the test cases use the same coarse energy group structure
-specified in the ``27n19g'' library; the groups in this library are listed in
-Table A-1 of Appendix A of the ADVANTG technical report \cite{advantg}. The
-exception to this is the simplified portal problem. The highest energy
-emission line of Ba-133 is 383.8 keV, so weight window bounds above this
-energy would not be used in the Monte Carlo simulation. Thus, the highest
-energy group of the deterministic calculations was set to group number 41,
-which has an upper energy of 400 keV \cite{advantg}. Because 
-energy discretization is treated the same way between the traditional discrete 
-ordinates formulation and the LDO equations, it was assumed that energy group 
-structure would not greatly affect the comparative results.
+Because energy discretization is treated the same way between the traditional
+discrete ordinates formulation and the LDO equations, it was assumed that
+energy group structure would not greatly affect the comparative results. All
+but one of the test cases use the same coarse energy group structure specified
+in the ``27n19g'' library; the groups in this library are listed in Table A-1
+of Appendix A of the ADVANTG technical report \cite{advantg}. The exception to
+this is the simplified portal problem. The highest energy emission line of
+Ba-133 is 383.8 keV, so weight window bounds above this energy would not be
+used in the Monte Carlo simulation. Thus, the highest energy group of the
+deterministic calculations was set to group number 41, which has an upper
+energy of 400 keV \cite{advantg}.
 
 In the deterministic calculations, forward solutions for the test cases were
 generated using quadruple range (QR), Galerkin, linear-discontinuous finite 
@@ -717,8 +725,8 @@ Similar to the LDO equations, the
 ``hybrid collocation- Galerkin-S$_\mathrm{N}$'' method developed by Morel 
 has the same algebraic structure as the traditional discrete ordinates
 equations but employs a nonstandard scattering treatment. For an \sn\ order
-$N$, a given Galerkin quadrature set has a total of $N(N+2)$ angles. For
-reasons noted below, the Galerkin quadrature orders used were 2 and 4; the
+$N$, a given Galerkin quadrature set has a total of $N(N+2)$ angles. The
+Galerkin quadrature orders used were 2 and 4; the
 Galerkin quadrature sets used in this work have 8 and 24 total angles,
 respectively.
 
@@ -731,7 +739,11 @@ scattering expansion. At the time of this writing, Galerkin quadrature sets
 are implemented in the Exnihilo framework with the restriction that the \pn\
 order be one greater than the \sn\ order. That is, for the Galerkin quadrature
 set of \sn\ order 2, the corresponding \pn\ order is set equal to 3, and for
-the Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5.
+the Galerkin quadrature set of \sn\ order 4, the \pn\ order is 5. It is not
+anticipated that this will greatly impact the results; the Galerkin
+quadrature sets used here feature relatively coarse angular meshes and are
+included to provide a comparison with another quadrature type that uses a
+nonstandard scattering treatment.
 
 The Monte Carlo calculations in this work were run on one Dell PowerEdge C6220
 server blade node with two Intel Xeon 10-core Ivy Bridge processors (a total
@@ -741,7 +753,7 @@ particles with the remaining available tasks \cite{mcnp}. For the purpose of
 parallel efficiency, one transport process per hardware core was used here.
 
 All of the Monte Carlo calculations were run with a fixed number of particle
-histories to simulate. For the steel plate in water and simplified portal
+histories. For the steel plate in water and simplified portal
 monitor cases, all calculations used 1\E{9} particle histories. The DLVN
 experimental benchmark case was simulated with 1\E{10} neutron histories as it
 was modeled after calculations performed by Slaybaugh and Wilson
@@ -813,7 +825,7 @@ affect the calculated flux tally value or the associated error.
 
 Additionally, it is instructive to look at the Figures of Merit for the
 various results to observe trends that could translate to other problems where
-correct results are obtained. Figure  \ref{steel-cad-fom} shows the reported
+correct results are obtained. Figure \ref{steel-cad-fom} shows the reported
 FOM value for the detector tally for the various quadrature sets and orders.
 The VR parameters corresponding to the LDFE quadrature set of order 1 (128
 quadrature points)result in the highest FOM value while those of the QR set of
@@ -907,8 +919,10 @@ parameters for a Monte Carlo mesh tally using the \fwc\ method.
 
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
-experiment. Figure \ref{dlvn-cad-tally} shows the MCNP-reported tally for the
-forward scalar flux at the location of detector \#14.
+experiment. Detector \#14 was chosen because it is centrally located among the
+detectors and farthest from the forward source. Figure \ref{dlvn-cad-tally}
+shows the MCNP-reported tally for the forward scalar flux at the location of
+detector \#14.
 
 \begin{figure}[!htb]
 \centering
