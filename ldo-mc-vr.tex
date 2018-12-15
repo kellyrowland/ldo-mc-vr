@@ -140,7 +140,7 @@ Number of figures: \totalfigures \\}
 
 Hybrid radiation transport methods that use deterministic solutions to speed
 up stochastic calculations are rarely effective for shielding problems with
-highly anisotropic radiation with streaming pathways. In this
+highly anisotropic radiation streaming pathways. In this
 work, we investigate using a different deterministic formulation, the Lagrange
 Discrete Ordinates (LDO), for variance reduction (VR) parameter generation in
 hybrid methods. The LDO equations retain the formal structure of the
@@ -155,10 +155,8 @@ effects at increased angular resolutions. Here, we assess the LDO equations'
 scalar flux solutions as input in the CADIS and \fwc\ methods for Monte Carlo
 variance reduction parameter generation. Monte Carlo calculations and Figures
 of Merit using VR parameters from the LDO equations are compared against
-those using VR parameters from standard quadrature set types for a small
-variety of test case scenarios in both neutron and photon transport. The LDO
-equations' variance reduction parameters see their best performance in the
-\fwc\ method, especially for photon transport.
+those using VR parameters from standard quadrature set types for a collection of engineering test problems that have angular streaming features that challenges the CADIS and \fwc\ methods. Most are neutron problems and one is a photon problem. Using the LDO equations to create variance reduction parameters with the
+\fwc\ method gave better performance in many cases, especially for the photon test problem.
 
 Keywords: hybrid methods; transport; Lagrange discrete ordinates
 }
