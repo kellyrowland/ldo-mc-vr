@@ -1300,8 +1300,12 @@ transport in the \fwc\ context.
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
+Hybrid methods can be highly effective in allowing the use of Monte Carlo methods to solve tough shielding problems. However, engineering problems with streaming paths and strong anisotropies, such as steel embedded in water or concrete, and small air gaps between shielding materials, CADIS and \fwc\ are ineffective at getting low enough relative error in the regions of streaming. The LDO formulation offers lesser ray effects, superior mathematical properties, and more flexible angular treatment than the \sn equations for an equivalent number of angles. We investigated whether using LDO for VR parameter creation was more effective than standard quadratures. 
+
 The LDO equations saw their best-performing Monte Carlo VR parameters in
-the \fwc\ context. For the DLVN experimental benchmark, LDO variance reduction
+the \fwc\ context. This is makes sense as LDO is capturing better overall performance than equivalent \sn, which will be reflected in global VR. LDO does not improve localized performance as much, so we therefore do not expect CADIS to see as much improvement. 
+% you may want to talk about this above and then here talk about how this is a confirmation of what you expected. 
+For the DLVN experimental benchmark, LDO variance reduction
 parameters generated the highest Figures of Merit for two of the six detector
 locations in the assembly. Of those studied here, the only other quadrature
 type to achieve this was the QR quadrature set. In the case of the simplified
@@ -1318,7 +1322,10 @@ Merit.
 In general, the LDO formulation is most useful in the specific context of
 Monte Carlo variance parameter generation using the \fwc\ method for photon
 transport problems. It is also effective in the \fwc\ method for neutron
-transport problems, though somewhat less so. However, the LDO representation
+transport problems, though somewhat less so. Overall, LDO was more effective than equivalent \sn-created VR parameters for a variety of standard quadratures for these tough engineering problems containing streaming behaviors that are tough for hybrid methods to capture. 
+% feel free to beef this up a little more. 
+
+The LDO representation
 is currently limited in applicability by its current implementation in the
 Exnihilo framework and the ADVANTG software. The problem space available to
 explore is limited to those with vacuum boundary conditions and isotropic
