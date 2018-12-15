@@ -155,7 +155,7 @@ effects at increased angular resolutions. Here, we assess the LDO equations'
 scalar flux solutions as input in the CADIS and \fwc\ methods for Monte Carlo
 variance reduction parameter generation. Monte Carlo calculations and Figures
 of Merit using VR parameters from the LDO equations are compared against
-those using VR parameters from standard quadrature set types for a collection of engineering test problems that have angular streaming features that challenges the CADIS and \fwc\ methods. Most are neutron problems and one is a photon problem. Using the LDO equations to create variance reduction parameters with the
+those using VR parameters from standard quadrature set types for a collection of engineering test problems that have angular streaming features that challenges the CADIS and \fwc\ methods. Most tests are neutron problems and one is a photon problem. Using the LDO equations to create variance reduction parameters with the
 \fwc\ method gave better performance in many cases, especially for the photon test problem.
 
 Keywords: hybrid methods; transport; Lagrange discrete ordinates
@@ -182,7 +182,7 @@ the favorable aspects of deterministic and Monte Carlo methods to achieve more
 accurate results more quickly. The CADIS (consistent adjoint driven importance
 sampling) \cite{cadis} and \fwc\ (forward-weighted CADIS) \cite{fwcadis}
 methods are the current state of the art in Monte Carlo variance reduction
-parameter generation for shielding. These methods use the results of
+parameter generation for shielding. These methods use the results of a
 deterministic calculation to create variance reduction (VR) parameters for
 improving the Monte Carlo transport game. However, these methods do not
 entirely mitigate the negative aspects of the combined simulation types.
@@ -196,16 +196,16 @@ exclude information about how particles move toward a response of interest.
 For problems with strong anisotropies in the particle flux, the VR parameters
 calculated using the standard space/energy treatment may not represent the
 real importance well enough to sufficiently improve efficiency in the Monte
-Carlo calculation.
+Carlo calculation. Using angular flux instead of scalar flux to make VR parameters, however, is intractable at this time because the size of the variance reduction maps would be too large and creating weight windows in angle is complex. Thus, we would like to find more effective methods of capturing enough angular information in the scalar flux to be able to use CADIS and \fwc\ without modification for these challenging problems. 
 
-This work aims to characterize the performance of Monte Carlo VR
+This work characterizes the performance of Monte Carlo VR
 parameters based on scalar flux solutions from solving the Lagrange Discrete
-Ordinates (LDO) formulation of the transport equation \cite{ahrens}. We employ
+Ordinates (LDO) formulation of the transport equation \cite{ahrens}. LDO has more flexible representation of angle space and results in fewer ray effects than equivalently-sized quadratures sets used in standard discrete ordinates. We therefore employ
 the LDO equations' solutions in the standard CADIS and \fwc\ methods to assess
 how well the LDO representation's unique treatment of scattering and asymmetry
 in angle incorporate angular information into the resulting scalar flux
 solutions and corresponding Monte Carlo VR parameters. The results for
-several test problems are compared to results where the VR parameters
+several engineering test problems are compared to results where the VR parameters
 were generated with standard formulations of the transport equation. All
 deterministic calculations were performed with the Denovo radiation transport
 code \cite{denovo} in the Exnihilo framework, with Monte Carlo VR
@@ -214,7 +214,7 @@ calculations done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
 given regarding the CADIS and \fwc\ methods, the discrete ordinates equations,
-the LDO equations, and previous related work in Section II. Test case
+the LDO equations, and previous related work in Section II. Engineering test
 problems are then described with relevant calculation parameters listed in
 Section III; numerical results and discussion follow in Section IV. We
 conclude in Section V with a summary of the results and a discussion of
