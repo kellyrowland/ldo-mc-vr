@@ -227,7 +227,7 @@ future work.
 We begin by describing the CADIS and \fwc\ methods, which are the current
 state of the art of Monte Carlo variance reduction parameter generation for
 shielding. A brief introduction to the LDO equations is then given to
-demonstrate the difference between the LDO representation and the classical
+motivate the use of the LDO equations compared to the classical
 discrete ordinates (\sn) equations.
 
 %%---------------------------------------------------------------------------%%
@@ -405,6 +405,11 @@ construction methods of these point systems \cite{ahrens}. As in the
 fundamental studies of the LDO equations conducted by Ahrens, we chose to use
 the extremal point sets developed and distributed by Womersley \cite{wom}.
 
+A few key features of the LDO equations that suggested they would be useful for VR parameter creation in the presence of anisotropy are the LDO equations naturally allow the angular flux to be evaluated in directions other than those found in the quadrature set; the LDO scattering source preserves the eigenstructure of the continuous scattering operator; and numerical results have shown spectral convergence in angle and mitigated ray effects compared to classical \sn \citep{ahrens}. We have not leveraged the ability to evaluate the flux at angles other than those in the quadrature set, but note that this could be a useful area of continued exploration. 
+
+% so, I can't remember if the scalar flux solutions you have show ray effects, so this paragraph may not really make sense. Please tweak as needed. I added it to address a reviewer comment. 
+We also note that CADIS and \fwc\ may be differently impacted by the presence of ray effects. Because CADIS is seeking localized solutions the alignment or mis-alignment of a ray with \textit{e.g.}, a detector of interest would over- or under-represent the importance of particles in that area, respectively. Because \fwc\ uses a global solution, ray effects would not accurately represent importance throughout the problem space and could result in inefficient particle tracking. 
+
 %%---------------------------------------------------------------------------%%
 \subsection{Previous Work}
 
@@ -415,13 +420,15 @@ direction of particle travel. As CADIS and \fwc\ are the current state of the
 art in Monte Carlo variance reduction parameter generation, we focus on
 angle-informed hybrid methods which are variants of CADIS and \fwc.
 
-Noting that the CADIS and \fwc\ methods have only been implemented as a
-function space and energy, excluding angle, and that direction of particle
-travel can be important, Peplow et al.\ introduced directional CADIS in 2012
+The CADIS and \fwc\ methods have only been implemented as a
+function space and energy, excluding angle because VR maps with angular information would use too much memory for engineering problems and would difficult to use as methods for sampling and using VR maps in angle would need to be added to Monte Carlo codes. However, direction of particle
+travel can be important in many problems so Peplow et al.\ introduced directional CADIS in 2012 to investigate methods to capture angular information more effectively
 \cite{peplow}. Two versions of directional CADIS were explored: one method
 that biases the source in space and energy while preserving the original
 angular distribution of the particles, and one method that biases the source
-in space, energy, and angle. Both new methods were tested against standard
+in space, energy, and angle. 
+
+Both new methods were tested against standard
 CADIS for seven example problems, with the Monte Carlo calculation Figure of
 Merit (FOM), defined below in Equation \eqref{eq:fom}, compared among the
 methods for each problem. For most of these problems, directional CADIS
@@ -469,6 +476,8 @@ methods \cite{kr}. The conclusions of these research efforts have
 been that methods either work predictably but are complex to use, putting a
 high burden on user expertise, or are simple to use but do not consistently
 perform well.
+
+The strength of the CADIS and \fwc\ methods for many types of problems is that a relatively coarse deterministic solution, which is quick to generate, is sufficient for dramatically enhanced improvement. As mentioned, however, for problems with strong anisotropies or where it is difficult to create accurate multigroup cross sections to accurately capture energy streaming, the deterministic solutions may not be accurate enough to serve as effective variance reduction maps \cite{peplow}, \cite{wilsonslaybaugh}. These situations occur in many engineering problems of interest, like metal pipes in cement, plates in water, and gaps in highly-scattering shielding material. We would like to be able to solve these problems without having to spend large amounts of time generating detailed deterministic solutions, using more complicated methods such as those mentioned here, or resorting to VR maps that explicitly use angular information. This is the motivation for investigating the use of LDO with CADIS and \fwc.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
