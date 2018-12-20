@@ -138,25 +138,33 @@ Number of figures: \totalfigures \\}
 
 \begin{abstract} {
 
-Hybrid radiation transport methods that use deterministic solutions to speed
-up stochastic calculations are rarely effective for shielding problems with
-highly anisotropic radiation streaming pathways. In this
-work, we investigate using a different deterministic formulation, the Lagrange
-Discrete Ordinates (LDO), for variance reduction (VR) parameter generation in
-hybrid methods. The LDO equations retain the formal structure of the
-traditional discrete ordinates approximation of the Boltzmann transport
-equation while handling the angular variable and particle scattering in a
-unique fashion. The LDO equations' solutions have an interpolatory structure
-such that the angular flux can be naturally evaluated at directions other than
-the discrete ordinates used in arriving at the solutions, and those discrete
-ordinates at which the problem is solved may be chosen in a strategic way. Of
-particular interest is that the LDO equations have been shown to mitigate ray
-effects at increased angular resolutions. Here, we assess the LDO equations'
-scalar flux solutions as input in the CADIS and \fwc\ methods for Monte Carlo
-variance reduction parameter generation. Monte Carlo calculations and Figures
-of Merit using VR parameters from the LDO equations are compared against
-those using VR parameters from standard quadrature set types for a collection of engineering test problems that have angular streaming features that challenges the CADIS and \fwc\ methods. Most tests are neutron problems and one is a photon problem. Using the LDO equations to create variance reduction parameters with the
-\fwc\ method gave better performance in many cases, especially for the photon test problem.
+Hybrid radiation transport methods that use deterministic solutions to speed up
+stochastic calculations are rarely effective for shielding problems with highly
+anisotropic radiation streaming pathways. In this work, we investigate using a
+different deterministic formulation, the Lagrange Discrete Ordinates (LDO), for
+variance reduction (VR) parameter generation in hybrid methods. The LDO
+equations retain the formal structure of the traditional discrete ordinates
+approximation of the Boltzmann transport equation while handling the angular
+variable and particle scattering in a unique fashion. The LDO equations'
+solutions have an interpolatory structure such that the angular flux can be
+naturally evaluated at directions other than the discrete ordinates used in
+arriving at the solutions, and those discrete ordinates at which the problem is
+solved may be chosen in a strategic way. Of particular interest is that the LDO
+equations have been shown to mitigate ray effects at increased angular
+resolutions. Here, we assess the LDO equations' scalar flux solutions as input
+in the CADIS and \fwc\ methods for Monte Carlo variance reduction parameter
+generation. Monte Carlo calculations and Figures of Merit using VR parameters
+from the LDO equations are compared against those using VR parameters from
+standard quadrature set types for a collection of engineering test problems. The
+problems chosen, most neutron transport and one photon transport, have angular
+streaming features that challenge the CADIS and \fwc\ methods. Using the LDO
+equations to create VR parameters with the \fwc\ method gave better performance
+in many cases, especially for the photon test problem. When using an LDO
+formulation for Monte Carlo VR parameter generation, we suggest using a fairly
+coarse angular mesh of 36 to 81 discrete ordinates for neutron or photon
+transport problems in the \fwc\ context, a coarse angular mesh of 16 to 81
+discrete ordinates for neutron transport with the CADIS method, and the finest
+available angular mesh for photon transport in the CADIS context. 
 
 Keywords: hybrid methods; transport; Lagrange discrete ordinates
 }
@@ -189,28 +197,35 @@ entirely mitigate the negative aspects of the combined simulation types.
 
 One particular area of interest where even hybrid methods struggle to yield
 accurate results quickly is in shielding problems with highly anisotropic
-particle movement. This is because the standard implementations of the CADIS
-and \fwc\ methods are based on scalar particle flux rather than angular
-particle flux. Thus, solutions used to create variance reduction parameters
-exclude information about how particles move toward a response of interest.
-For problems with strong anisotropies in the particle flux, the VR parameters
-calculated using the standard space/energy treatment may not represent the
-real importance well enough to sufficiently improve efficiency in the Monte
-Carlo calculation. Using angular flux instead of scalar flux to make VR parameters, however, is intractable at this time because the size of the variance reduction maps would be too large and creating weight windows in angle is complex. Thus, we would like to find more effective methods of capturing enough angular information in the scalar flux to be able to use CADIS and \fwc\ without modification for these challenging problems. 
+particle movement. This is because the standard implementations of the CADIS and
+\fwc\ methods are based on scalar particle flux rather than angular particle
+flux. Thus, solutions used to create variance reduction parameters exclude
+information about how particles move toward a response of interest. For problems
+with strong anisotropies in the particle flux, the VR parameters calculated
+using the standard space/energy treatment may not represent the real importance
+well enough to sufficiently improve efficiency in the Monte Carlo calculation.
+Using angular flux solutions instead of scalar flux solutions to generate VR
+parameters, however, is intractable at this time because the size of the
+variance reduction maps would be too large and creating weight windows in angle
+is complex. Thus, we would like to find more effective methods of capturing
+enough angular information in the scalar flux to be able to use CADIS and \fwc\
+without modification for these challenging problems.
 
-This work characterizes the performance of Monte Carlo VR
-parameters based on scalar flux solutions from solving the Lagrange Discrete
-Ordinates (LDO) formulation of the transport equation \cite{ahrens}. LDO has more flexible representation of angle space and results in fewer ray effects than equivalently-sized quadratures sets used in standard discrete ordinates. We therefore employ
-the LDO equations' solutions in the standard CADIS and \fwc\ methods to assess
-how well the LDO representation's unique treatment of scattering and asymmetry
-in angle incorporate angular information into the resulting scalar flux
-solutions and corresponding Monte Carlo VR parameters. The results for
-several engineering test problems are compared to results where the VR parameters
-were generated with standard formulations of the transport equation. All
-deterministic calculations were performed with the Denovo radiation transport
-code \cite{denovo} in the Exnihilo framework, with Monte Carlo VR
-parameters generated via the ADVANTG software \cite{advantg} and Monte Carlo
-calculations done with MCNP5 \cite{mcnp}.
+This work characterizes the performance of Monte Carlo VR parameters based on
+scalar flux solutions from solving the Lagrange Discrete Ordinates (LDO)
+formulation of the transport equation \cite{ahrens}. The LDO formulation has
+more flexible representation of angle space and results in fewer ray effects
+than equivalently-sized quadrature sets used in standard discrete ordinates. We
+therefore employ the LDO equations' solutions in the standard CADIS and \fwc\
+methods to assess how well the LDO representation's unique treatment of
+scattering and asymmetry in angle incorporate angular information into the
+resulting scalar flux solutions and corresponding Monte Carlo VR parameters. The
+results for several engineering test problems are compared to results where the
+VR parameters were generated with standard formulations of the transport
+equation. All deterministic calculations were performed with the Denovo
+radiation transport code \cite{denovo} in the Exnihilo framework, with Monte
+Carlo VR parameters generated via the ADVANTG software \cite{advantg} and Monte
+Carlo calculations done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
 given regarding the CADIS and \fwc\ methods, the discrete ordinates equations,
@@ -372,7 +387,7 @@ Angular integration is approximated with the quadrature rule
 \end{equation}
 %
 where $w_n$ are the integration weights and $N$ is the number of ordinates.
-Evans et al.\ provide a more complete disscussion and references to the
+Evans et al.\ provide a more complete discussion and references to the
 derivation of the \sn\ equations as well as solution methods for the equations
 \cite{denovo}.
 
@@ -405,10 +420,22 @@ construction methods of these point systems \cite{ahrens}. As in the
 fundamental studies of the LDO equations conducted by Ahrens, we chose to use
 the extremal point sets developed and distributed by Womersley \cite{wom}.
 
-A few key features of the LDO equations that suggested they would be useful for VR parameter creation in the presence of anisotropy are the LDO equations naturally allow the angular flux to be evaluated in directions other than those found in the quadrature set; the LDO scattering source preserves the eigenstructure of the continuous scattering operator; and numerical results have shown spectral convergence in angle and mitigated ray effects compared to classical \sn \citep{ahrens}. We have not leveraged the ability to evaluate the flux at angles other than those in the quadrature set, but note that this could be a useful area of continued exploration. 
+A few key features of the LDO equations that suggested they would be useful for
+VR parameter creation in the presence of anisotropy are that the LDO equations
+naturally allow the angular flux to be evaluated in directions other than those
+found in the quadrature set, the LDO scattering source preserves the
+eigenstructure of the continuous scattering operator, and numerical results have
+shown spectral convergence in angle and mitigated ray effects compared to the
+classical \sn equations \cite{ahrens}. We have not leveraged the ability to
+evaluate the flux at angles other than those in the quadrature set, but we note
+that this could be a useful area of continued exploration.
 
-% so, I can't remember if the scalar flux solutions you have show ray effects, so this paragraph may not really make sense. Please tweak as needed. I added it to address a reviewer comment. 
-We also note that CADIS and \fwc\ may be differently impacted by the presence of ray effects. Because CADIS is seeking localized solutions the alignment or mis-alignment of a ray with \textit{e.g.}, a detector of interest would over- or under-represent the importance of particles in that area, respectively. Because \fwc\ uses a global solution, ray effects would not accurately represent importance throughout the problem space and could result in inefficient particle tracking. 
+We also note that CADIS and \fwc\ may be differently impacted by the presence of
+ray effects. Because CADIS is seeking localized solutions, the alignment or
+misalignment of a ray with a detector of interest would over- or under-represent
+the importance of particles in that area, respectively. Because \fwc\ uses a
+global solution, ray effects would not accurately represent importance
+throughout the problem space and could result in inefficient particle tracking.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Previous Work}
@@ -420,13 +447,16 @@ direction of particle travel. As CADIS and \fwc\ are the current state of the
 art in Monte Carlo variance reduction parameter generation, we focus on
 angle-informed hybrid methods which are variants of CADIS and \fwc.
 
-The CADIS and \fwc\ methods have only been implemented as a
-function space and energy, excluding angle because VR maps with angular information would use too much memory for engineering problems and would difficult to use as methods for sampling and using VR maps in angle would need to be added to Monte Carlo codes. However, direction of particle
-travel can be important in many problems so Peplow et al.\ introduced directional CADIS in 2012 to investigate methods to capture angular information more effectively
-\cite{peplow}. Two versions of directional CADIS were explored: one method
-that biases the source in space and energy while preserving the original
-angular distribution of the particles, and one method that biases the source
-in space, energy, and angle. 
+The CADIS and \fwc\ methods have only been implemented as a function of space
+and energy, excluding angle because VR maps with angular information would use
+too much memory for engineering problems and would be difficult to use, as
+methods for sampling and using VR maps in angle would need to be added to Monte
+Carlo codes. However, direction of particle travel can be important in many
+problems, so Peplow et al.\ introduced directional CADIS in 2012 to investigate
+methods to capture angular information more effectively \cite{peplow}. Two
+versions of directional CADIS were explored: one method that biases the source
+in space and energy while preserving the original angular distribution of the
+particles, and one method that biases the source in space, energy, and angle.
 
 Both new methods were tested against standard
 CADIS for seven example problems, with the Monte Carlo calculation Figure of
@@ -435,7 +465,7 @@ methods for each problem. For most of these problems, directional CADIS
 outperformed standard CADIS, increasing the Monte Carlo FOM by a factor of
 about two. Notable cases in which directional CADIS performed more poorly than
 standard CADIS are a neutron porosity tool problem and a gamma-ray litho-density
- tool problem with the detector far away from the source. It should
+tool problem with the detector far away from the source. It should
 also be noted that, for a spherical boat test problem with a source far away
 from the boat, both standard CADIS and directional CADIS performed more poorly
 than an analog Monte Carlo calculation. Peplow et al.\ provide full details on
@@ -477,22 +507,42 @@ been that methods either work predictably but are complex to use, putting a
 high burden on user expertise, or are simple to use but do not consistently
 perform well.
 
-The strength of the CADIS and \fwc\ methods for many types of problems is that a relatively coarse deterministic solution, which is quick to generate, is sufficient for dramatically enhanced improvement. As mentioned, however, for problems with strong anisotropies or where it is difficult to create accurate multigroup cross sections to accurately capture energy streaming, the deterministic solutions may not be accurate enough to serve as effective variance reduction maps \cite{peplow}, \cite{wilsonslaybaugh}. These situations occur in many engineering problems of interest, like metal pipes in cement, plates in water, and gaps in highly-scattering shielding material. We would like to be able to solve these problems without having to spend large amounts of time generating detailed deterministic solutions, using more complicated methods such as those mentioned here, or resorting to VR maps that explicitly use angular information. This is the motivation for investigating the use of LDO with CADIS and \fwc.
+The strength of the CADIS and \fwc\ methods for many types of problems is that a
+relatively coarse deterministic solution, which is quick to generate, is
+sufficient for dramatically enhanced improvement. As mentioned, however, for
+problems with strong anisotropies or where it is difficult to create accurate
+multigroup cross sections to accurately capture energy streaming, the
+deterministic solutions may not be accurate enough to serve as effective
+variance reduction maps \cite{peplow,wilsonslaybaugh}. These situations occur in
+many engineering problems of interest, like metal pipes in cement, plates in
+water, and gaps in highly-scattering shielding material. We would like to be
+able to solve these problems without having to spend large amounts of time
+generating detailed deterministic solutions, using more complicated methods such
+as those mentioned here, or resorting to VR maps that explicitly use angular
+information. This is the motivation for investigating the use of the LDO
+formulation with CADIS and \fwc.
 
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
-The purpose of this work is to enable the solution of real engineering problems that we cannot solve easily with current tools. Thus, we focus on test cases that exhibit extreme cases of the behaviors that challenge CADIS and \fwc. The goal of this work is to see if LDO can provide better performance than other \sn methods, noting that it may not be practical to find accurately these problems with CADIS or \fwc\ in a reasonable amount of compute time. In this section, we first present descriptions of the geometry and materials
-used in the test cases as well as why each problem was chosen. Then, we
-discuss the parameters chosen for the various deterministic and Monte Carlo
-calculations performed in this work.
+The purpose of this work is to enable the solution of real engineering problems
+that we cannot solve easily with current tools. Thus, we focus on test cases
+that exhibit extreme cases of the behaviors that challenge CADIS and \fwc. The
+goal of this work is to see if the LDO formulation can provide better
+performance than other \sn methods, noting that it may not be practical to find
+accurate solutions to these problems with CADIS or \fwc\ in a reasonable amount
+of compute time. In this section, we first present descriptions of the geometry
+and materials used in the test cases as well as why each problem was chosen.
+Then, we discuss the parameters chosen for the various deterministic and Monte
+Carlo calculations performed in this work.
 
-Deterministic solutions for the test cases using the various quadrature sets
-are provided in Rowland's earlier publication \cite{kr18}. Generally, the
-problems were chosen because they are computationally challenging due to
-streaming pathways and ray effects and these can be seen clearly in the figures the earlier publication; the test cases are also of interest in
-that they are relevant to real-world application problems. We direct the
-reader to Rowland's earlier article for full detail \cite{kr18}.
+Deterministic solutions for the test cases using the various quadrature sets are
+provided in the earlier publication by Rowland et al.\ \cite{kr18}. Generally,
+the problems were chosen because they are computationally challenging due to
+streaming pathways and ray effects; these can be seen clearly in the figures the
+earlier publication. The test cases are also of interest in that they are
+relevant to real-world application problems. We direct the reader to the earlier
+article by Rowland et al.\ for full detail \cite{kr18}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -829,6 +879,7 @@ affect the calculated flux tally value or the associated error.
 \caption{MCNP-reported flux tally values at the end of the steel plate.}
 \label{steel-cad-tally}
 \end{figure}
+% see about combining these two figures to be side-by-side like the DLVN plots
 
 Additionally, it is instructive to look at the Figures of Merit for the
 various results to observe trends that could translate to other problems where
@@ -844,6 +895,7 @@ order 1 (8 quadrature points) result in the lowest FOM value.
 \caption{FOM values for MCNP flux tally at the end of the steel plate.}
 \label{steel-cad-fom}
 \end{figure}
+% see about combining these two figures to be side-by-side like the DLVN plots
 
 To conclude this subsection, we consider the overall trends in angular mesh
 refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
@@ -987,11 +1039,16 @@ the extreme ends of the angular mesh refinement spectrum.
 Like their corresponding flux tally graphs, Figures \ref{dlvn-fwc-5},
 \ref{dlvn-fwc-9}, and \ref{dlvn-fwc-13} show almost no variation in FOM with
 angular mesh refinement for the tallies at detector locations \#5, \#9, and
-\#13. This is to be expected, considering the uniform statistical error and
+\#13. This is not surprising in the \fwc\ context, as the global VR parameters
+produce more uniform statistical errors and
 stable flux tally results at these locations. Figure \ref{dlvn-fwc-11} shows
 variation in FOM with angular mesh refinement that is more varied, which
 corresponds to the larger statistical uncertainties in the flux tally values
-for detector \#11. Figure \ref{dlvn-fwc-12} shows little variation in FOM with
+for detector \#11. This is likely due to the close proximity of detector \#11
+to the bend in the ``dog-legged'' void; problems with small air gaps between
+shielding materials, such as the DLVN experimental benchmark, are historically
+difficult to solve well with hybrid methods.
+Figure \ref{dlvn-fwc-12} shows little variation in FOM with
 angular mesh refinement with the exception of the finest QR set. Lastly,
 \ref{dlvn-fwc-14} shows an upper FOM limit of approximately 200 across all
 quadrature types, with the Figure of Merit largely consistent across
@@ -1276,6 +1333,19 @@ points) or order 8 (81 quadrature points) may be used to good effect.
 %%---------------------------------------------------------------------------%%
 \subsection{Summary}
 
+The LDO equations saw their best-performing Monte Carlo VR parameters in the
+\fwc\ context, where the LDO formulation's angular information is better
+incorporated into the variance reduction parameter generation.
+
+In the context of the \fwc\ method, we found that low-order (5 or 8) angular
+meshes (36 to 81 discrete ordinates) are sufficient to produce forward flux
+tally and Figure of Merit values comparable to those of more refined angular
+meshes when using LDO quadrature sets. The superior FOM values resulting from
+the representative LDO quadrature set for three of four detectors in the
+simplified portal monitor scenario begets interest in further exploration of
+LDO equations' solutions as input for Monte Carlo VR parameters for photon
+transport in the \fwc\ context.
+
 On the whole, little correlation was seen between angular mesh refinement and
 the MCNP-reported forward flux tally values in the CADIS context. If using an
 LDO quadrature set to generate variance reduction parameters in this context
@@ -1287,24 +1357,26 @@ angular mesh should be used. This is consistent with what is expected based on
 the difference between neutron and photon scattering in the materials in these
 test cases.
 
-In the context of the \fwc\ method, we found that low-order (5 or 8) angular
-meshes (36 to 81 discrete ordinates) are sufficient to produce forward flux
-tally and Figure of Merit values comparable to those of more refined angular
-meshes when using LDO quadrature sets. The superior FOM values resulting from
-the representative LDO quadrature set for three of four detectors in the
-simplified portal monitor scenario begets interest in further exploration of
-LDO equations' solutions as input for Monte Carlo VR parameters for photon
-transport in the \fwc\ context.
-
 %---------------------------------------------------------------------------%%
 \section{Conclusions and Future Work}
 \label{sec:conclusions}
 
-Hybrid methods can be highly effective in allowing the use of Monte Carlo methods to solve tough shielding problems. However, engineering problems with streaming paths and strong anisotropies, such as steel embedded in water or concrete, and small air gaps between shielding materials, CADIS and \fwc\ are ineffective at getting low enough relative error in the regions of streaming. The LDO formulation offers lesser ray effects, superior mathematical properties, and more flexible angular treatment than the \sn equations for an equivalent number of angles. We investigated whether using LDO for VR parameter creation was more effective than standard quadratures. 
+Hybrid methods can be highly effective in allowing the use of Monte Carlo
+methods to solve tough shielding problems. However, for engineering problems
+with streaming paths and strong anisotropies, such as steel embedded in water or
+concrete, and small air gaps between shielding materials, CADIS and \fwc\ are
+ineffective at getting low enough relative error in the regions of streaming.
+The LDO formulation offers lesser ray effects, superior mathematical properties,
+and more flexible angular treatment than the classical \sn equations for an
+equivalent number of angles. We investigated whether using LDO for VR parameter
+creation was more effective than standard quadratures.
 
-The LDO equations saw their best-performing Monte Carlo VR parameters in
-the \fwc\ context. This is makes sense as LDO is capturing better overall performance than equivalent \sn, which will be reflected in global VR. LDO does not improve localized performance as much, so we therefore do not expect CADIS to see as much improvement. 
-% you may want to talk about this above and then here talk about how this is a confirmation of what you expected. 
+The LDO equations saw their best-performing Monte Carlo VR parameters in the
+\fwc\ context. This makes sense as the LDO formulation is capturing better
+overall performance than equivalent \sn constructions, which will be reflected
+in global VR. The LDO formulation does not improve localized performance as
+much, so we therefore do not expect CADIS to see as much improvement.
+
 For the DLVN experimental benchmark, LDO variance reduction
 parameters generated the highest Figures of Merit for two of the six detector
 locations in the assembly. Of those studied here, the only other quadrature
@@ -1319,11 +1391,13 @@ problems, a more refined LDO angular mesh is recommended for generating Monte
 Carlo VR parameters and achieving detector responses with high Figures of
 Merit.
 
-In general, the LDO formulation is most useful in the specific context of
-Monte Carlo variance parameter generation using the \fwc\ method for photon
-transport problems. It is also effective in the \fwc\ method for neutron
-transport problems, though somewhat less so. Overall, LDO was more effective than equivalent \sn-created VR parameters for a variety of standard quadratures for these tough engineering problems containing streaming behaviors that are tough for hybrid methods to capture. 
-% feel free to beef this up a little more. 
+In general, the LDO formulation is most useful in the specific context of Monte
+Carlo variance parameter generation using the \fwc\ method for photon transport
+problems. It is also effective in the \fwc\ method for neutron transport
+problems, though somewhat less so. Overall, LDO was more effective than
+equivalent \sn-created VR parameters for a variety of standard quadratures for
+these tough engineering problems containing streaming behaviors that are
+difficult for hybrid methods to capture.
 
 The LDO representation
 is currently limited in applicability by its current implementation in the
@@ -1337,7 +1411,7 @@ An additional area of research that could prove interesting comes from the
 flexibility of the LDO equations. In this work we did not specifically adapt
 the angles of evaluation to the problems of interest. For example, one could
 use the interpolatory nature of the LDO formulation to cluster angles along
-the direction of streaming paths. It could be that improved angular resolution
+the direction of streaming paths. It could be that increased angular resolution
 in key directions could improve performance of the VR parameters generated.
 The purpose of this work, however, was a first evaluation of using LDO
 solutions for Monte Carlo variance reduction.
