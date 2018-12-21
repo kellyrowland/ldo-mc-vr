@@ -215,17 +215,17 @@ This work characterizes the performance of Monte Carlo VR parameters based on
 scalar flux solutions from solving the Lagrange Discrete Ordinates (LDO)
 formulation of the transport equation \cite{ahrens}. The LDO formulation has
 more flexible representation of angle space and results in fewer ray effects
-than equivalently-sized quadrature sets used in standard discrete ordinates. We
-therefore employ the LDO equations' solutions in the standard CADIS and \fwc\
-methods to assess how well the LDO representation's unique treatment of
-scattering and asymmetry in angle incorporate angular information into the
-resulting scalar flux solutions and corresponding Monte Carlo VR parameters. The
-results for several engineering test problems are compared to results where the
-VR parameters were generated with standard formulations of the transport
-equation. All deterministic calculations were performed with the Denovo
-radiation transport code \cite{denovo} in the Exnihilo framework, with Monte
-Carlo VR parameters generated via the ADVANTG software \cite{advantg} and Monte
-Carlo calculations done with MCNP5 \cite{mcnp}.
+than equivalently-sized quadrature sets used in standard discrete ordinates
+calculations. We therefore employ the LDO equations' solutions in the standard
+CADIS and \fwc\ methods to assess how well the LDO representation's unique
+treatment of scattering and asymmetry in angle incorporate angular information
+into the resulting scalar flux solutions and corresponding Monte Carlo VR
+parameters. The results for several engineering test problems are compared to
+results where the VR parameters were generated with standard formulations of
+the transport equation. All deterministic calculations were performed with the
+Denovo radiation transport code \cite{denovo} in the Exnihilo framework, with
+Monte Carlo VR parameters generated via the ADVANTG software \cite{advantg}
+and Monte Carlo calculations done with MCNP5 \cite{mcnp}.
 
 The remainder of the paper is structured as follows: background information is
 given regarding the CADIS and \fwc\ methods, the discrete ordinates equations,
@@ -347,7 +347,7 @@ source biasing parameters and weight windows.
 
 The discrete ordinates, or \sn, approximation is one of the most commonly-used
 methods to discretize the angular variable in the linear Boltzmann
-transport equation \cite{bg}. The \sn approximation is written as:
+transport equation \cite{bg}. The \sn\ approximation is written as:
 %
 \begin{multline}
 \bo \cdot \nabla \psi(\vecr,E,\bo) + \Sigma_t(\vecr,E) \psi(\vecr,E,\bo) = \\
@@ -426,16 +426,9 @@ naturally allow the angular flux to be evaluated in directions other than those
 found in the quadrature set, the LDO scattering source preserves the
 eigenstructure of the continuous scattering operator, and numerical results have
 shown spectral convergence in angle and mitigated ray effects compared to the
-classical \sn equations \cite{ahrens}. We have not leveraged the ability to
+classical \sn\ equations \cite{ahrens}. We have not leveraged the ability to
 evaluate the flux at angles other than those in the quadrature set, but we note
 that this could be a useful area of continued exploration.
-
-We also note that CADIS and \fwc\ may be differently impacted by the presence of
-ray effects. Because CADIS is seeking localized solutions, the alignment or
-misalignment of a ray with a detector of interest would over- or under-represent
-the importance of particles in that area, respectively. Because \fwc\ uses a
-global solution, ray effects would not accurately represent importance
-throughout the problem space and could result in inefficient particle tracking.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Previous Work}
@@ -513,7 +506,7 @@ sufficient for dramatically enhanced improvement. As mentioned, however, for
 problems with strong anisotropies or where it is difficult to create accurate
 multigroup cross sections to accurately capture energy streaming, the
 deterministic solutions may not be accurate enough to serve as effective
-variance reduction maps \cite{peplow,wilsonslaybaugh}. These situations occur in
+variance reduction maps \cite{wilsonslaybaugh,peplow}. These situations occur in
 many engineering problems of interest, like metal pipes in cement, plates in
 water, and gaps in highly-scattering shielding material. We would like to be
 able to solve these problems without having to spend large amounts of time
@@ -522,6 +515,13 @@ as those mentioned here, or resorting to VR maps that explicitly use angular
 information. This is the motivation for investigating the use of the LDO
 formulation with CADIS and \fwc.
 
+We note that CADIS and \fwc\ may be differently impacted by the presence of
+ray effects. Because CADIS is seeking localized solutions, the alignment or
+misalignment of a ray with a detector of interest would over- or under-represent
+the importance of particles in that area, respectively. Because \fwc\ uses a
+global solution, ray effects would not accurately represent importance
+throughout the problem space and could result in inefficient particle tracking.
+
 %%---------------------------------------------------------------------------%%
 \section{Test Cases and Calculation Parameters}
 
@@ -529,7 +529,7 @@ The purpose of this work is to enable the solution of real engineering problems
 that we cannot solve easily with current tools. Thus, we focus on test cases
 that exhibit extreme cases of the behaviors that challenge CADIS and \fwc. The
 goal of this work is to see if the LDO formulation can provide better
-performance than other \sn methods, noting that it may not be practical to find
+performance than other \sn\ methods, noting that it may not be practical to find
 accurate solutions to these problems with CADIS or \fwc\ in a reasonable amount
 of compute time. In this section, we first present descriptions of the geometry
 and materials used in the test cases as well as why each problem was chosen.
@@ -665,7 +665,7 @@ Vacuum boundary conditions were applied to the outside of the entire problem.
 \subsection{Simplified Portal Monitor}
 
 The final problem described here, a simplified portal monitor scenario, is a
-photon rather than a neutron problem. Portal monitors are large detector
+photon transport problem. Portal monitors are large detector
 panels used to screen cargo for illicit radioactive materials. The problem
 models a cargo container holding a Ba-133 photon point source and large blocks
 of homogenized iron and polyethylene. The geometry and material configuration
@@ -755,7 +755,7 @@ Table \ref{ldo-n}.
 \label{ldo-n}
 \end{table}
 
-QR quadrature sets were chosen to generate the reference results against which
+QR quadrature sets were chosen to generate reference results against which
 the LDO results are compared. QR was selected because it is commonly used 
 in hybrid methods for Monte Carlo variance reduction parameter generation and 
 therefore provides a relevant baseline. The Exnihilo framework allows the user
@@ -779,7 +779,7 @@ angles) and two (8192 total angles).
 Galerkin quadrature sets offer several advantages relative to the standard
 \sn\ method for problems with highly anisotropic scattering \cite{morel}.
 Similar to the LDO equations, the 
-``hybrid collocation- Galerkin-S$_\mathrm{N}$'' method developed by Morel 
+``hybrid collocation-Galerkin-S$_\mathrm{N}$'' method developed by Morel 
 has the same algebraic structure as the traditional discrete ordinates
 equations but employs a nonstandard scattering treatment. For an \sn\ order
 $N$, a given Galerkin quadrature set has a total of $N(N+2)$ angles. The
@@ -861,7 +861,7 @@ data where available, we refer the reader to Rowland's previous publication
 \subsubsection{CADIS}
 
 For the CADIS calculations for the steel plate embedded in water, the adjoint
-source was set to be the detector tally. Figure \ref{steel-cad-tally} shows
+source was set to be the detector tally. Figure \ref{steel-cadis} shows
 the MCNP-reported flux tally for the detector at the end of the steel plate
 for each angular mesh refinement for each quadrature type. We note that the
 Monte Carlo calculations with VR parameters from the Galerkin quadrature
@@ -873,17 +873,9 @@ the effect of angular mesh refinement on flux tally solution for the different
 quadrature types; we observe that the angular mesh refinement does not greatly
 affect the calculated flux tally value or the associated error.
 
-\begin{figure}[!hbt]
-\centering
-\includegraphics[max height=0.445\textheight]{steel-cadis-tally.eps}
-\caption{MCNP-reported flux tally values at the end of the steel plate.}
-\label{steel-cad-tally}
-\end{figure}
-% see about combining these two figures to be side-by-side like the DLVN plots
-
 Additionally, it is instructive to look at the Figures of Merit for the
 various results to observe trends that could translate to other problems where
-correct results are obtained. Figure \ref{steel-cad-fom} shows the reported
+correct results are obtained. Figure \ref{steel-cadis} shows the reported
 FOM value for the detector tally for the various quadrature sets and orders.
 The VR parameters corresponding to the LDFE quadrature set of order 1 (128
 quadrature points)result in the highest FOM value while those of the QR set of
@@ -891,14 +883,14 @@ order 1 (8 quadrature points) result in the lowest FOM value.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{steel-cadis-fom.eps}
-\caption{FOM values for MCNP flux tally at the end of the steel plate.}
-\label{steel-cad-fom}
+\includegraphics[max height=0.445\textheight]{steel-cadis.eps}
+\caption{MCNP-reported forward flux tally and FOM values at the end of the
+         steel plate.}
+\label{steel-cadis}
 \end{figure}
-% see about combining these two figures to be side-by-side like the DLVN plots
 
 To conclude this subsection, we consider the overall trends in angular mesh
-refinement in Figures \ref{steel-cad-tally} and \ref{steel-cad-fom}. It
+refinement in Figure \ref{steel-cadis}. It
 appears that the angular mesh refinement does not have a large influence on the
 flux tally value in this problem, as all of the tally results using VR
 parameters fall within the same order of magnitude and do not exhibit any
@@ -927,7 +919,7 @@ quadrature set of order 2 was not able to finish in a timely manner for the
 hardware configuration used in this work, so Monte Carlo results for this data
 point are not included here.
 
-Figure \ref{steel-fwc-tally} shows the total tally summed over all air in the
+Figure \ref{steel-fwc} shows the total tally summed over all air in the
 problem for the Monte Carlo calculations with VR parameters. The calculations
 with VR parameters are plotted as a function of angular mesh refinement. Like
 in the CADIS method, the angular mesh refinement has little impact on the
@@ -935,27 +927,21 @@ tally results. If using an LDO quadrature set to generate VR parameters with
 the \fwc\ method in a similar case, a low-order LDO angular mesh could be
 used to good effect.
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[max height=0.445\textheight]{steel-fwcadis-tally.eps}
-\caption{Flux tally over the air region in the steel plate test with the \fwc\ method.}
-\label{steel-fwc-tally}
-\end{figure}
-
 To analyze the performance of the representative quadrature sets' variance
 reduction parameters for the steel plate in water case using the \fwc\ method,
 we will look at the average FOM values over the entire adjoint source mesh
 tally. The Figures of Merit were calculated by taking the average relative
 error over all spatial cells in the air block mesh tally and using that mean
 value in combination with the MCNP-reported computer time. Figure 
-\ref{steel-fwc-fom} shows these average Figures of Merit as a function of the
+\ref{steel-fwc} shows these average Figures of Merit as a function of the
 number of angles used in generating the VR parameters.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{steel-fwcadis-fom.eps}
-\caption{Average FOM values for the mesh tally in the \fwc\ steel plate scenario.}
-\label{steel-fwc-fom}
+\includegraphics[max height=0.445\textheight]{steel-fwcadis.eps}
+\caption{Scalar flux and average FOM values for the mesh tally in the \fwc\
+         steel plate test.}
+\label{steel-fwc}
 \end{figure}
 
 We see a different trend here than with CADIS in that the highest average FOM
@@ -964,7 +950,7 @@ refinement; the coarsest and finest angular meshes produce Monte Carlo VR
 parameters that result in reduced Figures of Merit. This indicates that too
 low an angular resolution likely does not provide enough accuracy, while a
 high resolution adds computational cost without much accuracy benefit.
-Considering Figures \ref{steel-fwc-tally} and \ref{steel-fwc-fom}, we note
+Considering Figure \ref{steel-fwc}, we note
 that one would wish to use a lower-order (\textit{e.g.}, order 5, 36
 quadrature points) LDO quadrature set to generate variance reduction
 parameters for a Monte Carlo mesh tally using the \fwc\ method.
@@ -979,26 +965,19 @@ parameters for a Monte Carlo mesh tally using the \fwc\ method.
 To study the DLVN problem in the context of the CADIS method, the adjoint
 source was set to be the tally located at detector \#14 in the original
 experiment. Detector \#14 was chosen because it is centrally located among the
-detectors and farthest from the forward source. Figure \ref{dlvn-cad-tally}
+detectors and farthest from the forward source. Figure \ref{dlvn-cadis}
 shows the MCNP-reported tally for the forward scalar flux at the location of
 detector \#14.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{dlvn-cadis-tally.eps}
-\caption{Flux tally at detector \#14 in the DLVN problem with the CADIS method.}
-\label{dlvn-cad-tally}
+\includegraphics[max height=0.445\textheight]{dlvn-cadis.eps}
+\caption{Flux tally and FOM values for the DLVN problem detector \#14 tally
+         with the CADIS method.}
+\label{dlvn-cadis}
 \end{figure}
 
-\begin{figure}[!htb]
-\centering
-\includegraphics[max height=0.445\textheight]{dlvn-cadis-fom.eps}
-\caption{FOM values for the DLVN problem detector \#14 tally with the CADIS 
-         method.}
-\label{dlvn-cad-fom}
-\end{figure}
-
-Figures \ref{dlvn-cad-tally} and \ref{dlvn-cad-fom} show similar convergence
+Figure \ref{dlvn-cadis} shows similar convergence
 behavior with respect to angular mesh refinement for the tally calculations
 and Figure of Merit values resulting from calculations using VR parameters.
 Beyond the lowest-order angular mesh refinement for each quadrature type
@@ -1194,31 +1173,25 @@ To study calculations for the simplified portal monitor test case in the
 context of the CADIS method, the adjoint source was set to be the top detector
 in the small array.
 
-Figures \ref{cargo-cad-tally} and \ref{cargo-cad-fom} show the MCNP-reported
-forward scalar flux tally values and Figures of Merit, respectively. As with
-the other test cases, the values are plotted as a function of the number of
-quadrature points used to generate the VR parameters in order to explore
-the effect of angular mesh refinement on flux tally and FOM.
+Figure \ref{cargo-cadis} shows the MCNP-reported forward scalar flux tally
+values and Figures of Merit. As with the other test cases, the values are
+plotted as a function of the number of quadrature points used to generate the
+VR parameters in order to explore the effect of angular mesh refinement on
+flux tally and FOM.
 
 \begin{figure}[!htb]
 \centering
-\includegraphics[max height=0.445\textheight]{portal-cadis-tally.eps}
-\caption{Flux tally in the portal monitor top detector using the CADIS method.}
-\label{cargo-cad-tally}
-\end{figure}
-
-\begin{figure}[!htb]
-\centering
-\includegraphics[max height=0.445\textheight]{portal-cadis-fom.eps}
-\caption{CADIS method FOM values for the portal monitor top detector flux tally.}
-\label{cargo-cad-fom}
+\includegraphics[max height=0.445\textheight]{portal-cadis.eps}
+\caption{Flux tally and FOM values in the portal monitor top detector using
+         the CADIS method.}
+\label{cargo-cadis}
 \end{figure}
 
 Similar to other test cases, the flux tally values reported in Figure 
-\ref{cargo-cad-tally} show a trend of converging to a stable value after the
+\ref{cargo-cadis} show a trend of converging to a stable value after the
 first few coarsest angular meshes. The flux tally values from the
 calculations using VR appear to require a minimum value of approximately 100
-discrete angular values in order to stabilize. Figure \ref{cargo-cad-fom}
+discrete angular values in order to stabilize. Figure \ref{cargo-cadis}
 shows a strong correlation between the number of quadrature points and the
 flux tally FOM, eventually approaching an upper limit around 100. The LDO
 Figures of Merit increase most rapidly with the number of quadrature points
@@ -1367,13 +1340,13 @@ with streaming paths and strong anisotropies, such as steel embedded in water or
 concrete, and small air gaps between shielding materials, CADIS and \fwc\ are
 ineffective at getting low enough relative error in the regions of streaming.
 The LDO formulation offers lesser ray effects, superior mathematical properties,
-and more flexible angular treatment than the classical \sn equations for an
+and more flexible angular treatment than the classical \sn\ equations for an
 equivalent number of angles. We investigated whether using LDO for VR parameter
 creation was more effective than standard quadratures.
 
 The LDO equations saw their best-performing Monte Carlo VR parameters in the
 \fwc\ context. This makes sense as the LDO formulation is capturing better
-overall performance than equivalent \sn constructions, which will be reflected
+overall performance than equivalent \sn\ constructions, which will be reflected
 in global VR. The LDO formulation does not improve localized performance as
 much, so we therefore do not expect CADIS to see as much improvement.
 
