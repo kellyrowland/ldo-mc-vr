@@ -541,8 +541,7 @@ Carlo calculations performed in this work.
 Deterministic solutions for the test cases using the various quadrature sets are
 provided in the earlier publication by Rowland et al.\ \cite{kr18}. Generally,
 the problems were chosen because they are computationally challenging due to
-streaming pathways and ray effects; these can be seen clearly in the figures the
-earlier publication. The test cases are also of interest in that they are
+streaming pathways and ray effects; these can be seen clearly in the figures in reference \cite{kr18}. The test cases are also of interest in that they are
 relevant to real-world application problems. We direct the reader to the earlier
 article by Rowland et al.\ for full detail \cite{kr18}.
 
@@ -553,7 +552,7 @@ article by Rowland et al.\ for full detail \cite{kr18}.
 The first test case we describe is an idealized geometry of a steel plate
 embedded in water; it is modeled after the problem presented by Wilson and
 Slaybaugh \cite{wilsonslaybaugh}. This idealized geometry is of interest
-because it has been shown to be computationally challenging: resonances in the
+because it has been shown to be computationally challenging: there is strong angular streaming down the steel plate embedded in water; resonances in the
 iron cause self-shielding in energy and spatial self-shielding comes from the
 presence of a thin plate of resonance material embedded in a moderating
 material. Because of this, Monte Carlo variance reduction parameters generated
@@ -653,21 +652,20 @@ locations shown in Figure \ref{dlvn}; this test case is of interest
 because the streaming pathways in the configuration make the problem
 computationally challenging. It is particularly interesting because the DLVN
 configuration contains both physical streaming in air and energy streaming in
-iron. Additionally, the availability of experimental flux solution data
-provides actual values against which to compare the calculated solutions.
+iron. 
 
-The experimental configuration is symmetric about the $y-z$ plane at $x = 0$
+The DLVN configuration is symmetric about the $y-z$ plane at $x = 0$
 and so is usually simulated with a reflecting boundary at $x = 0$ and vacuum
 boundaries on all other sides of the configuration. For the tests in this work,
 the use of reflecting boundary conditions was not available, so the model used 
-was constructed to represent the entire experimental geometry configuration.
+was constructed to represent the entire geometry.
 Vacuum boundary conditions were applied to the outside of the entire problem.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Simplified Portal Monitor}
 
 The final problem described here, a simplified portal monitor scenario, is a
-photon transport problem. Portal monitors are large detector
+\textit{photon-only} transport problem (the first two test problems are only transporting neutrons). Portal monitors are large detector
 panels used to screen cargo for illicit radioactive materials. The problem
 models a cargo container holding a Ba-133 photon point source and large blocks
 of homogenized iron and polyethylene. The geometry and material configuration
