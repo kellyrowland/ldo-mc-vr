@@ -851,8 +851,10 @@ presented for the test cases in the contexts of both the CADIS and
 angular mesh refinement used in the deterministic calculations from which
 Monte Carlo variance reduction parameters were generated. For additional
 results and analysis, including comparisons with experimentally-gathered
-data where available, we refer the reader to Rowland's previous publication
+data where available, we refer the reader to Rowland's previous related publication
 \cite{kr}.
+
+When considering the results presented, keep in mind that some of these problems are nearly pathological in difficulty, especially the steel plate embedded in water. In some cases, no quadrature is able to create VR parameters to obtain a valid solution in a reasonable time. In these circumstances, we still compare performance in terms of FOM. The motivation is that, with enough simulated particles, a correct solution would be obtained. Therefore, a better FOM should still indicate which method to choose to get the correct answer faster. The results below elucidate when LDO is a good choice, and we acknowledge that we have not yet found a method that always works when problems have strong angular anisotropy.  The contribution here is that LDO increases the number of problems we can solve with CADIS and \fwc.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -878,7 +880,7 @@ various results to observe trends that could translate to other problems where
 correct results are obtained. Figure \ref{steel-cadis} shows the reported
 FOM value for the detector tally for the various quadrature sets and orders.
 The VR parameters corresponding to the LDFE quadrature set of order 1 (128
-quadrature points)result in the highest FOM value while those of the QR set of
+quadrature points) result in the highest FOM value while those of the QR set of
 order 1 (8 quadrature points) result in the lowest FOM value.
 
 \begin{figure}[!htb]
@@ -900,7 +902,7 @@ the increased computational cost. The Figures of Merit vary somewhat more
 greatly. Specifically, the LDO VR parameters appear to gather around FOM
 values of 0.005 even as the number of discrete angles used is increased. Thus,
 for the steel plate in water problem solved with the CADIS method, one could
-use a relatively low-order (\textit{i.e.}, order 8, 81 quadrature points) LDO
+use a relatively low-order (\textit{i.e.}, order 8, which is 81 quadrature points) LDO
 quadrature set to generate Monte Carlo VR parameters that result in a Figure
 of Merit comparable to or better than those produced by finer angular meshes.
 
@@ -911,7 +913,7 @@ of Merit comparable to or better than those produced by finer angular meshes.
 For the \fwc\ calculations for the steel plate in water, the adjoint source
 was set to be a mesh tally over all of the air beyond the steel plate. The
 discretization for the adjoint source mesh tally is the same as that listed in
-Section \ref{sec:steel_params}\ Specifically, the adjoint source mesh is
+Section \ref{sec:steel_params}.  Specifically, the adjoint source mesh is
 identical to the overall problem mesh in the $x-$ and $y-$directions but
 starts at $z = 130$ cm and extends to the problem boundary at $z = 140$ cm.
 The Monte Carlo calculation with VR parameters from the Galerkin
@@ -951,7 +953,7 @@ parameters that result in reduced Figures of Merit. This indicates that too
 low an angular resolution likely does not provide enough accuracy, while a
 high resolution adds computational cost without much accuracy benefit.
 Considering Figure \ref{steel-fwc}, we note
-that one would wish to use a lower-order (\textit{e.g.}, order 5, 36
+that one would wish to use a lower-order (\textit{e.g.}, order 5, which is 36
 quadrature points) LDO quadrature set to generate variance reduction
 parameters for a Monte Carlo mesh tally using the \fwc\ method.
 
@@ -1035,7 +1037,7 @@ quadrature types with the exception of QR angular meshes.
 
 To examine the FOM values in a more quantifiable way, Table 
 \ref{dlvn-fwc-fom-table} lists the FOM values for all detector locations for
-each of the representative quadrature sets listed in Section \ref{params}\
+each of the representative quadrature sets listed in Section \ref{params}.
 The maximum FOM value in each detector location column is emphasized. Of the
 six detector locations, the representative LDO quadrature set achieves the
 highest FOM for two of the locations. The representative QR quadrature set is
@@ -1048,7 +1050,8 @@ multiple detector locations using the \fwc\ method for the DLVN problem.
 
 \begin{table}[!hbt]
 \centering
-\caption{\fwc\ FOM values for representative quadratures for the DLVN problem.}
+\caption{\fwc\ FOM values for representative quadratures for the DLVN problem, with best performance at each detector indicated with bold font.}
+% I don't know why this isn't centered anymore... sorry!
 \label{dlvn-fwc-fom-table}
 \begin{tabular}{l|cccccc}
 \multicolumn{1}{l|}{Quadrature}
@@ -1225,7 +1228,7 @@ for the bottom detector in the array.
 \begin{table}[!hbt]
 \centering
 \small
-\caption{\fwc\ FOM values for representative quadratures for the portal monitor.}
+\caption{\fwc\ FOM values for representative quadratures for the portal monitor, with best performance at each detector indicated with bold font.}
 \label{cargo-fwc-fom-table}
 \begin{tabular}{l|cccc}
 \multicolumn{1}{l|}{Quadrature}
