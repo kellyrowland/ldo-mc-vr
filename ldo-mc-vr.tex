@@ -335,7 +335,7 @@ defined as
 q^{\dagger}(\vecr,E,\bo) = \frac{1}{\psi(\vecr,E,\bo)},
 \end{equation}
 %
-where $\psi$ denotes the angular neutron flux. Note that $\psi$ is obtained
+where $\psi$ denotes the angular neutron flux. A key point is that $\psi$ is obtained
 from a coarse, inexpensive, forward deterministic calculation. From this, we
 can calculate an adjoint importance function that represents the importance of
 particles to achieving the desired objective of uniformly distributed Monte
@@ -345,7 +345,7 @@ adjoint source with the inverse of the forward flux; the adjoint source will
 be high where the forward flux is low and the adjoint source will be low where
 the forward flux is high. With this method, after the adjoint has been
 determined, the standard CADIS procedures are used to calculate consistent
-source biasing parameters and weight windows.
+source biasing parameters and weight windows. Note that other types of global responses, such as global energy deposition, can be targeted with other, similar formulations of the adjoint source; see Reference \cite{fwcadis} for details. 
 
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
@@ -443,7 +443,7 @@ execution of hybrid methods. This section discusses previous work in this
 field with a particular emphasis on hybrid methods that incorporate
 direction of particle travel. As CADIS and \fwc\ are the current state of the
 art in Monte Carlo variance reduction parameter generation, we focus on
-angle-informed hybrid methods which are variants of CADIS and \fwc.
+angle-informed hybrid methods which are variants of CADIS and \fwc. For a larger review of hybrid methods than what we present here, see Reference \cite{munk-review}.
 
 The CADIS and \fwc\ methods have only been implemented as a function of space
 and energy, excluding angle because VR maps with angular information would use
@@ -479,14 +479,16 @@ as the contributon flux integrated over angle divided by the angle-integrated
 forward flux; this alternative adjoint scalar flux is then used in the CADIS
 and \fwc\ methods for generation of variance reduction parameters for local
 and global response functions, respectively. The \co\ method was implemented
-in the ADVANTG framework using MCNP5. Munk et al.\ identified three categories
+in the ADVANTG framework using MCNP5. 
+
+Munk et al.\ identified three categories
 of processes that affect particle flux anisotropy: strongly-directional
 particle sources, strong differences between material properties, and
 algorithmic limitations that result in ray effects. Munk et al.\ then tested a
 set of problems containing different combinations of these anisotropy-inducing
 mechanisms and compared the results to CADIS. Munk et al.\ also developed a
 set of metrics by which the degree of anisotropy of the flux may be
-quantified. Similar to the conclusions drawn by Peplow et al.\, Munk et al.\
+quantified. Similar to the conclusions drawn by Peplow et al., Munk et al.\
 found that it was difficult to predict for which problems \co\ would
 outperform CADIS. When considering a parametric study of deterministic
 variables likely to affect angular flux (varying quadrature set order and \pn\
@@ -507,7 +509,7 @@ perform well.
 
 The strength of the CADIS and \fwc\ methods for many types of problems is that a
 relatively coarse deterministic solution, which is quick to generate, is
-sufficient for dramatically enhanced improvement. As mentioned, however, for
+sufficient for dramatically enhanced performance. As mentioned, however, for
 problems with strong anisotropies or where it is difficult to create accurate
 multigroup cross sections to accurately capture energy streaming, the
 deterministic solutions may not be accurate enough to serve as effective
