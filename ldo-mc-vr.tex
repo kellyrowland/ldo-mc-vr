@@ -869,9 +869,9 @@ When considering the results presented, keep in mind that some of these
 problems are nearly pathological in difficulty, especially the steel plate
 embedded in water. In some cases, no quadrature is able to create VR
 parameters to obtain a valid solution in a reasonable time. In these
-circumstances, we still compare performance in terms of FOM. The motivation is
-that, with enough simulated particles, a correct solution would be obtained.
-Therefore, a better FOM should still indicate which method to choose to get
+circumstances, we still compare performance in terms of FOM. This
+is because, with enough simulated particles, a correct solution would be obtained.
+Therefore, a better FOM still indicates which method to choose to get
 the correct answer more quickly. The results below elucidate when the LDO
 equations are a good choice, and we acknowledge that we have not yet found a
 method that always works when problems have strong angular anisotropy. The
@@ -895,7 +895,7 @@ Carlo results for those two data points are not included here. The flux tally
 results are plotted as a function of angular mesh refinement to investigate
 the effect of angular mesh refinement on flux tally solution for the different
 quadrature types; we observe that the angular mesh refinement does not greatly
-affect the calculated flux tally value or the associated error.
+affect the calculated flux tally value or the associated error. 
 
 Additionally, it is instructive to look at the Figures of Merit for the
 various results to observe trends that could translate to other problems where
@@ -979,6 +979,8 @@ lower-order (\textit{e.g.}, order 5, which is 36 quadrature points) LDO
 quadrature set to generate variance reduction parameters for a Monte Carlo
 mesh tally using the \fwc\ method.
 
+This is a true challenge problem. We note that for both the CADIS and \fwc\ results, the solution not clearly obtained. This problem is very difficult to solve---Wilson and Slaybaugh \cite{wilsonslaybaugh} were unable to obtain accurate solutions using a reasonable number of particles with analog Monte Carlo or CADIS or \fwc\ despite many deterministic parameter choices. The meaning of the recommendations here is that, with enough particles, a correct solution would eventually be obtained and using the method with the best FOM will get there the fastest. 
+
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
 \subsection{Dog-Legged Void Neutron (DLVN)}
@@ -1020,9 +1022,7 @@ problem in the CADIS context.
 
 Considering the DLVN case with the \fwc\ method, the adjoint source was
 specified to be the combination of all of the detector locations in the
-problem.
-
-Figures \ref{dlvn-fwc-5} and \ref{dlvn-fwc-9} exhibit the same lack of trend in
+problem. Figures \ref{dlvn-fwc-5} and \ref{dlvn-fwc-9} exhibit the same lack of trend in
 flux tally as a function of angular mesh refinement. That is, in general, for
 detector locations \#5 and \#9, using more discrete angles in the \fwc\
 deterministic calculations does not greatly impact the flux tally result from
@@ -1197,9 +1197,7 @@ point set of order 5 (36 quadrature points) or order 8 (81 quadrature points).
 
 To study calculations for the simplified portal monitor test case in the
 context of the CADIS method, the adjoint source was set to be the top detector
-in the small array.
-
-Figure \ref{cargo-cadis} shows the MCNP-reported forward scalar flux tally
+in the small array. Figure \ref{cargo-cadis} shows the MCNP-reported forward scalar flux tally
 values and Figures of Merit. As with the other test cases, the values are
 plotted as a function of the number of quadrature points used to generate the
 VR parameters in order to explore the effect of angular mesh refinement on
@@ -1230,9 +1228,7 @@ Monte Carlo VR parameters.
 
 To generate Monte Carlo variance reduction parameters for the simplified portal
 monitor using the \fwc\ method, the adjoint source was set to be all four
-detector locations in the problem's detector array.
-
-Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
+detector locations in the problem's detector array. Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
 values are each plotted as a function of the number of discrete angles used in
 the quadrature sets that were used to generate VR parameters. At all
@@ -1420,7 +1416,7 @@ use the interpolatory nature of the LDO formulation to cluster angles along
 the direction of streaming paths. It could be that increased angular resolution
 in key directions could improve performance of the VR parameters generated.
 The purpose of this work, however, was a first evaluation of using LDO
-solutions for Monte Carlo variance reduction.
+solutions for Monte Carlo variance reduction and in doing so we identified several areas of valuable application. 
 
 \pagebreak
 \section*{Acknowledgments}
