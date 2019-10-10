@@ -345,7 +345,9 @@ adjoint source with the inverse of the forward flux; the adjoint source will
 be high where the forward flux is low and the adjoint source will be low where
 the forward flux is high. With this method, after the adjoint has been
 determined, the standard CADIS procedures are used to calculate consistent
-source biasing parameters and weight windows. Note that other types of global responses, such as global energy deposition, can be targeted with other, similar formulations of the adjoint source; see Reference \cite{fwcadis} for details. 
+source biasing parameters and weight windows. Note that other types of global
+responses, such as global energy deposition, can be targeted with other,
+similar formulations of the adjoint source; see Reference \cite{fwcadis} for details. 
 
 %%---------------------------------------------------------------------------%%
 \subsection{Classical Discrete Ordinates (\sn) Equations}
@@ -443,7 +445,9 @@ execution of hybrid methods. This section discusses previous work in this
 field with a particular emphasis on hybrid methods that incorporate
 direction of particle travel. As CADIS and \fwc\ are the current state of the
 art in Monte Carlo variance reduction parameter generation, we focus on
-angle-informed hybrid methods which are variants of CADIS and \fwc. For a larger review of hybrid methods than what we present here, see Reference \cite{munk-review}.
+angle-informed hybrid methods which are variants of CADIS and \fwc. For a
+larger review of hybrid methods than what we present here, see
+Reference \cite{munk-review}.
 
 The CADIS and \fwc\ methods have only been implemented as a function of space
 and energy, excluding angle because VR maps with angular information would use
@@ -550,7 +554,8 @@ challenging due to streaming pathways and ray effects; these can be seen
 clearly in the figures in the publication. The test cases are also
 of interest in that they are relevant to real-world application problems. We
 direct the reader to the earlier article by Rowland et al.\ for full detail
-\cite{kr18}. All data and scripts for making plots associated with this work can be found at \url{https://github.com/kellyrowland/ldo-mc-vr/tree/master/data}.
+\cite{kr18}. All data and scripts for making plots associated with this work
+can be found at \url{https://github.com/kellyrowland/ldo-mc-vr/tree/master/data}.
 
 %%---------------------------------------------------------------------------%%
 \subsection{Steel Plate Embedded in Water}
@@ -979,7 +984,14 @@ lower-order (\textit{e.g.}, order 5, which is 36 quadrature points) LDO
 quadrature set to generate variance reduction parameters for a Monte Carlo
 mesh tally using the \fwc\ method.
 
-This is a true challenge problem. We note that for bot  h the CADIS and \fwc\ results, the solution was not clearly obtained. This problem is very difficult to solve---Wilson and Slaybaugh \cite{wilsonslaybaugh} were unable to obtain accurate solutions using a reasonable number of particles with analog Monte Carlo or CADIS or \fwc\ despite many deterministic parameter choices. The meaning of the recommendations here is that, with enough particles, a correct solution would eventually be obtained and using the method with the best FOM will get there the fastest. 
+This is a true challenge problem. We note that for both the CADIS and \fwc\
+results, the solution was not clearly obtained. This problem is very difficult
+to solve -- Wilson and Slaybaugh \cite{wilsonslaybaugh} were unable to obtain
+accurate solutions using a reasonable number of particles with analog Monte
+Carlo or CADIS or \fwc\ despite many deterministic parameter choices. The
+meaning of the recommendations here is that, with enough particles, a correct
+solution would eventually be obtained and using the method with the best FOM
+will get there the fastest. 
 
 \FloatBarrier
 %%---------------------------------------------------------------------------%%
@@ -1197,7 +1209,8 @@ point set of order 5 (36 quadrature points) or order 8 (81 quadrature points).
 
 To study calculations for the simplified portal monitor test case in the
 context of the CADIS method, the adjoint source was set to be the top detector
-in the small array. Figure \ref{cargo-cadis} shows the MCNP-reported forward scalar flux tally
+in the small array. Figure \ref{cargo-cadis} shows the MCNP-reported forward
+scalar flux tally
 values and Figures of Merit. As with the other test cases, the values are
 plotted as a function of the number of quadrature points used to generate the
 VR parameters in order to explore the effect of angular mesh refinement on
@@ -1228,7 +1241,8 @@ Monte Carlo VR parameters.
 
 To generate Monte Carlo variance reduction parameters for the simplified portal
 monitor using the \fwc\ method, the adjoint source was set to be all four
-detector locations in the problem's detector array. Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
+detector locations in the problem's detector array.
+Figure \ref{cargo-fwc} shows MCNP-reported forward scalar flux tallies and
 Figures of Merit for all four detectors in the array. The flux tallies and FOM
 values are each plotted as a function of the number of discrete angles used in
 the quadrature sets that were used to generate VR parameters. At all
@@ -1416,7 +1430,8 @@ use the interpolatory nature of the LDO formulation to cluster angles along
 the direction of streaming paths. It could be that increased angular resolution
 in key directions could improve performance of the VR parameters generated.
 The purpose of this work, however, was a first evaluation of using LDO
-solutions for Monte Carlo variance reduction and in doing so we identified several areas of valuable application. 
+solutions for Monte Carlo variance reduction and in doing so we identified
+several areas of valuable application. 
 
 \pagebreak
 \section*{Acknowledgments}
